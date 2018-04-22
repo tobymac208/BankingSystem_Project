@@ -4,8 +4,7 @@ public class SavingsAccount extends Account{
     private double balance;
 
     public SavingsAccount(){
-        super(); // calls the super-class's default constructor
-        super.setId(1);
+        super("Savings Account", 1); // calls the super-class's default constructor
         balance = 0.0;
     }
 

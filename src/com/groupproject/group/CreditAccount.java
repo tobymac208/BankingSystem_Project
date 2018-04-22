@@ -8,8 +8,7 @@ public class CreditAccount extends Account {
     // TODO: Add in Date variable and functionality
 
     public CreditAccount(){
-        super(); // calls the super-class's default constructor
-        super.setId(3);
+        super("Credit Account", 3); // calls the super-class's default constructor -- passing in default values
         limit = 6500;
         amountLeft = 6500;
     }
@@ -20,6 +19,7 @@ public class CreditAccount extends Account {
 
     /** Allows the user to pay off a portion/all of their balance */
     public boolean paymentAmount(double amount){
+        // TODO: Add in functionality
         return false;
     }
 }
