@@ -9,15 +9,39 @@ public class UserAccount {
     private String name;
     private ArrayList<Transaction> transactionArrayList;
     private double balance;
+    private boolean hasCreditAccount; // keeps track of if the user decided to have a credit account included
 
-    public UserAccount(String name, double balance, boolean checkingAccountFlag){
+    public UserAccount(String name, boolean creditAccountFlag){
         this.name = name;
-        this.balance = balance;
+        this.balance = 0.0; // we don't set this by default, because this is the overall total of all of the accounts
         this.sAccount = new SavingsAccount();
-        if (checkingAccountFlag)                    //flag for if user wants to open up checking account when they open an account
-            this.chAccount = new CheckingAccount();
+        this.chAccount = new CheckingAccount();
+        if(creditAccountFlag)                    //flag for if user wants to open up credit account when they open an account
+            this.ccAccount = new CreditAccount();
         transactionArrayList = new ArrayList<>(); // initializes the list
+        this.hasCreditAccount = creditAccountFlag;
     }
+
+    // GETTERS & SETTERS
+    // transactionsList
+    public ArrayList<Transaction> getTransactionArrayList(){return this.transactionArrayList;}
+    // name
+    public String getName(){return name;}
+    public void setName(String name){this.name = name;}
+    // savings account
+    public SavingsAccount getsAccount(){return sAccount;}
+    public void setsAccount(SavingsAccount sAccount){this.sAccount = sAccount;}
+    // checking account
+    public CheckingAccount getchAccount(){return chAccount;}
+    public void setchAccount(CheckingAccount chAccount){this.chAccount = chAccount;}
+    // credit account
+    public CreditAccount getCcAccount(){return ccAccount;}
+    public void setChAccount(CreditAccount ccAccount){this.ccAccount = ccAccount;}
+    // has credit account
+    public boolean isCreditAccount(){return hasCreditAccount;}
+    // balance
+    public double getBalance() {return balance;}
+    public void setBalance(double balance) {this.balance = balance;}
 
     // Transaction methods
     private void addTransaction(int type, String description){
@@ -122,8 +146,4 @@ public class UserAccount {
     }
 
     //TODO finish helperMethod
-
-    // GETTERS & SETTERS
-    // transactionsList
-    public ArrayList<Transaction> getTransactionArrayList(){return this.transactionArrayList;}
 }

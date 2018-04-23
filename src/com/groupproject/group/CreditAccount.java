@@ -13,9 +13,12 @@ public class CreditAccount extends Account {
         amountLeft = 6500;
     }
 
-    public void setAmountLeft(double amount){
-        amountLeft -= amount;
-    }
+    // getters & setters
+    // amount left
+    public double getAmountLeft(){return amountLeft;}
+    public void setAmountLeft(double amount){amountLeft -= amount;}
+    // outstanding balance
+    public double getOustandingBalance(){return oustandingBalance;}
 
     /** Allows the user to pay off a portion/all of their balance */
     public boolean paymentAmount(double amount){

@@ -8,11 +8,13 @@ import java.util.Scanner;
 
 /*
  * Changelog:
- * 04/22/2018: Updated menu; done by Joe
+ * 04/22/2018: Updated menu
+ * 04/22/2018: Began adding file operations
+ * 04/23/2018: Updates to menu, UserAccount, and to file operations
  */
 
 public class Main {
-    private static UserAccount account = new UserAccount("Bobs Account", 123546, false); // accountName and ID
+    private static UserAccount account = new UserAccount("Bobs Account",false); // account name and balance
 
     public static void main(String[] args) {
         writeToFile();
@@ -45,6 +47,7 @@ public class Main {
                     amount = input.nextDouble();
                     System.out.print("Please enter account type (1-3; Savings, Checking, Credit): ");
                     type = input.nextInt();
+                    // input validation code
                     while(type != 1 || type != 2 || type != 3){
                         System.out.println("Retry (1-3): ");
                         type = input.nextInt();
@@ -87,6 +90,10 @@ public class Main {
             }
         }while(choice != 5);
 
+        // write the information to the files
+        writeToFile(); // print out the current user information
+        writeTransactionsToFile(); // print out the transactions to the transactions file
+
     }
     /** Prints menu for users to see */
     public static void printMenu(){
@@ -109,7 +116,8 @@ public class Main {
             }
         }
         try (PrintWriter printer = new PrintWriter(file)) {
-            printer.println("This is a test!");
+            // print out the account information. Order: account name, savings account balance, checking account value, amount left in credit, and the outstanding balance due
+            printer.println(account.getName() + " " + account.getsAccount().getBalance() + " " + account.getchAccount().getBalance() + " " + account.getCcAccount().getAmountLeft() + " " + account.getCcAccount().getOustandingBalance());
         } catch (FileNotFoundException e) { // catches the possible exception throw by the printer object being created
             System.out.println("The file does not exist!");
         }
@@ -133,19 +141,19 @@ public class Main {
             // Task: Check to see if there is anything in the file yet
             String testString = fileReader.nextLine();
             if(testString.isEmpty()){ // check to see if the file is empty
-                return new UserAccount(null, 0.0, false); // give back an empty UserAccount object
+                return new UserAccount(null, false); // give back an empty UserAccount object
             }else{ // there IS something in the file, so read from it.
                 // TODO: Process information
-                return new UserAccount(null, 0.0, false);
+                return new UserAccount(null, false);
             }
         }catch (FileNotFoundException e) {
             System.out.println("The file was not found!"); // debug code.
-            return new UserAccount(null, 0.0, false); // give back an empty UserAccount object
+            return new UserAccount(null, false); // give back an empty UserAccount object
         }
     }
 
     /** Writes the current transaction list to a file to be stored */
-    public static void WriteTransactions(){
+    public static void writeTransactionsToFile(){
         File file = new File("src/com/groupproject/group/transactions.txt");
         if(!file.exists()){ // check if the doesn't exist
             // if it doesn't, create it
