@@ -56,15 +56,22 @@ public class UserAccount {
     public boolean deposit(int type, double amount){
         switch(type){
             case 1:
-                sAccount.setBalance(sAccount.getBalance() + amount);
-                sAccount.setBalance(sAccount.getBalance() + amount);
-                addTransaction(type, "Deposit, Amount deposited: " + amount + ", Total in account: " + sAccount.getBalance());
+                if(amount > 0) {
+                    sAccount.setBalance(sAccount.getBalance() + amount);
+                    System.out.println("Deposit Successful\nNew savings account balance is: " + sAccount.getBalance());
+                    //addTransaction(type, "Deposit, Amount deposited: " + amount + ", Total in account: " + sAccount.getBalance());
+                    transactionArrayList.add(new Transaction("Deposited " + amount + " into your savings account. Current savings account balance is: " + sAccount.getBalance()));
+                } else System.out.println("Please select an amount greater than 0.");
                 break;
             case 2:
-                chAccount.setBalance(chAccount.getBalance() + amount);
+                if(amount > 0) {
+                    chAccount.setBalance(chAccount.getBalance() + amount);
+                    System.out.println("Deposit Successful\nNew checking account balance is: " + chAccount.getBalance());
+                    transactionArrayList.add(new Transaction("Deposited " + amount + " into your checking account. Current checking account balance is: " + chAccount.getBalance()));
+                } else System.out.println("Please select an amount greater than 0.");
                 break;
-            case 3:
-                // TODO: Work on deposit choice
+            default:
+                System.out.println("Please select a valid account to deposit to.");
                 break;
         }
         return true;
@@ -78,27 +85,31 @@ public class UserAccount {
     /** Allows a user to withdraw money from the account chosen */
     // same style as above. match the account types to withdraw from.
     public boolean withdraw(int type, double amount) {
+        boolean balanceFlag;
         switch (type) {
-            case 1:
-                System.out.println("Savings amount: $" + sAccount.getBalance());
-                //TODO create helper method
-                //boolean balanceFlag = helperMethod
-                //if(balanceFlag){
-                sAccount.setBalance(sAccount.getBalance() - amount);
-                System.out.println("Withdrawal Succesful");
-                transactionArrayList.add(new Transaction("Withdrew " + amount + " from savings account. Current balance is: " + sAccount.getBalance()));
-                //}else
-                //System.out.println("Insufficient Funds");
+            case 1://savings account withdrawal
+                System.out.println("Savings balance: $" + sAccount.getBalance());
+                balanceFlag = checkFunds(type, amount);
+                if(balanceFlag){
+                    sAccount.setBalance(sAccount.getBalance() - amount);
+                    System.out.println("Withdrawal Successful\nRemaining savings account balance is: " + sAccount.getBalance());
+                    transactionArrayList.add(new Transaction("Withdrew " + amount + " from savings account. Current balance is: " + sAccount.getBalance()));
+                }else
+                    System.out.println("Insufficient Funds");
                 break;
-            case 2:
-                //TODO create helper method
-                //boolean balanceFlag = helperMethod
-                //if(balanceFlag){
-                chAccount.setBalance(chAccount.getBalance() - amount);
-                System.out.println("Checking Account Withdrawl");
-                //}else
-                //System.out.println("Insufficient Funds");
+            case 2://checking account withdrawal
+                balanceFlag = checkFunds(type, amount);
+                if(balanceFlag){
+                    System.out.println("Checking balance: $" + chAccount.getBalance());
+                    chAccount.setBalance(chAccount.getBalance() - amount);
+                    System.out.println("Withdrawal Successful\nRemaining checking account balance is: " + chAccount.getBalance());
+                    transactionArrayList.add(new Transaction("Withdrew " + amount + " from checking account. Current balance is: " + chAccount.getBalance()));
+                }else
+                    System.out.println("Insufficient Funds");
                 break;
+            default://incorrect input
+                System.out.println("Please enter either a 1 for Savings account or 2 for Checking Account, to withdraw from.");
+                return false;
         }
         return true;
     }
@@ -106,37 +117,57 @@ public class UserAccount {
 
     /** Allows a user to transfer money between accounts */
     public boolean transferBetweenAccounts(int fromAccount, int toAccount, double amount){
+        boolean balanceFlag = checkFunds(fromAccount, amount);
         switch(fromAccount){
             case 1:                                                     //transferring money from savings
-                if (amount > sAccount.getBalance()){
-                    System.out.println("Insufficient funds");
-                }
-                else {
+                System.out.println("Savings balance: $" + sAccount.getBalance());
+                if (balanceFlag){
                     sAccount.setBalance(sAccount.getBalance() - amount);
-                    if (toAccount == 2) {                                  //input validation for the from account
+                    if (toAccount == 2) {
                         chAccount.setBalance(chAccount.getBalance() + amount);
+                        System.out.println("Transfer Successful\nRemaining savings account balance is: " + sAccount.getBalance() +
+                                "\nNew checking account balance is: " + chAccount.getBalance());
+                        transactionArrayList.add(new Transaction("Transferred " + amount + " from savings account to checking account." +
+                                "Current savings account balance is: " + sAccount.getBalance() + "Current checking account balance is: " + chAccount.getBalance()));
                     } else if (toAccount == 3) {
                         ccAccount.setAmountLeft(-amount);
+                        chAccount.setBalance(chAccount.getBalance() + amount);
+                        System.out.println("Transfer Successful\nRemaining savings account balance is: " + sAccount.getBalance() +
+                                "\nAvailable credit: " + ccAccount.getAmountLeft());
+                        transactionArrayList.add(new Transaction("Transferred " + amount + " from savings account to credit account." +
+                                "Current savings account balance is: " + sAccount.getBalance() + "Current available credit is: " + ccAccount.getAmountLeft()));
                     } else {
                         System.out.println("Please choose a valid account to transfer to.");
                     }
                 }
-                break;
-            case 2:
-                if (amount > chAccount.getBalance()){
-                    System.out.println("Insufficient funds");
-                }
                 else {
+                    System.out.println("Please check your information and input a valid amount to transfer.");
+                }
+                break;
+            case 2:                                                 //transferring from checking account
+                System.out.println("Checking balance: $" + chAccount.getBalance());
+                if (balanceFlag){
                     chAccount.setBalance(chAccount.getBalance() - amount);
-                    if (toAccount == 1) {                                  //input validation for the from account
+                    if (toAccount == 1) {
                         sAccount.setBalance(sAccount.getBalance() + amount);
+                        System.out.println("Transfer Successful\nRemaining checking account balance is: " + chAccount.getBalance() +
+                                "\nNew savings account balance is: " + sAccount.getBalance());
+                        transactionArrayList.add(new Transaction("Transferred " + amount + " from checking account to savings account." +
+                                "Current checking account balance is: " + chAccount.getBalance() + "Current savings account balance is: " + sAccount.getBalance()));
                     }
                     else if (toAccount == 3) {
                         ccAccount.setAmountLeft(-amount);
+                        System.out.println("Transfer Successful\nRemaining checking account balance is: " + chAccount.getBalance() +
+                                "\nAvailable Credit: " + ccAccount.getAmountLeft());
+                        transactionArrayList.add(new Transaction("Transferred " + amount + " from checking account to credit account." +
+                                "Current checking account balance is: " + chAccount.getBalance() + "Current credit account balance is: " + ccAccount.getAmountLeft()));
                     }
                     else{
                         System.out.println("Please choose a valid account to transfer to.");
                     }
+                }
+                else {
+                    System.out.println("Please check your information and input a valid amount to transfer.");
                 }
                 break;
             case 3:
@@ -145,5 +176,29 @@ public class UserAccount {
         return true;
     }
 
-    //TODO finish helperMethod
+    /*checks to make sure the amount being taken from an account is not greater than the amount in the account.
+     **returns true if the amount to be withdrawn is ok  */
+    public boolean checkFunds(int accountID, double amount){
+        switch(accountID){
+            case 1://checks amount to savings account amount
+                if(amount <= 0) {
+                    System.out.println("Please enter a number greater than 0.");
+                    return false;
+                }else if(amount > sAccount.getBalance()) {
+                    return false;
+                }
+                else return true;
+            case 2://checks amount to checking account amount
+                if(amount <= 0) {
+                    System.out.println("Please enter a number greater than 0.");
+                    return false;
+                }else if(amount > chAccount.getBalance()) {
+                    return false;
+                }
+                else return true;
+            default://incorrect input
+                System.out.println("Please enter either a 1 for Savings account or 2 for Checking Account.");
+                return false;
+        }
+    }
 }

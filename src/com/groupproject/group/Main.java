@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
@@ -15,22 +16,29 @@ import java.util.Scanner;
 
 public class Main {
     private static UserAccount account = new UserAccount("Bobs Account",false); // account name and balance
+    private static ArrayList<UserAccount> acctList = new ArrayList<>();
+    private static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
-        writeToFile();
-        Scanner input = new Scanner(System.in); // creates a scanner to get user input
+        // writeToFile();
 
         // make sure to add acctNum to some sort of list or something that we can test.
         // same with passwords
 
-        double num = 0;
+        String stringChoice;
         int choice = 0;
         System.out.println("======================");
         System.out.println("---- BANK PORTAL -----");
         System.out.println("======================");
 
-        System.out.println("ENTER account Number: ");
-        num = input.nextDouble();
+        System.out.println("Type 'Login' or type 'register' to register: ");
+        stringChoice = input.nextLine();
+
+        if(stringChoice.equals("Login") || stringChoice.equals("login")){
+
+        }else if(stringChoice.equals("Register") || stringChoice.equals("register")){
+            addAccount(); // create a new account
+        }
 
         printMenu();
         System.out.println("SELECT A MENU OPTION");
@@ -91,10 +99,37 @@ public class Main {
         }while(choice != 5);
 
         // write the information to the files
-        writeToFile(); // print out the current user information
-        writeTransactionsToFile(); // print out the transactions to the transactions file
+        //writeToFile(); // print out the current user information
+        //writeTransactionsToFile(); // print out the transactions to the transactions file
 
     }
+
+    /** method that allows a user to create a new account */
+    public static void addAccount(){
+        String name;
+        int ans;
+
+        System.out.println("CREATE NEW ACCOUNT");
+        System.out.println("Please Enter Account Name");
+        name = input.nextLine();
+        String junk = input.nextLine();
+
+        System.out.println("Did you want to add a credit account? (1) for yes (2) for no ");
+        ans = input.nextInt();
+        if(ans == 1) {
+            UserAccount account = new UserAccount(name, true);
+            // add more access to the account set-up like an initial deposit amount or things of that nature.
+            // add to arrayList
+            acctList.add(account);
+            System.out.println("New Account Created! w cc");
+        }if(ans == 2) {
+            UserAccount account = new UserAccount(name, false);
+            // add to arrayList
+            acctList.add(account);
+            System.out.println("New Account Created! no cc");
+        }
+    }
+
     /** Prints menu for users to see */
     public static void printMenu(){
         System.out.println("MENU");
@@ -105,7 +140,7 @@ public class Main {
     }
 
     /** Writes the current account information to the account_info.txt file */
-    public static void writeToFile() {
+    /* public static void writeToFile() {
         File file = new File("src/com/groupproject/group/account_info.txt");
         if(!file.exists()){ // check if the doesn't exist
             // if it doesn't, create it
@@ -121,10 +156,10 @@ public class Main {
         } catch (FileNotFoundException e) { // catches the possible exception throw by the printer object being created
             System.out.println("The file does not exist!");
         }
-    }
+    } */
 
     /** Reads information from "account_info.txt" and populates the fields for the accounts */
-    public static UserAccount readFromFile(){
+    /* public static UserAccount readFromFile(){
         // Create the file. This will help to read content from a file
         File file = new File("src/com/groupproject/group/account_info.txt");
         if(!file.exists()){ // check if the doesn't exist
@@ -150,10 +185,10 @@ public class Main {
             System.out.println("The file was not found!"); // debug code.
             return new UserAccount(null, false); // give back an empty UserAccount object
         }
-    }
+    } */
 
     /** Writes the current transaction list to a file to be stored */
-    public static void writeTransactionsToFile(){
+    /* public static void writeTransactionsToFile(){
         File file = new File("src/com/groupproject/group/transactions.txt");
         if(!file.exists()){ // check if the doesn't exist
             // if it doesn't, create it
@@ -171,5 +206,5 @@ public class Main {
         }catch (FileNotFoundException e){
             System.out.println("Can't print transactions! File was not found.");
         }
-    }
+    } */
 }
