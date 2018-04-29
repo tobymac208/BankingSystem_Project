@@ -121,9 +121,8 @@ public class Main {
                         System.out.println("Retry (1,2,5): ");
                         fromType = input.nextInt();
                         System.out.println("Please enter the account to transfer to(1,2,5):");
-
                     }
-                    account.transferBetweenAccounts()
+                    // account.transferBetweenAccounts();
 
                     // print the menu and request input
                     printMenu();
@@ -226,9 +225,9 @@ public class Main {
     } */
 
     /** Writes the current transaction list to a file to be stored */
-    /* public static void writeTransactionsToFile(){
+    public static void writeTransactionsToFile(){
         File file = new File("src/com/groupproject/group/transactions.txt");
-        if(!file.exists()){ // check if the doesn't exist
+        if(!file.exists()){ // check if the file doesn't exist
             // if it doesn't, create it
             try {
                 file.createNewFile();
@@ -238,11 +237,13 @@ public class Main {
         }
         // use a printWriter to write the information to the file
         try(PrintWriter writer = new PrintWriter(file)){
-            for(Transaction transaction : account.getTransactionArrayList()){ // iterate through the transactions list
-                writer.println(transaction.getDescription()); // write the description to a line
+            for(UserAccount account : accountList.getAccountsList()){ // gets every account
+                for(Transaction transaction : account.getTransactionArrayList()){ // gets every transaction in each account
+                    writer.println(transaction.getDescription()); // write each transaction's description to the file
+                }
             }
         }catch (FileNotFoundException e){
             System.out.println("Can't print transactions! File was not found.");
         }
-    } */
+    }
 }
