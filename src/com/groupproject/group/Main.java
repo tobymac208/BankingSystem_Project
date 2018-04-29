@@ -40,10 +40,11 @@ public class Main {
             System.out.print("Please enter your id number: ");
             int idNum = input.nextInt();
 
-            // adding and checking for if the account exists
 
+            //Takes in the extra line
             String junkLine = input.nextLine();
 
+            // adding and checking for if the account exists
             boolean search = false;
             while(!search) {                        //Loop to make sure an existing ID is input with matching password
                 UserAccount account = accountList.findById(idNum);
@@ -77,16 +78,20 @@ public class Main {
                 case 1:
                     double amount;
                     int type;
-                    System.out.print("Please enter the amount: ");
-                    amount = input.nextDouble();
-                    System.out.print("Please enter account type (1,2,5; Savings, Checking, Credit): ");
+
+                    System.out.print("Please enter account type to deposit to(1:Savings 2:Checking 5:Cancel): ");
                     type = input.nextInt();
+                    //Display amount currently in chosen account
+                    account.displayAccountBalance(type);
+                    System.out.print("Please enter the amount to deposit: ");
+                    amount = input.nextDouble();
                     // input validation code
                     while(type != 1 && type != 2 && type != 5){
-                        System.out.println("Retry (1,2,5): ");
+                        System.out.println("Retry (1:Savings 2:Checking 5:Cancel): ");
                         type = input.nextInt();
                     }
-                    account.deposit(type, amount);
+                    if(type == 1 || type == 2)
+                        account.deposit(type, amount);
 
                     // print the menu and request input
                     printMenu();
@@ -94,36 +99,46 @@ public class Main {
                     break;
                 case 2:
                     System.out.println("WITHDRAW");
-                    System.out.println("Please enter the amount: ");
-                    amount = input.nextDouble();
-                    System.out.println("Please enter account type (1-3): ");
+                    System.out.println("Please enter account type to withdraw from(1:Savings 2:Checking 5:Cancel): ");
                     type = input.nextInt();
+                    //Display amount currently in chosen account
+                    account.displayAccountBalance(type);
+                    System.out.println("Please enter the amount to withdraw: ");
+                    amount = input.nextDouble();
+
                     while(type != 1 && type != 2 && type != 5){
-                        System.out.println("Retry (1,2,5): ");
+                        System.out.println("Retry (1:Savings 2:Checking 5:Cancel): ");
                         type = input.nextInt();
                     }
-                    account.withdraw(type, amount);
+                    if(type == 1 || type == 2)
+                        account.withdraw(type, amount);
 
                     // print the menu and request input
                     printMenu();
                     choice = input.nextInt();
                     break;
                 case 3:
-                    //TODO finish writing this
                     System.out.println("TRANSFER");
-                    System.out.println("Please enter the amount: ");
-                    amount = input.nextDouble();
-                    System.out.println("Please enter account number (1-3): ");
-                    int fromType = input.nextInt();
-                    System.out.println("Please enter account number (1-3): ");
-                    int toType = input.nextInt();
-                    while(fromType != 1 && fromType != 2 && fromType != 5, toType != 1 && toType != 2 && toType != 5 ){
-                        System.out.println("Retry (1,2,5): ");
-                        fromType = input.nextInt();
-                        System.out.println("Please enter the account to transfer to(1,2,5):");
 
+                    System.out.println("Please enter account to transfer from(1:Savings 2:Checking 5:Cancel): ");
+                    int fromType = input.nextInt();
+                    //Display amount currently in chosen account
+                    account.displayAccountBalance(fromType);
+                    System.out.println("Please enter the amount to transfer: ");
+                    amount = input.nextDouble();
+                    System.out.println("Please enter account to transfer to(1:Savings 2:Checking 3: Credit 5:Cancel): ");
+                    int toType = input.nextInt();
+
+                    //input validation
+                    while(fromType != 1 && fromType != 2 && fromType != 5 && toType != 1 && toType != 2 && toType != 3 && toType != 5 ){
+                        System.out.println("Invalid option selected");
+                        System.out.println("Please enter the account to transfer From (1:Savings 2:Checking 5:Cancel): ");
+                        fromType = input.nextInt();
+                        System.out.println("Please enter the account to transfer to(1:Savings 2:Checking 3: Credit 5:Cancel): ");
+                        toType= input.nextInt();
                     }
-                    account.transferBetweenAccounts()
+                    if((fromType == 1 || fromType == 2) && (toType == 1 || toType == 2 || toType == 3))
+                    account.transferBetweenAccounts(fromType, toType, amount);
 
                     // print the menu and request input
                     printMenu();
