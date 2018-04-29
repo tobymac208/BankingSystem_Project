@@ -7,7 +7,7 @@ public class UserAccount {
     private CheckingAccount chAccount;
     private CreditAccount ccAccount;
     private String password;
-    private static int id = 1;
+    private static int id = 100; // auto-incremented ids
     private ArrayList<Transaction> transactionArrayList;
     private double balance;
     private boolean hasCreditAccount; // keeps track of if the user decided to have a credit account included

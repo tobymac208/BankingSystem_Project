@@ -18,13 +18,15 @@ public class Main {
     private static UserAccount account = new UserAccount("Bobs Account",false); // account name and balance
     private static UserAccountList accountList = new UserAccountList();
     private static Scanner input = new Scanner(System.in);
+    //delete this later, this is for testing
+
 
     public static void main(String[] args) {
         // writeToFile();
 
         // make sure to add acctNum to some sort of list or something that we can test.
         // same with passwords
-
+        accountList.addAccount(account);
         String stringChoice;
         int choice = 0;
         System.out.println("======================");
@@ -34,9 +36,34 @@ public class Main {
         System.out.println("Type 'Login' or type 'register' to register: ");
         stringChoice = input.nextLine();
 
-        if(stringChoice.equals("Login") || stringChoice.equals("login")){
-        }else if(stringChoice.equals("Register") || stringChoice.equals("register")){
-            addAccount(); // adds an account
+        if(stringChoice.equals("Login") || stringChoice.equals("login")) {
+            System.out.print("Please enter your id number: ");
+            int idNum = input.nextInt();
+
+            // adding and checking for if the account exists
+
+            String junkLine = input.nextLine();
+
+            boolean search = false;
+            while(!search) {                        //Loop to make sure an existing ID is input with matching password
+                UserAccount account = accountList.findById(idNum);
+                if (account != null) {
+                    System.out.print("Please enter your password: ");
+
+                    String password = input.nextLine();
+                    if (account.getPassword().equals(password)) {
+                        search = true;
+                    } else{ System.out.println("Password and Id did not match");
+                    }
+
+                } else {
+                    System.out.println("Could not find account, please check to make sure ID entered is correct.");
+                    System.out.print("Please enter your id number: ");
+                    idNum = input.nextInt();
+                }
+            }
+        } else if (stringChoice.equals("Register") || stringChoice.equals("register")) {
+                addAccount(); // adds an account
         }
 
         printMenu();
@@ -52,11 +79,11 @@ public class Main {
                     int type;
                     System.out.print("Please enter the amount: ");
                     amount = input.nextDouble();
-                    System.out.print("Please enter account type (1-3; Savings, Checking, Credit): ");
+                    System.out.print("Please enter account type (1,2,5; Savings, Checking, Credit): ");
                     type = input.nextInt();
                     // input validation code
-                    while(type != 1 || type != 2 || type != 3){
-                        System.out.println("Retry (1-3): ");
+                    while(type != 1 && type != 2 && type != 5){
+                        System.out.println("Retry (1,2,5): ");
                         type = input.nextInt();
                     }
                     account.deposit(type, amount);
@@ -71,6 +98,10 @@ public class Main {
                     amount = input.nextDouble();
                     System.out.println("Please enter account type (1-3): ");
                     type = input.nextInt();
+                    while(type != 1 && type != 2 && type != 5){
+                        System.out.println("Retry (1,2,5): ");
+                        type = input.nextInt();
+                    }
                     account.withdraw(type, amount);
 
                     // print the menu and request input
@@ -78,12 +109,21 @@ public class Main {
                     choice = input.nextInt();
                     break;
                 case 3:
+                    //TODO finish writing this
                     System.out.println("TRANSFER");
                     System.out.println("Please enter the amount: ");
                     amount = input.nextDouble();
                     System.out.println("Please enter account number (1-3): ");
-                    type = input.nextInt();
-                    // TODO: Add transfer functionality
+                    int fromType = input.nextInt();
+                    System.out.println("Please enter account number (1-3): ");
+                    int toType = input.nextInt();
+                    while(fromType != 1 && fromType != 2 && fromType != 5, toType != 1 && toType != 2 && toType != 5 ){
+                        System.out.println("Retry (1,2,5): ");
+                        fromType = input.nextInt();
+                        System.out.println("Please enter the account to transfer to(1,2,5):");
+
+                    }
+                    account.transferBetweenAccounts()
 
                     // print the menu and request input
                     printMenu();

@@ -1,7 +1,6 @@
 package com.groupproject.group;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class UserAccountList {
     private ArrayList<UserAccount> accountsList;
