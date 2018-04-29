@@ -1,9 +1,6 @@
 package com.groupproject.group;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -118,7 +115,7 @@ public class Main {
                     int fromType = input.nextInt();
                     System.out.println("Please enter account number (1-3): ");
                     int toType = input.nextInt();
-                    while(fromType != 1 && fromType != 2 && fromType != 5, toType != 1 && toType != 2 && toType != 5){
+                    while(fromType != 1 && fromType != 2 && fromType != 5 && toType != 1 && toType != 2 && toType != 5){
                         System.out.println("Retry (1,2,5): ");
                         fromType = input.nextInt();
                         System.out.println("Please enter the account to transfer to(1,2,5):");
@@ -139,7 +136,7 @@ public class Main {
 
         // write the information to the files
         //writeToFile(); // print out the current user information
-        //writeTransactionsToFile(); // print out the transactions to the transactions file
+        writeTransactionsToFile(); // print out the transactions to the transactions file
 
     }
 
@@ -237,13 +234,15 @@ public class Main {
             }
         }
         // use a printWriter to write the information to the file
-        try(PrintWriter writer = new PrintWriter(file)){
+        try(FileWriter fWriter = new FileWriter(file, true)){
+            BufferedWriter bw = new BufferedWriter(fWriter);
+            PrintWriter writer = new PrintWriter(bw);
             for(UserAccount account : accountList.getAccountsList()){ // gets every account
                 for(Transaction transaction : account.getTransactionArrayList()){ // gets every transaction in each account
                     writer.println(transaction.getDescription()); // write each transaction's description to the file
                 }
             }
-        }catch (FileNotFoundException e){
+        }catch (IOException e){
             System.out.println("Can't print transactions! File was not found.");
         }
     }
