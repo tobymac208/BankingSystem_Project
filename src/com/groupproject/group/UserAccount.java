@@ -6,13 +6,14 @@ public class UserAccount {
     private SavingsAccount sAccount;
     private CheckingAccount chAccount;
     private CreditAccount ccAccount;
-    private String name;
+    private String password;
+    private static int id = 1;
     private ArrayList<Transaction> transactionArrayList;
     private double balance;
     private boolean hasCreditAccount; // keeps track of if the user decided to have a credit account included
 
-    public UserAccount(String name, boolean creditAccountFlag){
-        this.name = name;
+    public UserAccount(String password, boolean creditAccountFlag){
+        this.password = password;
         this.balance = 0.0; // we don't set this by default, because this is the overall total of all of the accounts
         this.sAccount = new SavingsAccount();
         this.chAccount = new CheckingAccount();
@@ -20,14 +21,15 @@ public class UserAccount {
             this.ccAccount = new CreditAccount();
         transactionArrayList = new ArrayList<>(); // initializes the list
         this.hasCreditAccount = creditAccountFlag;
+        id++; // increment the id
     }
 
     // GETTERS & SETTERS
     // transactionsList
     public ArrayList<Transaction> getTransactionArrayList(){return this.transactionArrayList;}
-    // name
-    public String getName(){return name;}
-    public void setName(String name){this.name = name;}
+    // username
+    public String getPassword(){return password;}
+    public void setPassword(String password){this.password = password;}
     // savings account
     public SavingsAccount getsAccount(){return sAccount;}
     public void setsAccount(SavingsAccount sAccount){this.sAccount = sAccount;}
@@ -42,6 +44,8 @@ public class UserAccount {
     // balance
     public double getBalance() {return balance;}
     public void setBalance(double balance) {this.balance = balance;}
+    // id
+    public int getId(){return id;}
 
     // Transaction methods
     private void addTransaction(int type, String description){

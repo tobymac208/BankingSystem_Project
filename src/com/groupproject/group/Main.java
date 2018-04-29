@@ -16,7 +16,7 @@ import java.util.Scanner;
 
 public class Main {
     private static UserAccount account = new UserAccount("Bobs Account",false); // account name and balance
-    private static ArrayList<UserAccount> acctList = new ArrayList<>();
+    private static UserAccountList accountList = new UserAccountList();
     private static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -35,9 +35,8 @@ public class Main {
         stringChoice = input.nextLine();
 
         if(stringChoice.equals("Login") || stringChoice.equals("login")){
-
         }else if(stringChoice.equals("Register") || stringChoice.equals("register")){
-            addAccount(); // create a new account
+            addAccount(); // adds an account
         }
 
         printMenu();
@@ -104,32 +103,6 @@ public class Main {
 
     }
 
-    /** method that allows a user to create a new account */
-    public static void addAccount(){
-        String name;
-        int ans;
-
-        System.out.println("CREATE NEW ACCOUNT");
-        System.out.println("Please Enter Account Name");
-        name = input.nextLine();
-        String junk = input.nextLine();
-
-        System.out.println("Did you want to add a credit account? (1) for yes (2) for no ");
-        ans = input.nextInt();
-        if(ans == 1) {
-            UserAccount account = new UserAccount(name, true);
-            // add more access to the account set-up like an initial deposit amount or things of that nature.
-            // add to arrayList
-            acctList.add(account);
-            System.out.println("New Account Created! w cc");
-        }if(ans == 2) {
-            UserAccount account = new UserAccount(name, false);
-            // add to arrayList
-            acctList.add(account);
-            System.out.println("New Account Created! no cc");
-        }
-    }
-
     /** Prints menu for users to see */
     public static void printMenu(){
         System.out.println("MENU");
@@ -137,6 +110,31 @@ public class Main {
         System.out.println("2. Withdrawal");
         System.out.println("3. Transfer");
         System.out.println("5. Exit");
+    }
+
+    /** method that allows a user to create a new account */
+    public static void addAccount(){
+        String password;
+        int ans;
+
+        System.out.println("CREATE NEW ACCOUNT");
+        System.out.print("Please Enter Account Password: ");
+        password = input.nextLine();
+
+        System.out.println("Did you want to add a credit account? (1) for yes (2) for no ");
+        ans = input.nextInt();
+        if(ans == 1) {
+            UserAccount account = new UserAccount(password, true);
+            // add more access to the account set-up like an initial deposit amount or things of that nature.
+            // add to arrayList
+            accountList.addAccount(account);
+            System.out.println("New Account Created (with Credit). Your id is " + account.getId());
+        }if(ans == 2) {
+            UserAccount account = new UserAccount(password, false);
+            // add to arrayList
+            accountList.addAccount(account);
+            System.out.println("New Account Created ");
+        }
     }
 
     /** Writes the current account information to the account_info.txt file */
@@ -152,7 +150,7 @@ public class Main {
         }
         try (PrintWriter printer = new PrintWriter(file)) {
             // print out the account information. Order: account name, savings account balance, checking account value, amount left in credit, and the outstanding balance due
-            printer.println(account.getName() + " " + account.getsAccount().getBalance() + " " + account.getchAccount().getBalance() + " " + account.getCcAccount().getAmountLeft() + " " + account.getCcAccount().getOustandingBalance());
+            printer.println(account.getUsername() + " " + account.getsAccount().getBalance() + " " + account.getchAccount().getBalance() + " " + account.getCcAccount().getAmountLeft() + " " + account.getCcAccount().getOustandingBalance());
         } catch (FileNotFoundException e) { // catches the possible exception throw by the printer object being created
             System.out.println("The file does not exist!");
         }
