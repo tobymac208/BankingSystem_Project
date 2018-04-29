@@ -42,6 +42,7 @@ public class Main {
 
             // adding and checking for if the account exists
 
+            // read in a junk line to clear the stream
             String junkLine = input.nextLine();
 
             boolean search = false;
@@ -117,7 +118,7 @@ public class Main {
                     int fromType = input.nextInt();
                     System.out.println("Please enter account number (1-3): ");
                     int toType = input.nextInt();
-                    while(fromType != 1 && fromType != 2 && fromType != 5, toType != 1 && toType != 2 && toType != 5 ){
+                    while(fromType != 1 && fromType != 2 && fromType != 5, toType != 1 && toType != 2 && toType != 5){
                         System.out.println("Retry (1,2,5): ");
                         fromType = input.nextInt();
                         System.out.println("Please enter the account to transfer to(1,2,5):");
