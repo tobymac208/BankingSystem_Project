@@ -1,6 +1,7 @@
 package com.groupproject.group;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,7 +20,8 @@ public class Main {
 
 
     public static void main(String[] args) {
-        // writeToFile();
+        ArrayList<UserAccount> readInList = readFromFile(); // read in the items
+        accountList.setAccountsList(readInList); // populates all of the fields in accountsList object
 
         // make sure to add acctNum to some sort of list or something that we can test.
         // same with passwords
@@ -67,7 +69,6 @@ public class Main {
         printMenu();
         System.out.println("SELECT A MENU OPTION");
         choice = input.nextInt();
-
 
         // MENU
         do {
@@ -135,7 +136,7 @@ public class Main {
         }while(choice != 5);
 
         // write the information to the files
-        //writeToFile(); // print out the current user information
+        writeToFile(); // print out the current user information
         writeTransactionsToFile(); // print out the transactions to the transactions file
 
     }
@@ -175,7 +176,7 @@ public class Main {
     }
 
     /** Writes the current account information to the account_info.txt file */
-    /* public static void writeToFile() {
+    public static void writeToFile() {
         File file = new File("src/com/groupproject/group/account_info.txt");
         if(!file.exists()){ // check if the doesn't exist
             // if it doesn't, create it
@@ -185,16 +186,23 @@ public class Main {
                 System.out.println("Exception thrown");
             }
         }
-        try (PrintWriter printer = new PrintWriter(file)) {
-            // print out the account information. Order: account name, savings account balance, checking account value, amount left in credit, and the outstanding balance due
-            printer.println(account.getUsername() + " " + account.getsAccount().getBalance() + " " + account.getchAccount().getBalance() + " " + account.getCcAccount().getAmountLeft() + " " + account.getCcAccount().getOustandingBalance());
+        try (PrintWriter printer = new PrintWriter(new FileOutputStream(file))) {
+            for(UserAccount elem : accountList.getAccountsList()){
+                // print out the account information. Order: account name, savings account balance, checking account value, amount left in credit, and the outstanding balance due
+                if(elem.isCreditAccount()){
+                    printer.println(elem.getPassword() + ", " + elem.getsAccount().getBalance() +", "+ elem.getchAccount().getBalance() +", " +elem.getCcAccount().getAmountLeft() + ", " +elem.isCreditAccount());
+                }else{
+                    printer.println(elem.getPassword() + ", " + elem.getsAccount().getBalance() +", "+ elem.getchAccount().getBalance() + ", " +elem.isCreditAccount());
+                }
+            }
         } catch (FileNotFoundException e) { // catches the possible exception throw by the printer object being created
             System.out.println("The file does not exist!");
         }
-    } */
+    }
 
     /** Reads information from "account_info.txt" and populates the fields for the accounts */
-    /* public static UserAccount readFromFile(){
+    public static ArrayList<UserAccount> readFromFile(){
+        ArrayList<UserAccount> userAccounts = new ArrayList<>(); // populated list that is returned at the end
         // Create the file. This will help to read content from a file
         File file = new File("src/com/groupproject/group/account_info.txt");
         if(!file.exists()){ // check if the doesn't exist
@@ -205,22 +213,41 @@ public class Main {
                 System.out.println("Exception thrown");
             }
         }
-
         // Create a Scanner object -- this will be used to do the reading
         try(Scanner fileReader = new Scanner(file)) {
             // Task: Check to see if there is anything in the file yet
             String testString = fileReader.nextLine();
             if(testString.isEmpty()){ // check to see if the file is empty
-                return new UserAccount(null, false); // give back an empty UserAccount object
+                return new ArrayList<>();
             }else{ // there IS something in the file, so read from it.
-                // TODO: Process information
-                return new UserAccount(null, false);
+                while((fileReader.hasNextLine())) {
+                    String line = fileReader.nextLine();
+                    String members[] = line.split(", "); // split up the string
+
+                    String pass = members[0];
+                    double sAcctBal = Double.parseDouble(members[1]);
+                    double chAcctBal = Double.parseDouble(members[2]);
+                    double ccAcctBal = Double.parseDouble(members[3]);
+                    boolean isCredit = Boolean.parseBoolean(members[4]);
+                    UserAccount account = new UserAccount(pass, isCredit);
+
+                    // populate other members
+                    account.getsAccount().setBalance(sAcctBal);
+                    account.getchAccount().setBalance(chAcctBal);
+                    if(isCredit){ // if this account is a credit account
+                        // set the credit account value -- avoids null pointer exceptions
+                        account.getCcAccount().setAmountLeft(ccAcctBal); // sets the amount left
+                    }
+                    userAccounts.add(account); // adds the current user account
+                    // add the account to the local list
+                } // end of while loop
+                return userAccounts; // returns the user accounts to the caller
             }
         }catch (FileNotFoundException e) {
-            System.out.println("The file was not found!"); // debug code.
-            return new UserAccount(null, false); // give back an empty UserAccount object
+            System.out.println("Exception Thrown!"); // debug code.
+            return new ArrayList<>(); // give back an empty UserAccountList object
         }
-    } */
+    }
 
     /** Writes the current transaction list to a file to be stored */
     public static void writeTransactionsToFile(){
