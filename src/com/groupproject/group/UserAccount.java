@@ -92,7 +92,6 @@ public class UserAccount {
         boolean balanceFlag;
         switch (type) {
             case 1://savings account withdrawal
-                System.out.println("Savings balance: $" + sAccount.getBalance());
                 balanceFlag = checkFunds(type, amount);
                 if(balanceFlag){
                     sAccount.setBalance(sAccount.getBalance() - amount);
@@ -104,7 +103,6 @@ public class UserAccount {
             case 2://checking account withdrawal
                 balanceFlag = checkFunds(type, amount);
                 if(balanceFlag){
-                    System.out.println("Checking balance: $" + chAccount.getBalance());
                     chAccount.setBalance(chAccount.getBalance() - amount);
                     System.out.println("Withdrawal Successful\nRemaining checking account balance is: " + chAccount.getBalance());
                     transactionArrayList.add(new Transaction("Withdrew " + amount + " from checking account. Current balance is: " + chAccount.getBalance()));
@@ -124,7 +122,6 @@ public class UserAccount {
         boolean balanceFlag = checkFunds(fromAccount, amount);
         switch(fromAccount){
             case 1:                                                     //transferring money from savings
-                System.out.println("Savings balance: $" + sAccount.getBalance());
                 if (balanceFlag){
                     sAccount.setBalance(sAccount.getBalance() - amount);
                     if (toAccount == 2) {
@@ -149,7 +146,6 @@ public class UserAccount {
                 }
                 break;
             case 2:                                                 //transferring from checking account
-                System.out.println("Checking balance: $" + chAccount.getBalance());
                 if (balanceFlag){
                     chAccount.setBalance(chAccount.getBalance() - amount);
                     if (toAccount == 1) {
@@ -204,5 +200,15 @@ public class UserAccount {
                 System.out.println("Please enter either a 1 for Savings account or 2 for Checking Account.");
                 return false;
         }
+    }
+
+    //Displays the current amount of the chosen account
+    public void displayAccountBalance(int type){
+        if(type == 1)
+            System.out.println("Savings balance: $" + sAccount.getBalance());
+        else if(type == 2)
+            System.out.println("Checking balance: $" + chAccount.getBalance());
+        else if(type == 3)
+            System.out.println("Checking balance: $" + ccAccount.getAmountLeft());
     }
 }
