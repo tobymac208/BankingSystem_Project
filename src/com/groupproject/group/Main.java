@@ -1,15 +1,12 @@
 package com.groupproject.group;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
- * Changelog:
- * 04/22/2018: Updated menu
- * 04/22/2018: Began adding file operations
- * 04/23/2018: Updates to menu, UserAccount, and to file operations
+ * Authors: Nik, Joe, Scott
+ * Due: 05/01/2018
  */
 
 public class Main {
@@ -213,13 +210,10 @@ public class Main {
                 System.out.println("Exception thrown");
             }
         }
+
         // Create a Scanner object -- this will be used to do the reading
         try(Scanner fileReader = new Scanner(file)) {
-            // Task: Check to see if there is anything in the file yet
-            String testString = fileReader.nextLine();
-            if(testString.isEmpty()){ // check to see if the file is empty
-                return new ArrayList<>();
-            }else{ // there IS something in the file, so read from it.
+            // there IS something in the file, so read from it.
                 while((fileReader.hasNextLine())) {
                     String line = fileReader.nextLine();
                     String members[] = line.split(", "); // split up the string
@@ -241,9 +235,8 @@ public class Main {
                     userAccounts.add(account); // adds the current user account
                     // add the account to the local list
                 } // end of while loop
-                return userAccounts; // returns the user accounts to the caller
-            }
-        }catch (FileNotFoundException e) {
+                return userAccounts; // returns the user accounts to the called
+        }catch(FileNotFoundException e){
             System.out.println("Exception Thrown!"); // debug code.
             return new ArrayList<>(); // give back an empty UserAccountList object
         }
