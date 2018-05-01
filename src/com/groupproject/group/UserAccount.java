@@ -138,8 +138,8 @@ public class UserAccount {
                         chAccount.setBalance(chAccount.getBalance() + amount);
                         System.out.println("Transfer Successful\nRemaining savings account balance is: " + sAccount.getBalance() +
                                 "\nAvailable credit: " + ccAccount.getAmountLeft());
-                        transactionArrayList.add(new Transaction("Transferred " + amount + " from savings account to credit account." +
-                                "Current savings account balance is: " + sAccount.getBalance() + "Current available credit is: " + ccAccount.getAmountLeft()));
+                        transactionArrayList.add(new Transaction("Transferred " + amount + " from savings account to credit account. " +
+                                "Current savings account balance is: " + sAccount.getBalance() + ". Current available credit is: " + ccAccount.getAmountLeft()));
                     } else {
                         System.out.println("Please choose a valid account to transfer to.");
                     }
@@ -155,15 +155,15 @@ public class UserAccount {
                         sAccount.setBalance(sAccount.getBalance() + amount);
                         System.out.println("Transfer Successful\nRemaining checking account balance is: " + chAccount.getBalance() +
                                 "\nNew savings account balance is: " + sAccount.getBalance());
-                        transactionArrayList.add(new Transaction("Transferred " + amount + " from checking account to savings account." +
-                                "Current checking account balance is: " + chAccount.getBalance() + "Current savings account balance is: " + sAccount.getBalance()));
+                        transactionArrayList.add(new Transaction("Transferred " + amount + " from checking account to savings account. " +
+                                "Current checking account balance is: " + chAccount.getBalance() + ". Current savings account balance is: " + sAccount.getBalance()));
                     }
                     else if (toAccount == 3) {
                         ccAccount.setAmountLeft(-amount);
                         System.out.println("Transfer Successful\nRemaining checking account balance is: " + chAccount.getBalance() +
                                 "\nAvailable Credit: " + ccAccount.getAmountLeft());
-                        transactionArrayList.add(new Transaction("Transferred " + amount + " from checking account to credit account." +
-                                "Current checking account balance is: " + chAccount.getBalance() + "Current credit account balance is: " + ccAccount.getAmountLeft()));
+                        transactionArrayList.add(new Transaction("Transferred " + amount + " from checking account to credit account. " +
+                                "Current checking account balance is: " + chAccount.getBalance() + ". Current credit account balance is: " + ccAccount.getAmountLeft()));
                     }
                     else{
                         System.out.println("Please choose a valid account to transfer to.");
