@@ -25,9 +25,9 @@ public class Main {
         // accountList.addAccount(account);
         String stringChoice;
         int choice;
-        System.out.println("======================");
-        System.out.println("---- BANK PORTAL -----");
-        System.out.println("======================");
+        System.out.println("==============================================");
+        System.out.println("---------------- BANK PORTAL -----------------");
+        System.out.println("==============================================");
 
         System.out.println("Type 'Login' or type 'register' to register: ");
         stringChoice = input.nextLine();
@@ -150,7 +150,9 @@ public class Main {
                     choice = input.nextInt();
                     break;
                 case 7:
+                    System.out.println("--------- Account Balance -----------");
                     currentAccountOpen.displayAccountBalance();
+                    System.out.println("-------------------------------------");
                     printMenu();
                     System.out.println("SELECT A MENU OPTION");
                     choice = input.nextInt();
@@ -206,8 +208,11 @@ public class Main {
     /** Prints menu for users to see */
     public static void printMenu(){
         System.out.println(); // prints a space
+
+        System.out.println("---------------MENU---------------");
+        System.out.println("----------------------------------");
         System.out.println("Logged into account #" + currentAccountOpen.getId());
-        System.out.println("MENU");
+        System.out.println("----------------------------------");
         System.out.println("1. Deposit");
         System.out.println("2. Withdrawal");
         System.out.println("3. Transfer Money Between Accounts");
@@ -216,6 +221,7 @@ public class Main {
         System.out.println("6. Open a Credit Account");
         System.out.println("7. Display Account Balances");
         System.out.println("8. Exit/Logout");
+        System.out.println("----------------------------------");
     }
 
     /** method that allows a user to create a new account */
@@ -223,7 +229,7 @@ public class Main {
         UserAccount account = null;
         String password;
         int ans;
-
+        System.out.println("*****************************");
         System.out.println("CREATE NEW ACCOUNT");
         System.out.print("Please Enter Account Password: ");
         password = input.nextLine();
