@@ -344,7 +344,7 @@ public class Main {
             PrintWriter writer = new PrintWriter(bw);
             for(UserAccount account : accountList.getAccountsList()){ // gets every account
                 for(Transaction transaction : account.getTransactionArrayList()){ // gets every transaction in each account
-                    writer.println("Account #" + account.getId() + ": " + transaction.getDescription()); // write each transaction's description to the file
+                    writer.println("Account #" + account.getId() + ": " + transaction.getDescription() + "\n\n"); // write each transaction's description to the file
                 }
             }
             bw.close();
