@@ -50,14 +50,14 @@ public class Main {
             switch (choice) {
                 case 1:
                     double amount;
-                    int type;
+                    double type;
 
                     System.out.print("Please enter account type to deposit to(1:Savings 2:Checking 5:Cancel): ");
-                    type = input.nextInt();
+                    type = input.nextDouble();
                     // input validation code
                     while(type != 1 && type != 2 && type != 5){
                         System.out.println("Retry (1:Savings 2:Checking 5:Cancel): ");
-                        type = input.nextInt();
+                        type = input.nextDouble();
                     }
                     //Display amount currently in chosen account
                     currentAccountOpen.displayAnAccountBalance(type);
@@ -95,19 +95,19 @@ public class Main {
                     System.out.println("TRANSFER");
 
                     System.out.println("Please enter account to transfer from(1:Savings 2:Checking 5:Cancel): ");
-                    int fromType = input.nextInt();
+                    double fromType = input.nextDouble();
                     //input validation
                     while(fromType != 1 && fromType != 2 && fromType != 5) {
                         System.out.println("Invalid option selected");
                         System.out.println("Please enter the account to transfer From (1:Savings 2:Checking 5:Cancel): ");
-                        fromType = input.nextInt();
+                        fromType = input.nextDouble();
                     }
                     //Display amount currently in chosen account
                     currentAccountOpen.displayAnAccountBalance(fromType);
                     System.out.println("Please enter the amount to transfer: ");
                     amount = input.nextDouble();
                     System.out.println("Please enter account to transfer to(1:Savings 2:Checking 3:Credit 5:Cancel): ");
-                    int toType = input.nextInt();
+                    double toType = input.nextDouble();
                     while(toType != 1 && toType != 2 && toType != 3 && toType != 5 || (toType == 3 && currentAccountOpen.getCcAccount() == null)) {
                         if(currentAccountOpen.isCreditAccount()) {
                             System.out.println("Please enter an account to transfer to(1:Savings 2:Checking 3:Credit 5:Cancel): ");

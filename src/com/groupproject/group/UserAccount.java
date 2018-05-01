@@ -60,8 +60,8 @@ public class UserAccount {
     }
 
     /** Allows a user to deposit money into an account */
-    public boolean deposit(int type, double amount){
-        switch(type){
+    public boolean deposit(double type, double amount){
+        switch((int)type){
             case 1:
                 if(amount > 0) {
                     sAccount.setBalance(sAccount.getBalance() + amount);
@@ -91,9 +91,9 @@ public class UserAccount {
 
     /** Allows a user to withdraw money from the account chosen */
     // same style as above. match the account types to withdraw from.
-    public boolean withdraw(int type, double amount) {
+    public boolean withdraw(double type, double amount) {
         boolean balanceFlag;
-        switch (type) {
+        switch ((int)type) {
             case 1://savings account withdrawal
                 balanceFlag = checkFunds(type, amount);
                 if(balanceFlag){
@@ -121,9 +121,9 @@ public class UserAccount {
 
 
     /** Allows a user to transfer money between accounts */
-    public boolean transferBetweenAccounts(int fromAccount, int toAccount, double amount){
+    public boolean transferBetweenAccounts(double fromAccount, double toAccount, double amount){
         boolean balanceFlag = checkFunds(fromAccount, amount);
-        switch(fromAccount){
+        switch((int)fromAccount){
             case 1:                                                     //transferring money from savings
                 if (balanceFlag){
                     sAccount.setBalance(sAccount.getBalance() - amount);
@@ -181,8 +181,8 @@ public class UserAccount {
 
     /*checks to make sure the amount being taken from an account is not greater than the amount in the account.
      **returns true if the amount to be withdrawn is ok  */
-    public boolean checkFunds(int accountID, double amount){
-        switch(accountID){
+    public boolean checkFunds(double accountID, double amount){
+        switch((int)accountID){
             case 1://checks amount to savings account amount
                 if(amount <= 0) {
                     System.out.println("Please enter a number greater than 0.");
@@ -206,7 +206,7 @@ public class UserAccount {
     }
 
     //Displays the current amount of the chosen account
-    public void displayAnAccountBalance(int type){
+    public void displayAnAccountBalance(double type){
         if(type == 1)
             System.out.printf("Savings balance: $%.2f\n", sAccount.getBalance());
         else if(type == 2)
