@@ -92,7 +92,6 @@ public class UserAccount {
         boolean balanceFlag;
         switch (type) {
             case 1://savings account withdrawal
-                System.out.println("Savings balance: $" + sAccount.getBalance());
                 balanceFlag = checkFunds(type, amount);
                 if(balanceFlag){
                     sAccount.setBalance(sAccount.getBalance() - amount);
@@ -104,7 +103,6 @@ public class UserAccount {
             case 2://checking account withdrawal
                 balanceFlag = checkFunds(type, amount);
                 if(balanceFlag){
-                    System.out.println("Checking balance: $" + chAccount.getBalance());
                     chAccount.setBalance(chAccount.getBalance() - amount);
                     System.out.println("Withdrawal Successful\nRemaining checking account balance is: " + chAccount.getBalance());
                     transactionArrayList.add(new Transaction("Withdrew " + amount + " from checking account. Current balance is: " + chAccount.getBalance()));

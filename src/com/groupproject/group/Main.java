@@ -1,32 +1,28 @@
 package com.groupproject.group;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
- * Changelog:
- * 04/22/2018: Updated menu
- * 04/22/2018: Began adding file operations
- * 04/23/2018: Updates to menu, UserAccount, and to file operations
+ * Authors: Nik, Joe, Scott
+ * Due: 05/01/2018
  */
 
 public class Main {
-    private static UserAccount account = new UserAccount("Bobs Account",false); // account name and balance
+    // private static UserAccount account = new UserAccount("Bobs Account",false); // account name and balance
+    private static UserAccount currentAccountOpen; // used for holding the current account's info
     private static UserAccountList accountList = new UserAccountList();
     private static Scanner input = new Scanner(System.in);
-    //delete this later, this is for testing
 
 
     public static void main(String[] args) {
-        // writeToFile();
+        ArrayList<UserAccount> readInList = readFromFile(); // read in the items
+        accountList.setAccountsList(readInList); // populates all of the fields in accountsList object
 
         // make sure to add acctNum to some sort of list or something that we can test.
         // same with passwords
-        accountList.addAccount(account);
+        // accountList.addAccount(account);
         String stringChoice;
         int choice = 0;
         System.out.println("======================");
@@ -54,7 +50,9 @@ public class Main {
                     String password = input.nextLine();
                     if (account.getPassword().equals(password)) {
                         search = true;
-                    } else{ System.out.println("Password and Id did not match");
+                        currentAccountOpen = account;
+                    } else{
+                        System.out.println("Password and Id did not match");
                     }
 
                 } else {
@@ -64,13 +62,15 @@ public class Main {
                 }
             }
         } else if (stringChoice.equals("Register") || stringChoice.equals("register")) {
-                addAccount(); // adds an account
+            currentAccountOpen = addAccount(); // adds an account
+        }else{
+            System.out.println("You didn't choose 'Register' or 'Login'. Program closing.");
+            System.exit(0); // kill the program
         }
 
         printMenu();
         System.out.println("SELECT A MENU OPTION");
         choice = input.nextInt();
-
 
         // MENU
         do {
@@ -82,7 +82,7 @@ public class Main {
                     System.out.print("Please enter account type to deposit to(1:Savings 2:Checking 5:Cancel): ");
                     type = input.nextInt();
                     //Display amount currently in chosen account
-                    account.displayAccountBalance(type);
+                    currentAccountOpen.displayAccountBalance(type);
                     System.out.print("Please enter the amount to deposit: ");
                     amount = input.nextDouble();
                     // input validation code
@@ -91,7 +91,7 @@ public class Main {
                         type = input.nextInt();
                     }
                     if(type == 1 || type == 2)
-                        account.deposit(type, amount);
+                        currentAccountOpen.deposit(type, amount);
 
                     // print the menu and request input
                     printMenu();
@@ -102,7 +102,7 @@ public class Main {
                     System.out.println("Please enter account type to withdraw from(1:Savings 2:Checking 5:Cancel): ");
                     type = input.nextInt();
                     //Display amount currently in chosen account
-                    account.displayAccountBalance(type);
+                    currentAccountOpen.displayAccountBalance(type);
                     System.out.println("Please enter the amount to withdraw: ");
                     amount = input.nextDouble();
 
@@ -111,7 +111,7 @@ public class Main {
                         type = input.nextInt();
                     }
                     if(type == 1 || type == 2)
-                        account.withdraw(type, amount);
+                        currentAccountOpen.withdraw(type, amount);
 
                     // print the menu and request input
                     printMenu();
@@ -123,7 +123,7 @@ public class Main {
                     System.out.println("Please enter account to transfer from(1:Savings 2:Checking 5:Cancel): ");
                     int fromType = input.nextInt();
                     //Display amount currently in chosen account
-                    account.displayAccountBalance(fromType);
+                    currentAccountOpen.displayAccountBalance(fromType);
                     System.out.println("Please enter the amount to transfer: ");
                     amount = input.nextDouble();
                     System.out.println("Please enter account to transfer to(1:Savings 2:Checking 3: Credit 5:Cancel): ");
@@ -138,7 +138,7 @@ public class Main {
                         toType= input.nextInt();
                     }
                     if((fromType == 1 || fromType == 2) && (toType == 1 || toType == 2 || toType == 3))
-                    account.transferBetweenAccounts(fromType, toType, amount);
+                        currentAccountOpen.transferBetweenAccounts(fromType, toType, amount);
 
                     // print the menu and request input
                     printMenu();
@@ -153,8 +153,8 @@ public class Main {
         }while(choice != 5);
 
         // write the information to the files
-        //writeToFile(); // print out the current user information
-        //writeTransactionsToFile(); // print out the transactions to the transactions file
+        writeToFile(); // print out the current user information
+        writeTransactionsToFile(); // print out the transactions to the transactions file
 
     }
 
@@ -168,7 +168,9 @@ public class Main {
     }
 
     /** method that allows a user to create a new account */
-    public static void addAccount(){
+    public static UserAccount addAccount(){
+        UserAccount accountToReturn = null;
+
         String password;
         int ans;
 
@@ -183,17 +185,22 @@ public class Main {
             // add more access to the account set-up like an initial deposit amount or things of that nature.
             // add to arrayList
             accountList.addAccount(account);
-            System.out.println("New Account Created (with Credit). Your id is " + account.getId());
-        }if(ans == 2) {
+            System.out.println("New Account Created (with Credit). Your ID is " + account.getId());
+
+            accountToReturn = account;
+        }else if(ans == 2) {
             UserAccount account = new UserAccount(password, false);
             // add to arrayList
             accountList.addAccount(account);
-            System.out.println("New Account Created ");
+            System.out.println("New account created (without Credit). Your ID is: " + account.getId());
+
+            accountToReturn = account;
         }
+        return accountToReturn;
     }
 
     /** Writes the current account information to the account_info.txt file */
-    /* public static void writeToFile() {
+    public static void writeToFile() {
         File file = new File("src/com/groupproject/group/account_info.txt");
         if(!file.exists()){ // check if the doesn't exist
             // if it doesn't, create it
@@ -203,16 +210,23 @@ public class Main {
                 System.out.println("Exception thrown");
             }
         }
-        try (PrintWriter printer = new PrintWriter(file)) {
-            // print out the account information. Order: account name, savings account balance, checking account value, amount left in credit, and the outstanding balance due
-            printer.println(account.getUsername() + " " + account.getsAccount().getBalance() + " " + account.getchAccount().getBalance() + " " + account.getCcAccount().getAmountLeft() + " " + account.getCcAccount().getOustandingBalance());
+        try (PrintWriter printer = new PrintWriter(new FileOutputStream(file))) {
+            for(UserAccount elem : accountList.getAccountsList()){
+                // print out the account information. Order: account name, savings account balance, checking account value, amount left in credit, and the outstanding balance due
+                if(elem.isCreditAccount()){
+                    printer.println(elem.getPassword() + ", " + elem.getsAccount().getBalance() +", "+ elem.getchAccount().getBalance() +", " +elem.getCcAccount().getAmountLeft());
+                }else{
+                    printer.println(elem.getPassword() + ", " + elem.getsAccount().getBalance() +", "+ elem.getchAccount().getBalance());
+                }
+            }
         } catch (FileNotFoundException e) { // catches the possible exception throw by the printer object being created
             System.out.println("The file does not exist!");
         }
-    } */
+    }
 
     /** Reads information from "account_info.txt" and populates the fields for the accounts */
-    /* public static UserAccount readFromFile(){
+    public static ArrayList<UserAccount> readFromFile(){
+        ArrayList<UserAccount> userAccounts = new ArrayList<>(); // populated list that is returned at the end
         // Create the file. This will help to read content from a file
         File file = new File("src/com/groupproject/group/account_info.txt");
         if(!file.exists()){ // check if the doesn't exist
@@ -226,24 +240,41 @@ public class Main {
 
         // Create a Scanner object -- this will be used to do the reading
         try(Scanner fileReader = new Scanner(file)) {
-            // Task: Check to see if there is anything in the file yet
-            String testString = fileReader.nextLine();
-            if(testString.isEmpty()){ // check to see if the file is empty
-                return new UserAccount(null, false); // give back an empty UserAccount object
-            }else{ // there IS something in the file, so read from it.
-                // TODO: Process information
-                return new UserAccount(null, false);
-            }
-        }catch (FileNotFoundException e) {
-            System.out.println("The file was not found!"); // debug code.
-            return new UserAccount(null, false); // give back an empty UserAccount object
+            // there IS something in the file, so read from it.
+                while((fileReader.hasNextLine())) {
+                    String line = fileReader.nextLine();
+                    String members[] = line.split(", "); // split up the string
+
+                    String pass = members[0];
+                    double sAcctBal = Double.parseDouble(members[1]);
+                    double chAcctBal = Double.parseDouble(members[2]);
+                    UserAccount account;
+                    if(members[3] != null){ // if something was read in
+                        double ccAcctBal = Double.parseDouble(members[3]);
+                        account = new UserAccount(pass, true);
+                        account.getCcAccount().setAmountLeft(ccAcctBal); // sets the amount left
+                    }else{
+                        account = new UserAccount(pass, false);
+                    }
+
+                    // populate other members
+                    account.getsAccount().setBalance(sAcctBal);
+                    account.getchAccount().setBalance(chAcctBal);
+
+                    // add the account to the local list
+                    userAccounts.add(account); // adds the current user account
+                } // end of while loop
+                return userAccounts; // returns the user accounts to the caller
+        }catch(FileNotFoundException e){
+            System.out.println("Exception Thrown!"); // debug code.
+            return new ArrayList<>(); // give back an empty UserAccountList object
         }
-    } */
+    }
 
     /** Writes the current transaction list to a file to be stored */
-    /* public static void writeTransactionsToFile(){
+    public static void writeTransactionsToFile(){
         File file = new File("src/com/groupproject/group/transactions.txt");
-        if(!file.exists()){ // check if the doesn't exist
+        if(!file.exists()){ // check if the file doesn't exist
             // if it doesn't, create it
             try {
                 file.createNewFile();
@@ -252,12 +283,18 @@ public class Main {
             }
         }
         // use a printWriter to write the information to the file
-        try(PrintWriter writer = new PrintWriter(file)){
-            for(Transaction transaction : account.getTransactionArrayList()){ // iterate through the transactions list
-                writer.println(transaction.getDescription()); // write the description to a line
+        try(FileWriter fWriter = new FileWriter(file, true)){
+            BufferedWriter bw = new BufferedWriter(fWriter);
+            PrintWriter writer = new PrintWriter(bw);
+            for(UserAccount account : accountList.getAccountsList()){ // gets every account
+                for(Transaction transaction : account.getTransactionArrayList()){ // gets every transaction in each account
+                    writer.println(transaction.getDescription()); // write each transaction's description to the file
+                }
             }
-        }catch (FileNotFoundException e){
+            bw.close();
+            writer.close();
+        }catch (IOException e){
             System.out.println("Can't print transactions! File was not found.");
         }
-    } */
+    }
 }

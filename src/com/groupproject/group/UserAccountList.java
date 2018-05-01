@@ -11,6 +11,8 @@ public class UserAccountList {
 
     // getter
     public ArrayList<UserAccount> getAccountsList(){return accountsList;}
+    // this method should ONLY be called when reading in the file
+    public void setAccountsList(ArrayList<UserAccount> accountsList){this.accountsList = accountsList;}
 
     /** Adds an account to the list */
     public void addAccount(UserAccount theAccount){
