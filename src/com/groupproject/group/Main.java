@@ -60,7 +60,7 @@ public class Main {
                         type = input.nextInt();
                     }
                     //Display amount currently in chosen account
-                    currentAccountOpen.displayAccountBalance(type);
+                    currentAccountOpen.displayAnAccountBalance(type);
                     System.out.print("Please enter the amount to deposit: ");
                     amount = input.nextDouble();
                     if(type == 1 || type == 2)
@@ -81,7 +81,7 @@ public class Main {
                         type = input.nextInt();
                     }
                     //Display amount currently in chosen account
-                    currentAccountOpen.displayAccountBalance(type);
+                    currentAccountOpen.displayAnAccountBalance(type);
                     System.out.println("Please enter the amount to withdraw: ");
                     amount = input.nextDouble();
                     if(type == 1 || type == 2)
@@ -103,14 +103,19 @@ public class Main {
                         fromType = input.nextInt();
                     }
                     //Display amount currently in chosen account
-                    currentAccountOpen.displayAccountBalance(fromType);
+                    currentAccountOpen.displayAnAccountBalance(fromType);
                     System.out.println("Please enter the amount to transfer: ");
                     amount = input.nextDouble();
                     System.out.println("Please enter account to transfer to(1:Savings 2:Checking 3:Credit 5:Cancel): ");
                     int toType = input.nextInt();
-                    while((toType != 1 && toType != 2 && toType != 3 && toType != 5) || (toType == 3 && currentAccountOpen.getCcAccount() == null)) {
-                        System.out.println("Please enter the account to transfer to(1:Savings 2:Checking 3:Credit 5:Cancel): ");
-                        toType = input.nextInt();
+                    while(toType != 1 && toType != 2 && toType != 3 && toType != 5 || (toType == 3 && currentAccountOpen.getCcAccount() == null)) {
+                        if(currentAccountOpen.isCreditAccount()) {
+                            System.out.println("Please enter an account to transfer to(1:Savings 2:Checking 3:Credit 5:Cancel): ");
+                            toType = input.nextInt();
+                        } else{
+                            System.out.println("You do not have a Credit account, please choose from the following options(1:Savings 2:Checking 5:Cancel): ");
+                            toType = input.nextInt();
+                        }
                     }
                     if((fromType == 1 || fromType == 2) && (toType == 1 || toType == 2 || toType == 3))
                         currentAccountOpen.transferBetweenAccounts(fromType, toType, amount);
@@ -133,18 +138,36 @@ public class Main {
                     choice = input.nextInt();
                     break;
                 case 6:
-                    System.out.println("(6)Exit");
+                    if (currentAccountOpen.isCreditAccount()){
+                        System.out.println("You already have a credit account open");
+                    }else {
+                        currentAccountOpen.setCreditFlag(true);
+                        currentAccountOpen.setCcAccount(new CreditAccount());
+                        System.out.println("Your new credit account is now open");
+                    }
+                    printMenu();
+                    System.out.println("SELECT A MENU OPTION");
+                    choice = input.nextInt();
+                    break;
+                case 7:
+                    currentAccountOpen.displayAccountBalance();
+                    printMenu();
+                    System.out.println("SELECT A MENU OPTION");
+                    choice = input.nextInt();
+                    break;
+                case 8:
+                    System.out.println("(8)Exit");
                     break;
                 default:
                     System.out.println("(" + choice + ")" + "Something else");
                     System.exit(0); // kill the program
             }
-        }while(choice != 6);
+        }while(choice != 8);
 
         // write the information to the files
         writeToFile(); // print out the current user information
         writeTransactionsToFile(); // print out the transactions to the transactions file
-
+        System.out.println("Closing Program");
     }
 
     private static void login() {
@@ -182,13 +205,17 @@ public class Main {
 
     /** Prints menu for users to see */
     public static void printMenu(){
+        System.out.println(); // prints a space
+        System.out.println("Logged into account #" + currentAccountOpen.getId());
         System.out.println("MENU");
         System.out.println("1. Deposit");
         System.out.println("2. Withdrawal");
-        System.out.println("3. Transfer");
-        System.out.println("4. Register");
+        System.out.println("3. Transfer Money Between Accounts");
+        System.out.println("4. Register New Account");
         System.out.println("5. Switch Accounts");
-        System.out.println("6. Exit");
+        System.out.println("6. Open a Credit Account");
+        System.out.println("7. Display Account Balances");
+        System.out.println("8. Exit/Logout");
     }
 
     /** method that allows a user to create a new account */
@@ -317,7 +344,7 @@ public class Main {
             PrintWriter writer = new PrintWriter(bw);
             for(UserAccount account : accountList.getAccountsList()){ // gets every account
                 for(Transaction transaction : account.getTransactionArrayList()){ // gets every transaction in each account
-                    writer.println(transaction.getDescription()); // write each transaction's description to the file
+                    writer.println("Account #" + account.getId() + ": " + transaction.getDescription()); // write each transaction's description to the file
                 }
             }
             bw.close();

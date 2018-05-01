@@ -40,9 +40,10 @@ public class UserAccount {
     public void setchAccount(CheckingAccount chAccount){this.chAccount = chAccount;}
     // credit account
     public CreditAccount getCcAccount(){return ccAccount;}
-    public void setChAccount(CreditAccount ccAccount){this.ccAccount = ccAccount;}
+    public void setCcAccount(CreditAccount ccAccount){this.ccAccount = ccAccount;}
     // has credit account
     public boolean isCreditAccount(){return hasCreditAccount;}
+    public void setCreditFlag(boolean creditFlag){this.hasCreditAccount = creditFlag; }
     // balance
     public double getBalance() {return balance;}
     public void setBalance(double balance) {this.balance = balance;}
@@ -205,12 +206,20 @@ public class UserAccount {
     }
 
     //Displays the current amount of the chosen account
-    public void displayAccountBalance(int type){
+    public void displayAnAccountBalance(int type){
         if(type == 1)
-            System.out.println("Savings balance: $" + sAccount.getBalance());
+            System.out.printf("Savings balance: $%.2f\n", sAccount.getBalance());
         else if(type == 2)
-            System.out.println("Checking balance: $" + chAccount.getBalance());
+            System.out.printf("Checking balance: $%.2f\n", chAccount.getBalance());
         else if(type == 3)
-            System.out.println("Checking balance: $" + ccAccount.getAmountLeft());
+            System.out.printf("Credit amount left: $%.2f\n", ccAccount.getAmountLeft());
+    }
+
+    //Displays the current amount of all accounts
+    public void displayAccountBalance(){
+        System.out.printf("Savings balance: $%.2f\n", sAccount.getBalance());
+        System.out.printf("Checking balance: $%.2f\n", chAccount.getBalance());
+        if(hasCreditAccount)
+            System.out.printf("Credit amount left: $%.2f\n", ccAccount.getAmountLeft());
     }
 }
