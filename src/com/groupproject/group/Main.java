@@ -24,7 +24,7 @@ public class Main {
         // same with passwords
         // accountList.addAccount(account);
         String stringChoice;
-        int choice = 0;
+        int choice;
         System.out.println("======================");
         System.out.println("---- BANK PORTAL -----");
         System.out.println("======================");
@@ -32,36 +32,9 @@ public class Main {
         System.out.println("Type 'Login' or type 'register' to register: ");
         stringChoice = input.nextLine();
 
-        if(stringChoice.equals("Login") || stringChoice.equals("login")) {
-            System.out.print("Please enter your id number: ");
-            int idNum = input.nextInt();
-
-
-            //Takes in the extra line
-            String junkLine = input.nextLine();
-
-            // adding and checking for if the account exists
-            boolean search = false;
-            while(!search) {                        //Loop to make sure an existing ID is input with matching password
-                UserAccount account = accountList.findById(idNum);
-                if (account != null) {
-                    System.out.print("Please enter your password: ");
-
-                    String password = input.nextLine();
-                    if (account.getPassword().equals(password)) {
-                        search = true;
-                        currentAccountOpen = account;
-                    } else{
-                        System.out.println("Password and Id did not match");
-                    }
-
-                } else {
-                    System.out.println("Could not find account, please check to make sure ID entered is correct.");
-                    System.out.print("Please enter your id number: ");
-                    idNum = input.nextInt();
-                }
-            }
-        } else if (stringChoice.equals("Register") || stringChoice.equals("register")) {
+        if(stringChoice.toUpperCase().equals("LOGIN")) {
+            login();
+        } else if (stringChoice.toUpperCase().equals("REGISTER")) {
             currentAccountOpen = addAccount(); // adds an account
         }else{
             System.out.println("You didn't choose 'Register' or 'Login'. Program closing.");
@@ -81,15 +54,15 @@ public class Main {
 
                     System.out.print("Please enter account type to deposit to(1:Savings 2:Checking 5:Cancel): ");
                     type = input.nextInt();
-                    //Display amount currently in chosen account
-                    currentAccountOpen.displayAccountBalance(type);
-                    System.out.print("Please enter the amount to deposit: ");
-                    amount = input.nextDouble();
                     // input validation code
                     while(type != 1 && type != 2 && type != 5){
                         System.out.println("Retry (1:Savings 2:Checking 5:Cancel): ");
                         type = input.nextInt();
                     }
+                    //Display amount currently in chosen account
+                    currentAccountOpen.displayAccountBalance(type);
+                    System.out.print("Please enter the amount to deposit: ");
+                    amount = input.nextDouble();
                     if(type == 1 || type == 2)
                         currentAccountOpen.deposit(type, amount);
 
@@ -101,15 +74,16 @@ public class Main {
                     System.out.println("WITHDRAW");
                     System.out.println("Please enter account type to withdraw from(1:Savings 2:Checking 5:Cancel): ");
                     type = input.nextInt();
-                    //Display amount currently in chosen account
-                    currentAccountOpen.displayAccountBalance(type);
-                    System.out.println("Please enter the amount to withdraw: ");
-                    amount = input.nextDouble();
+
 
                     while(type != 1 && type != 2 && type != 5){
                         System.out.println("Retry (1:Savings 2:Checking 5:Cancel): ");
                         type = input.nextInt();
                     }
+                    //Display amount currently in chosen account
+                    currentAccountOpen.displayAccountBalance(type);
+                    System.out.println("Please enter the amount to withdraw: ");
+                    amount = input.nextDouble();
                     if(type == 1 || type == 2)
                         currentAccountOpen.withdraw(type, amount);
 
@@ -122,20 +96,21 @@ public class Main {
 
                     System.out.println("Please enter account to transfer from(1:Savings 2:Checking 5:Cancel): ");
                     int fromType = input.nextInt();
+                    //input validation
+                    while(fromType != 1 && fromType != 2 && fromType != 5) {
+                        System.out.println("Invalid option selected");
+                        System.out.println("Please enter the account to transfer From (1:Savings 2:Checking 5:Cancel): ");
+                        fromType = input.nextInt();
+                    }
                     //Display amount currently in chosen account
                     currentAccountOpen.displayAccountBalance(fromType);
                     System.out.println("Please enter the amount to transfer: ");
                     amount = input.nextDouble();
-                    System.out.println("Please enter account to transfer to(1:Savings 2:Checking 3: Credit 5:Cancel): ");
+                    System.out.println("Please enter account to transfer to(1:Savings 2:Checking 3:Credit 5:Cancel): ");
                     int toType = input.nextInt();
-
-                    //input validation
-                    while(fromType != 1 && fromType != 2 && fromType != 5 && toType != 1 && toType != 2 && toType != 3 && toType != 5 ){
-                        System.out.println("Invalid option selected");
-                        System.out.println("Please enter the account to transfer From (1:Savings 2:Checking 5:Cancel): ");
-                        fromType = input.nextInt();
-                        System.out.println("Please enter the account to transfer to(1:Savings 2:Checking 3: Credit 5:Cancel): ");
-                        toType= input.nextInt();
+                    while((toType != 1 && toType != 2 && toType != 3 && toType != 5) || (toType == 3 && currentAccountOpen.getCcAccount() == null)) {
+                        System.out.println("Please enter the account to transfer to(1:Savings 2:Checking 3:Credit 5:Cancel): ");
+                        toType = input.nextInt();
                     }
                     if((fromType == 1 || fromType == 2) && (toType == 1 || toType == 2 || toType == 3))
                         currentAccountOpen.transferBetweenAccounts(fromType, toType, amount);
@@ -143,19 +118,66 @@ public class Main {
                     // print the menu and request input
                     printMenu();
                     choice = input.nextInt();
+                    break;
+                case 4:
+                    String junkLine = input.nextLine();
+                    addAccount(); // adds an account
+                    printMenu();
+                    System.out.println("SELECT A MENU OPTION");
+                    choice = input.nextInt();
+                    break;
                 case 5:
-                    System.out.println("(5)Exit");
+                    login();
+                    printMenu();
+                    System.out.println("SELECT A MENU OPTION");
+                    choice = input.nextInt();
+                    break;
+                case 6:
+                    System.out.println("(6)Exit");
                     break;
                 default:
                     System.out.println("(" + choice + ")" + "Something else");
                     System.exit(0); // kill the program
             }
-        }while(choice != 5);
+        }while(choice != 6);
 
         // write the information to the files
         writeToFile(); // print out the current user information
         writeTransactionsToFile(); // print out the transactions to the transactions file
 
+    }
+
+    private static void login() {
+        System.out.print("Please enter your id number: ");
+        int idNum = input.nextInt();
+
+        // adding and checking for if the account exists
+        boolean search = false;
+        while(!search) {                        //Loop to make sure an existing ID is input with matching password
+            //Takes in the extra line
+            String junkLine = input.nextLine();
+            UserAccount account = accountList.findById(idNum);
+            if (account != null) {
+                System.out.print("Please enter your password: ");
+
+                String password = input.nextLine();
+                if (account.getPassword().equals(password)) {
+                    search = true;
+                    currentAccountOpen = account;
+                } else{
+                    System.out.println("Password and Id did not match");
+                    System.out.println("Press 0 to exit or 1 to try again");
+                    int tryAgain = input.nextInt();
+                    if(tryAgain == 0)
+                        System.exit(0);
+                }
+
+            } else {
+                System.out.println("Could not find account, please check to make sure ID entered is correct.");
+                System.out.print("Please enter your id number: ");
+                idNum = input.nextInt();
+            }
+        }
     }
 
     /** Prints menu for users to see */
@@ -164,13 +186,14 @@ public class Main {
         System.out.println("1. Deposit");
         System.out.println("2. Withdrawal");
         System.out.println("3. Transfer");
-        System.out.println("5. Exit");
+        System.out.println("4. Register");
+        System.out.println("5. Switch Accounts");
+        System.out.println("6. Exit");
     }
 
     /** method that allows a user to create a new account */
     public static UserAccount addAccount(){
-        UserAccount accountToReturn = null;
-
+        UserAccount account = null;
         String password;
         int ans;
 
@@ -181,22 +204,18 @@ public class Main {
         System.out.println("Did you want to add a credit account? (1) for yes (2) for no ");
         ans = input.nextInt();
         if(ans == 1) {
-            UserAccount account = new UserAccount(password, true);
+            account = new UserAccount(password, true);
             // add more access to the account set-up like an initial deposit amount or things of that nature.
             // add to arrayList
             accountList.addAccount(account);
             System.out.println("New Account Created (with Credit). Your ID is " + account.getId());
-
-            accountToReturn = account;
         }else if(ans == 2) {
-            UserAccount account = new UserAccount(password, false);
+            account = new UserAccount(password, false);
             // add to arrayList
             accountList.addAccount(account);
             System.out.println("New account created (without Credit). Your ID is: " + account.getId());
-
-            accountToReturn = account;
         }
-        return accountToReturn;
+        return account;
     }
 
     /** Writes the current account information to the account_info.txt file */
@@ -241,19 +260,28 @@ public class Main {
         // Create a Scanner object -- this will be used to do the reading
         try(Scanner fileReader = new Scanner(file)) {
             // there IS something in the file, so read from it.
-                while((fileReader.hasNextLine())) {
-                    String line = fileReader.nextLine();
-                    String members[] = line.split(", "); // split up the string
+            int SIZE = 4;
+            while((fileReader.hasNextLine())) {
+                String line = fileReader.nextLine();
+                if(line == null)
+                    continue; // avoids reading in an empty line
+                else {
+                    String temp[] = line.split(", "); // split up the string
+                    String members[] = new String[SIZE];
+                    //for loop to assign temp values to members without changing length
+                    for (int index = 0; index < temp.length; index++) {
+                        members[index] = temp[index];
+                    }
 
                     String pass = members[0];
                     double sAcctBal = Double.parseDouble(members[1]);
                     double chAcctBal = Double.parseDouble(members[2]);
                     UserAccount account;
-                    if(members[3] != null){ // if something was read in
+                    if (members[3] != null) { // if something was read in
                         double ccAcctBal = Double.parseDouble(members[3]);
                         account = new UserAccount(pass, true);
                         account.getCcAccount().setAmountLeft(ccAcctBal); // sets the amount left
-                    }else{
+                    } else {
                         account = new UserAccount(pass, false);
                     }
 
@@ -263,8 +291,9 @@ public class Main {
 
                     // add the account to the local list
                     userAccounts.add(account); // adds the current user account
-                } // end of while loop
-                return userAccounts; // returns the user accounts to the caller
+                }
+            } // end of while loop
+            return userAccounts; // returns the user accounts to the caller
         }catch(FileNotFoundException e){
             System.out.println("Exception Thrown!"); // debug code.
             return new ArrayList<>(); // give back an empty UserAccountList object

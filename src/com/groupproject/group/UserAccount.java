@@ -8,6 +8,7 @@ public class UserAccount {
     private CreditAccount ccAccount;
     private String password;
     private static int id = 100; // auto-incremented ids
+    private int current_user_id;
     private ArrayList<Transaction> transactionArrayList;
     private double balance;
     private boolean hasCreditAccount; // keeps track of if the user decided to have a credit account included
@@ -22,6 +23,7 @@ public class UserAccount {
         transactionArrayList = new ArrayList<>(); // initializes the list
         this.hasCreditAccount = creditAccountFlag;
         id++; // increment the id
+        current_user_id = id; // sets the current id to the most recent id
     }
 
     // GETTERS & SETTERS
@@ -45,7 +47,7 @@ public class UserAccount {
     public double getBalance() {return balance;}
     public void setBalance(double balance) {this.balance = balance;}
     // id
-    public int getId(){return id;}
+    public int getId(){return current_user_id;}
 
     // Transaction methods
     private void addTransaction(int type, String description){
