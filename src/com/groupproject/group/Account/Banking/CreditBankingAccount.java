@@ -1,14 +1,14 @@
-package com.groupproject.group.Account;
+package com.groupproject.group.Account.Banking;
 
-public class CreditAccount extends Account {
+public class CreditBankingAccount extends BankingAccount {
     private double limit;
     private double amountLeft;
     private double oustandingBalance; // variable for tracking how much the user has used
     private double interestRate;
     // TODO: Add in Date variable and functionality
 
-    public CreditAccount(){
-        super("Credit Account", 3); // calls the super-class's default constructor -- passing in default values
+    public CreditBankingAccount(){
+        super("Credit BankingAccount", 3); // calls the super-class's default constructor -- passing in default values
         limit = 6500;
         amountLeft = 6500;
     }

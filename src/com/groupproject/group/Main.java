@@ -1,12 +1,14 @@
 package com.groupproject.group;
 
-import com.groupproject.group.Account.CreditAccount;
-import com.groupproject.group.Account.UserAccount;
-import com.groupproject.group.Account.UserAccountList;
+import com.groupproject.group.Account.Banking.CreditBankingAccount;
+import com.groupproject.group.Account.LoginAccount.UserAccount;
+import com.groupproject.group.Account.LoginAccount.UserAccountList;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
 /*
  * Authors: Nik F, Joe K, Mike H
  * Description: A simple banking system.
@@ -15,11 +17,11 @@ import java.util.Scanner;
  */
 
 public class Main {
-    // private static UserAccount account = new UserAccount("Bobs Account",false); // account name and balance
+    // private static UserAccount account = new UserAccount("Bobs BankingAccount",false); // account name and balance
     private static UserAccount currentAccountOpen; // used for holding the current account's info
     private static UserAccountList accountList = new UserAccountList();
+    // scanner to read in data from the user
     private static Scanner input = new Scanner(System.in);
-
 
     public static void main(String[] args) {
         ArrayList<UserAccount> readInList = readFromFile(); // read in the items
@@ -74,7 +76,11 @@ public class Main {
 
                     // print the menu and request input
                     printMenu();
-                    choice = input.nextInt();
+                    try{
+                        choice = input.nextInt();
+                    }catch(InputMismatchException e){
+                        System.out.println("Incorrect data-type entered.");
+                    }
                     break;
                 case 2:
                     System.out.println("WITHDRAW");
@@ -95,7 +101,11 @@ public class Main {
 
                     // print the menu and request input
                     printMenu();
-                    choice = input.nextInt();
+                    try{
+                        choice = input.nextInt();
+                    }catch(InputMismatchException e){
+                        System.out.println("Incorrect data-type entered.");
+                    }
                     break;
                 case 3:
                     System.out.println("TRANSFER");
@@ -128,40 +138,60 @@ public class Main {
 
                     // print the menu and request input
                     printMenu();
-                    choice = input.nextInt();
+                    try{
+                        choice = input.nextInt();
+                    }catch(InputMismatchException e){
+                        System.out.println("Incorrect data-type entered.");
+                    }
                     break;
                 case 4:
                     String junkLine = input.nextLine();
                     addAccount(); // adds an account
                     printMenu();
                     System.out.println("SELECT A MENU OPTION");
-                    choice = input.nextInt();
+                    try{
+                        choice = input.nextInt();
+                    }catch(InputMismatchException e){
+                        System.out.println("Incorrect data-type entered.");
+                    }
                     break;
                 case 5:
                     login();
                     printMenu();
                     System.out.println("SELECT A MENU OPTION");
-                    choice = input.nextInt();
+                    try{
+                        choice = input.nextInt();
+                    }catch(InputMismatchException e){
+                        System.out.println("Incorrect data-type entered.");
+                    }
                     break;
                 case 6:
                     if (currentAccountOpen.isCreditAccount()){
                         System.out.println("You already have a credit account open");
                     }else {
                         currentAccountOpen.setCreditFlag(true);
-                        currentAccountOpen.setCcAccount(new CreditAccount());
+                        currentAccountOpen.setCcAccount(new CreditBankingAccount());
                         System.out.println("Your new credit account is now open");
                     }
                     printMenu();
                     System.out.println("SELECT A MENU OPTION");
-                    choice = input.nextInt();
+                    try{
+                        choice = input.nextInt();
+                    }catch(InputMismatchException e){
+                        System.out.println("Incorrect data-type entered.");
+                    }
                     break;
                 case 7:
-                    System.out.println("--------- Account Balance -----------");
+                    System.out.println("--------- BankingAccount Balance -----------");
                     currentAccountOpen.displayAccountBalance();
                     System.out.println("-------------------------------------");
                     printMenu();
                     System.out.println("SELECT A MENU OPTION");
-                    choice = input.nextInt();
+                    try{
+                        choice = input.nextInt();
+                    }catch(InputMismatchException e){
+                        System.out.println("Incorrect data-type entered.");
+                    }
                     break;
                 case 8:
                     System.out.println("(8)Exit");
@@ -184,7 +214,7 @@ public class Main {
 
         // adding and checking for if the account exists
         boolean search = false;
-        while(!search) {                        //Loop to make sure an existing ID is input with matching password
+        while(!search) { //Loop to make sure an existing ID is input with matching password
             //Takes in the extra line
             String junkLine = input.nextLine();
             UserAccount account = accountList.findById(idNum);
@@ -222,10 +252,10 @@ public class Main {
         System.out.println("1. Deposit");
         System.out.println("2. Withdrawal");
         System.out.println("3. Transfer Money Between Accounts");
-        System.out.println("4. Register New Account");
+        System.out.println("4. Register New BankingAccount");
         System.out.println("5. Switch Accounts");
-        System.out.println("6. Open a Credit Account");
-        System.out.println("7. Display Account Balances");
+        System.out.println("6. Open a Credit BankingAccount");
+        System.out.println("7. Display BankingAccount Balances");
         System.out.println("8. Exit/Logout");
         System.out.println("----------------------------------");
     }
@@ -237,7 +267,7 @@ public class Main {
         int ans;
         System.out.println("*****************************");
         System.out.println("CREATE NEW ACCOUNT");
-        System.out.print("Please Enter Account Password: ");
+        System.out.print("Please Enter BankingAccount Password: ");
         password = input.nextLine();
 
         System.out.println("Did you want to add a credit account? (1) for yes (2) for no ");
@@ -247,7 +277,7 @@ public class Main {
             // add more access to the account set-up like an initial deposit amount or things of that nature.
             // add to arrayList
             accountList.addAccount(account);
-            System.out.println("New Account Created (with Credit). Your ID is " + account.getId());
+            System.out.println("New BankingAccount Created (with Credit). Your ID is " + account.getId());
         }else if(ans == 2) {
             account = new UserAccount(password, false);
             // add to arrayList
@@ -272,9 +302,9 @@ public class Main {
             for(UserAccount elem : accountList.getAccountsList()){
                 // print out the account information. Order: account name, savings account balance, checking account value, amount left in credit, and the outstanding balance due
                 if(elem.isCreditAccount()){
-                    printer.println(elem.getPassword() + ", " + elem.getsAccount().getBalance() +", "+ elem.getchAccount().getBalance() +", " +elem.getCcAccount().getAmountLeft());
+                    printer.println(elem.getPassword() + ", " + elem.getSavingsAccount().getBalance() +", "+ elem.getchAccount().getBalance() +", " +elem.getCcAccount().getAmountLeft());
                 }else{
-                    printer.println(elem.getPassword() + ", " + elem.getsAccount().getBalance() +", "+ elem.getchAccount().getBalance());
+                    printer.println(elem.getPassword() + ", " + elem.getSavingsAccount().getBalance() +", "+ elem.getchAccount().getBalance());
                 }
             }
         } catch (FileNotFoundException e) { // catches the possible exception throw by the printer object being created
@@ -325,7 +355,7 @@ public class Main {
                     }
 
                     // populate other members
-                    account.getsAccount().setBalance(sAcctBal);
+                    account.getSavingsAccount().setBalance(sAcctBal);
                     account.getchAccount().setBalance(chAcctBal);
 
                     // add the account to the local list
@@ -356,7 +386,7 @@ public class Main {
             PrintWriter writer = new PrintWriter(bw);
             for(UserAccount account : accountList.getAccountsList()){ // gets every account
                 for(Transaction transaction : account.getTransactionArrayList()){ // gets every transaction in each account
-                    writer.println("Account #" + account.getId() + ": " + transaction.getDescription()); // write each transaction's description to the file
+                    writer.println("BankingAccount #" + account.getId() + ": " + transaction.getDescription()); // write each transaction's description to the file
                 }
             }
             bw.close();
