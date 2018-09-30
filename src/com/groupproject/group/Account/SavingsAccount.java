@@ -1,4 +1,4 @@
-package com.groupproject.group;
+package com.groupproject.group.Account;
 
 public class SavingsAccount extends Account{
     private double balance;

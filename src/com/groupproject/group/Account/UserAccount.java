@@ -1,4 +1,6 @@
-package com.groupproject.group;
+package com.groupproject.group.Account;
+
+import com.groupproject.group.Transaction;
 
 import java.util.ArrayList;
 

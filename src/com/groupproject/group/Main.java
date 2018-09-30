@@ -1,11 +1,16 @@
 package com.groupproject.group;
 
+import com.groupproject.group.Account.CreditAccount;
+import com.groupproject.group.Account.UserAccount;
+import com.groupproject.group.Account.UserAccountList;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 /*
- * Authors: Nik, Joe, Scott
+ * Authors: Nik F, Joe K, Mike H
+ * Description: A simple banking system.
+ *              Allows a manager to manage accounts, and users to use their accounts.
  * Due: 05/01/2018
  */
 
@@ -41,8 +46,9 @@ public class Main {
             System.exit(0); // kill the program
         }
 
-        printMenu();
+        printMenu(); // print the menu for the user to view options
         System.out.println("SELECT A MENU OPTION");
+        // get the first input from the user
         choice = input.nextInt();
 
         // MENU
@@ -253,7 +259,7 @@ public class Main {
 
     /** Writes the current account information to the account_info.txt file */
     public static void writeToFile() {
-        File file = new File("src/com/groupproject/group/account_info.txt");
+        File file = new File("src/com/groupproject/group/Resources/account_info.txt");
         if(!file.exists()){ // check if the doesn't exist
             // if it doesn't, create it
             try {
@@ -280,7 +286,7 @@ public class Main {
     public static ArrayList<UserAccount> readFromFile(){
         ArrayList<UserAccount> userAccounts = new ArrayList<>(); // populated list that is returned at the end
         // Create the file. This will help to read content from a file
-        File file = new File("src/com/groupproject/group/account_info.txt");
+        File file = new File("src/com/groupproject/group/Resources/account_info.txt");
         if(!file.exists()){ // check if the doesn't exist
             // if it doesn't, create it
             try {
@@ -335,7 +341,7 @@ public class Main {
 
     /** Writes the current transaction list to a file to be stored */
     public static void writeTransactionsToFile(){
-        File file = new File("src/com/groupproject/group/transactions.txt");
+        File file = new File("src/com/groupproject/group/Resources/transactions.txt");
         if(!file.exists()){ // check if the file doesn't exist
             // if it doesn't, create it
             try {

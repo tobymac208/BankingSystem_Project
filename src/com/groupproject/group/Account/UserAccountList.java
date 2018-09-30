@@ -1,4 +1,4 @@
-package com.groupproject.group;
+package com.groupproject.group.Account;
 
 import java.util.ArrayList;
 

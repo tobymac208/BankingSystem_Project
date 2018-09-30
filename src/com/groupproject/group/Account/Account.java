@@ -1,4 +1,4 @@
-package com.groupproject.group;
+package com.groupproject.group.Account;
 
 /** Abstract class for making other Account classes */
 public abstract class Account {
