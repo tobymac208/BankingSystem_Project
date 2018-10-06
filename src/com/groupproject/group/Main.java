@@ -32,7 +32,7 @@ public class Main {
         // same with passwords
         // accountList.addAccount(account);
         String stringChoice;
-        int choice;
+        int choice = 0;
         System.out.println("==============================================");
         System.out.println("---------------- BANK PORTAL -----------------");
         System.out.println("==============================================");
@@ -49,15 +49,20 @@ public class Main {
             System.exit(0); // kill the program
         }
 
-        printMenu(); // print the menu for the user to view options
-        System.out.println("SELECT A MENU OPTION");
-        // get the first input from the user
-        choice = input.nextInt();
-
         // MENU
         do {
+            // print the menu, and request entry
+            printMenu();
+            System.out.println("SELECT A MENU OPTION");
+            try{
+                choice = input.nextInt();
+            }catch(InputMismatchException e){
+                choice = 0; // 0 is not a valid option, so it will force them to go through the default option of the
+                            // switch statement
+            }
+
             switch (choice) {
-                case 1:
+                case 1: // DEPOSIT
                     double amount;
                     double type;
 
@@ -74,16 +79,8 @@ public class Main {
                     amount = input.nextDouble();
                     if(type == 1 || type == 2)
                         currentAccountOpen.deposit(type, amount);
-
-                    // print the menu and request input
-                    printMenu();
-                    try{
-                        choice = input.nextInt();
-                    }catch(InputMismatchException e){
-                        System.out.println("Incorrect data-type entered.");
-                    }
                     break;
-                case 2:
+                case 2: // WITHDRAWAL
                     System.out.println("WITHDRAW");
                     System.out.println("Please enter account type to withdraw from(1:Savings 2:Checking 5:Cancel): ");
                     type = input.nextInt();
@@ -99,16 +96,8 @@ public class Main {
                     amount = input.nextDouble();
                     if(type == 1 || type == 2)
                         currentAccountOpen.withdraw(type, amount);
-
-                    // print the menu and request input
-                    printMenu();
-                    try{
-                        choice = input.nextInt();
-                    }catch(InputMismatchException e){
-                        System.out.println("Incorrect data-type entered.");
-                    }
                     break;
-                case 3:
+                case 3: // TRANSFER
                     System.out.println("TRANSFER");
 
                     System.out.println("Please enter account to transfer from(1:Savings 2:Checking 5:Cancel): ");
@@ -136,35 +125,13 @@ public class Main {
                     }
                     if((fromType == 1 || fromType == 2) && (toType == 1 || toType == 2 || toType == 3))
                         currentAccountOpen.transferBetweenAccounts(fromType, toType, amount);
-
-                    // print the menu and request input
-                    printMenu();
-                    try{
-                        choice = input.nextInt();
-                    }catch(InputMismatchException e){
-                        System.out.println("Incorrect data-type entered.");
-                    }
                     break;
                 case 4:
                     String junkLine = input.nextLine();
                     addAccount(); // adds an account
-                    printMenu();
-                    System.out.println("SELECT A MENU OPTION");
-                    try{
-                        choice = input.nextInt();
-                    }catch(InputMismatchException e){
-                        System.out.println("Incorrect data-type entered.");
-                    }
                     break;
                 case 5:
                     login();
-                    printMenu();
-                    System.out.println("SELECT A MENU OPTION");
-                    try{
-                        choice = input.nextInt();
-                    }catch(InputMismatchException e){
-                        System.out.println("Incorrect data-type entered.");
-                    }
                     break;
                 case 6:
                     if (currentAccountOpen.isCreditAccount()){
@@ -174,32 +141,17 @@ public class Main {
                         currentAccountOpen.setCcAccount(new CreditBankingAccount());
                         System.out.println("Your new credit account is now open");
                     }
-                    printMenu();
-                    System.out.println("SELECT A MENU OPTION");
-                    try{
-                        choice = input.nextInt();
-                    }catch(InputMismatchException e){
-                        System.out.println("Incorrect data-type entered.");
-                    }
                     break;
                 case 7:
                     System.out.println("--------- BankingAccount Balance -----------");
                     currentAccountOpen.displayAccountBalance();
                     System.out.println("-------------------------------------");
-                    printMenu();
-                    System.out.println("SELECT A MENU OPTION");
-                    try{
-                        choice = input.nextInt();
-                    }catch(InputMismatchException e){
-                        System.out.println("Incorrect data-type entered.");
-                    }
-                    break;
                 case 8:
                     System.out.println("(8)Exit");
                     break;
-                default:
-                    System.out.println("(" + choice + ")" + "Something else");
-                    System.exit(0); // kill the program
+                default: // chose an incorrect option
+                    System.out.println("\"" + choice + "\" was not an option. Returning to menu.");
+                    break;
             }
         }while(choice != 8);
 
@@ -273,14 +225,16 @@ public class Main {
 
         System.out.println("Did you want to add a credit account? (1) for yes (2) for no ");
         ans = input.nextInt();
-        if(ans == 1) {
-            account = new UserAccount(password, true);
+        if(ans == 1) { // this did choose a credit account
+            // TODO: Implement add account to take a username, password, and age
+            account = new UserAccount(null, null, 0, password, password, true);
             // add more access to the account set-up like an initial deposit amount or things of that nature.
             // add to arrayList
             accountList.addAccount(account);
             System.out.println("New BankingAccount Created (with Credit). Your ID is " + account.getId());
-        }else if(ans == 2) {
-            account = new UserAccount(password, false);
+        }else if(ans == 2) { // they did not choose a credit account
+            // TODO: Implement add account to take a username, password, and age
+            account = new UserAccount(null, null, 0, null, password, false);
             // add to arrayList
             accountList.addAccount(account);
             System.out.println("New account created (without Credit). Your ID is: " + account.getId());
@@ -290,6 +244,7 @@ public class Main {
 
     /** Writes the current account information to the account_info.txt file */
     public static void writeToFile() {
+        // TODO: Implement write-to-file method to write a username, password, and age to the file
         File file = new File("src/com/groupproject/group/Resources/account_info.txt");
         if(!file.exists()){ // check if the doesn't exist
             // if it doesn't, create it
@@ -349,10 +304,12 @@ public class Main {
                     UserAccount account;
                     if (members[3] != null) { // if something was read in
                         double ccAcctBal = Double.parseDouble(members[3]);
-                        account = new UserAccount(pass, true);
+                        // TODO: Implement read-from-file method to take a username, password, and age
+                        account = new UserAccount(null, null, 0, null, pass, true);
                         account.getCcAccount().setAmountLeft(ccAcctBal); // sets the amount left
                     } else {
-                        account = new UserAccount(pass, false);
+                        // TODO: Implement read-from-file method to take a username, password, and age
+                        account = new UserAccount(null, null, 0, null, pass, false);
                     }
 
                     // populate other members

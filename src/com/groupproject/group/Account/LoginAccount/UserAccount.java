@@ -6,7 +6,7 @@ import com.groupproject.group.Account.Banking.SavingsBankingAccount;
 
 import java.util.ArrayList;
 
-public class UserAccount {
+public class UserAccount extends LoginAccount {
     private SavingsBankingAccount savingsAccount;
     private CheckingBankingAccount checkingAccount;
     private CreditBankingAccount ccAccount;
@@ -21,8 +21,9 @@ public class UserAccount {
     private static final int CHECKING_ID = 2;
     private static final int CREDIT_ID = 3;
 
-    public UserAccount(String password, boolean creditAccountFlag){
-        super();
+    public UserAccount(String firstName, String lastName, int age, String username, String password, boolean creditAccountFlag){
+        // Call super class constructor
+        super(firstName, lastName, age, username, password);
         this.password = password;
         this.balance = 0.0; // we don't set this by default, because this is the overall total of all of the accounts
         this.savingsAccount = new SavingsBankingAccount();

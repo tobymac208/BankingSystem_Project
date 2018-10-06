@@ -5,22 +5,32 @@ public abstract class LoginAccount {
     private String firstName;
     private String lastName;
     private int age;
+    private String username;
+    private String password;
 
     // all-arg constructor
-    public LoginAccount(String firstName, String lastName, int age){
+    public LoginAccount(String firstName, String lastName, int age, String username, String password){
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
+        this.username = username;
+        this.password = password;
     }
 
     // getters and setters
-    // first name, getter and setter
+    // first name
     public String getFirstName() {return firstName;}
     public void setFirstName(String firstName) {this.firstName = firstName;}
-    // last name, getter and setter
+    // last name
     public String getLastName() {return lastName;}
     public void setLastName(String lastName) {this.lastName = lastName;}
-    // age, getter setter
+    // age
     public int getAge() {return age;}
     public void setAge(int age) {this.age = age;}
+    // username -- CANNOT change this value, as of right now
+    public String getUsername(){return username;}
+    // password
+    public String getPassword(){return password;}
+    public void setPassword(String password){this.password = password;}
+    // ------------------------------------
 }
