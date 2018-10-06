@@ -36,20 +36,20 @@ public class Account_Menu extends JFrame {
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    // change L&F here
-                    //UIManager.setLookAndFeel("com.sun.java.swing.plaf.metal.MetalLookAndFeel");
-                    Account_Menu frame = new Account_Menu();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+//    public static void main(String[] args) {
+//        EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try {
+//                    // change L&F here
+//                    //UIManager.setLookAndFeel("com.sun.java.swing.plaf.metal.MetalLookAndFeel");
+//                    Account_Menu frame = new Account_Menu();
+//                    frame.setVisible(true);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
 
     /**
      * Create the frame.
