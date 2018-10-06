@@ -54,7 +54,7 @@ public class Login_Menu extends JFrame {
      */
     public Login_Menu() {
         setForeground(Color.LIGHT_GRAY);
-        setIconImage(Toolkit.getDefaultToolkit().getImage("com/groupproject/group/Resources/folder-red-java-icon.png"));
+        setIconImage(Toolkit.getDefaultToolkit().getImage("com/groupproject/group/Resources/Images/folder-red-java-icon.png"));
         //photo is large and will screw over the aesthetic dont enlarge.
         setResizable(false);
         setBackground(Color.LIGHT_GRAY);
@@ -87,7 +87,7 @@ public class Login_Menu extends JFrame {
         panel_2.setLayout(new BorderLayout(0, 0));
 
         JLabel lblNewLabel_3 = new JLabel("");
-        lblNewLabel_3.setIcon(new ImageIcon("/com/groupproject/group/Resources/00205-3D-art-logo-design-free-logos-online-011.png"));
+        lblNewLabel_3.setIcon(new ImageIcon("/com/groupproject/group/Resources/Images/00205-3D-art-logo-design-free-logos-online-011.png"));
         lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
         panel_2.add(lblNewLabel_3, BorderLayout.CENTER);
 
@@ -152,7 +152,7 @@ public class Login_Menu extends JFrame {
         public Account_Menu() throws IOException {
             setResizable(false);
             setTitle("CREATE ACCOUNT");
-            setIconImage(Toolkit.getDefaultToolkit().getImage(Account_Menu.class.getResource("/com/groupproject/group/Resources/folder-red-java-icon.png")));
+            setIconImage(Toolkit.getDefaultToolkit().getImage(Account_Menu.class.getResource("/com/groupproject/group/Resources/Images/folder-red-java-icon.png")));
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setBounds(100, 100, 606, 455); // mimicks the first windows size.
             contentPane = new JPanel();
@@ -250,7 +250,7 @@ public class Login_Menu extends JFrame {
 
             JLabel lblNewLabel_1 = new JLabel("");
             lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-            lblNewLabel_1.setIcon(new ImageIcon(Account_Menu.class.getResource("/com/groupproject/group/Resources/texture2.jpg")));
+            lblNewLabel_1.setIcon(new ImageIcon(Account_Menu.class.getResource("/com/groupproject/group/Resources/Images/texture2.jpg")));
             panel_6.add(lblNewLabel_1);
 
 

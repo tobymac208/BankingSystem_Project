@@ -58,7 +58,7 @@ public class Account_Menu extends JFrame {
     public Account_Menu() throws IOException {
         setResizable(false);
         setTitle("CREATE ACCOUNT");
-        setIconImage(Toolkit.getDefaultToolkit().getImage(Account_Menu.class.getResource("/com/groupproject/group/Resources/folder-red-java-icon.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(Account_Menu.class.getResource("/com/groupproject/group/Resources/Images/folder-red-java-icon.png")));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 606, 455); // mimicks the size of the first window
         contentPane = new JPanel();
@@ -156,7 +156,7 @@ public class Account_Menu extends JFrame {
         JLabel lblNewLabel_1 = new JLabel("");
         lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
         // please edit me or make me larger so i can fill the screen.
-        lblNewLabel_1.setIcon(new ImageIcon(Account_Menu.class.getResource("/com/groupproject/group/Resources/texture2.jpg")));
+        lblNewLabel_1.setIcon(new ImageIcon(Account_Menu.class.getResource("/com/groupproject/group/Resources/Images/texture2.jpg")));
         panel_6.add(lblNewLabel_1);
 
 
