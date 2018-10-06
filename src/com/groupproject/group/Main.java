@@ -1,6 +1,7 @@
 package com.groupproject.group;
 
 import com.groupproject.group.Account.Banking.CreditBankingAccount;
+import com.groupproject.group.Account.LoginAccount.Transaction;
 import com.groupproject.group.Account.LoginAccount.UserAccount;
 import com.groupproject.group.Account.LoginAccount.UserAccountList;
 

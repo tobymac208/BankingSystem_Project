@@ -1,4 +1,4 @@
-package com.groupproject.group;
+package com.groupproject.group.Account.LoginAccount;
 
 public class Transaction {
     private static int id = 0;

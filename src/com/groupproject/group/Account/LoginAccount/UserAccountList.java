@@ -21,7 +21,7 @@ public class UserAccountList {
 
     /** Finds an account by its id */
     public UserAccount findById(int id){
-        for(UserAccount currAccount : accountsList){
+        for(UserAccount currAccount : accountsList){ // run through each account in the list
             if(currAccount.getId() == id){
                 return currAccount;
             }

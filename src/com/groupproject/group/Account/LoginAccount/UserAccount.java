@@ -3,7 +3,6 @@ package com.groupproject.group.Account.LoginAccount;
 import com.groupproject.group.Account.Banking.CheckingBankingAccount;
 import com.groupproject.group.Account.Banking.CreditBankingAccount;
 import com.groupproject.group.Account.Banking.SavingsBankingAccount;
-import com.groupproject.group.Transaction;
 
 import java.util.ArrayList;
 
@@ -18,7 +17,12 @@ public class UserAccount {
     private double balance;
     private boolean hasCreditAccount; // keeps track of if the user decided to have a credit account included
 
+    private static final int SAVINGS_ID = 1;
+    private static final int CHECKING_ID = 2;
+    private static final int CREDIT_ID = 3;
+
     public UserAccount(String password, boolean creditAccountFlag){
+        super();
         this.password = password;
         this.balance = 0.0; // we don't set this by default, because this is the overall total of all of the accounts
         this.savingsAccount = new SavingsBankingAccount();
@@ -55,11 +59,17 @@ public class UserAccount {
     // id
     public int getId(){return current_user_id;}
 
-    // Transaction methods
+    /** Helper method - adds a transaction to the ArrayList of transaction items */
     private void addTransaction(int type, String description){
         switch (type){
-            case 1:
-                transactionArrayList.add(new Transaction(description + ", to Saving BankingAccount"));
+            case SAVINGS_ID:
+                transactionArrayList.add(new Transaction(description + ", to Savings Account"));
+                break;
+            case CHECKING_ID:
+                transactionArrayList.add(new Transaction(description + ", to Checking Account"));
+                break;
+            case CREDIT_ID:
+                transactionArrayList.add(new Transaction(description + ", to Credit Account"));
                 break;
         }
     }
@@ -210,17 +220,18 @@ public class UserAccount {
         }
     }
 
-    //Displays the current amount of the chosen account
+    /** Allows the current amount, from the chosen banking account, to be displayed
+     * Values must range from 1 to 3 */
     public void displayAnAccountBalance(double type){
-        if(type == 1)
+        if(type == SAVINGS_ID)
             System.out.printf("Savings balance: $%.2f\n", savingsAccount.getBalance());
-        else if(type == 2)
+        else if(type == CHECKING_ID)
             System.out.printf("Checking balance: $%.2f\n", checkingAccount.getBalance());
-        else if(type == 3)
+        else if(type == CREDIT_ID)
             System.out.printf("Credit amount left: $%.2f\n", ccAccount.getAmountLeft());
     }
 
-    //Displays the current amount of all accounts
+    /** Display all of the amounts from the banking accounts */
     public void displayAccountBalance(){
         System.out.printf("Savings balance: $%.2f\n", savingsAccount.getBalance());
         System.out.printf("Checking balance: $%.2f\n", checkingAccount.getBalance());
