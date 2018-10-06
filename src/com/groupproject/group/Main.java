@@ -14,7 +14,7 @@ import java.util.Scanner;
  * Authors: Nik F, Joe K, Mike H
  * Description: A simple banking system.
  *              Allows a manager to manage accounts, and users to use their accounts.
- * Due: 05/01/2018
+ * Due date:
  */
 
 public class Main {
