@@ -10,7 +10,6 @@ public class UserAccount extends LoginAccount {
     private SavingsBankingAccount savingsAccount;
     private CheckingBankingAccount checkingAccount;
     private CreditBankingAccount ccAccount;
-    private String password;
     private static int id = 100; // auto-incremented id
     private int current_user_id; // holds the id for the current user
     private ArrayList<Transaction> transactionArrayList;
@@ -24,7 +23,6 @@ public class UserAccount extends LoginAccount {
     public UserAccount(String firstName, String lastName, int age, String username, String password, boolean creditAccountFlag){
         // Call super class constructor
         super(firstName, lastName, age, username, password);
-        this.password = password;
         this.balance = 0.0; // we don't set this by default, because this is the overall total of all of the accounts
         this.savingsAccount = new SavingsBankingAccount();
         this.checkingAccount = new CheckingBankingAccount();
@@ -39,9 +37,6 @@ public class UserAccount extends LoginAccount {
     // GETTERS & SETTERS
     // transactionsList
     public ArrayList<Transaction> getTransactionArrayList(){return this.transactionArrayList;}
-    // username
-    public String getPassword(){return password;}
-    public void setPassword(String password){this.password = password;}
     // savings account
     public SavingsBankingAccount getSavingsAccount(){return savingsAccount;}
     public void setSavingsAccount(SavingsBankingAccount savingsAccount){this.savingsAccount = savingsAccount;}

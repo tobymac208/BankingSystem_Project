@@ -32,7 +32,7 @@ public class Main {
         // same with passwords
         // accountList.addAccount(account);
         String stringChoice;
-        int choice = 0;
+        int choice;
         System.out.println("==============================================");
         System.out.println("---------------- BANK PORTAL -----------------");
         System.out.println("==============================================");
