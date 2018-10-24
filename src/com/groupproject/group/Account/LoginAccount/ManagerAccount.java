@@ -1,7 +1,7 @@
 package com.groupproject.group.Account.LoginAccount;
 
 public class ManagerAccount extends LoginAccount {
-    private UserAccountList userAccountList;
+    private UserAccountList userAccounts;
 
     public ManagerAccount(String firstName, String lastName, int age, String username, String password){
         // call the base class constructor, passing in all arguments
@@ -9,7 +9,7 @@ public class ManagerAccount extends LoginAccount {
     }
     /** Add a user */
     public void addUser(UserAccount account){
-        userAccountList.addAccount(account);
+        userAccounts.addAccount(account);
     }
     /** Remove a user */
     public void removeUser(UserAccount account){

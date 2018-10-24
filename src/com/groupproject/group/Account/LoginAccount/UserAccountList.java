@@ -3,6 +3,7 @@ package com.groupproject.group.Account.LoginAccount;
 import java.util.ArrayList;
 
 public class UserAccountList {
+    // TODO: Implement a linked list instead of using an array list
     private ArrayList<UserAccount> accountsList;
 
     public UserAccountList(){
