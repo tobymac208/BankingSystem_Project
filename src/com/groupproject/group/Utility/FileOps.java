@@ -1,8 +1,8 @@
 package com.groupproject.group.Utility;
 
 import com.groupproject.group.Account.LoginAccount.Transaction;
-import com.groupproject.group.Account.LoginAccount.UserAccount;
-import com.groupproject.group.Account.LoginAccount.UserAccountList;
+import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccount;
+import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccountList;
 
 import java.io.*;
 import java.util.ArrayList;

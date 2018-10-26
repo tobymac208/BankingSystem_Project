@@ -1,8 +1,10 @@
-package com.groupproject.group.Account.LoginAccount;
+package com.groupproject.group.Account.LoginAccount.UserAccount;
 
 import com.groupproject.group.Account.Banking.CheckingBankingAccount;
 import com.groupproject.group.Account.Banking.CreditBankingAccount;
 import com.groupproject.group.Account.Banking.SavingsBankingAccount;
+import com.groupproject.group.Account.LoginAccount.LoginAccount;
+import com.groupproject.group.Account.LoginAccount.Transaction;
 
 import java.util.ArrayList;
 
@@ -233,5 +235,15 @@ public class UserAccount extends LoginAccount {
         System.out.printf("Checking balance: $%.2f\n", checkingAccount.getBalance());
         if(hasCreditAccount)
             System.out.printf("Credit amount left: $%.2f\n", ccAccount.getAmountLeft());
+    }
+
+    // TODO: Finish implementation of equals() in UserAccount
+    public boolean equals(Object otherObj){
+        if(!(otherObj instanceof UserAccount)){
+            return false;
+        }
+
+        UserAccount otherAccount = (UserAccount)otherObj;
+        return false;
     }
 }
