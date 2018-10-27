@@ -73,8 +73,8 @@ public class UserAccountList {
     }
 
     // TODO: Implement findAccountById()
-    public int findAccountById(){
-        return 0;
+    public UserAccount findAccountById(int id){
+        return null;
     }
 
 //    /** Finds an account by its id */

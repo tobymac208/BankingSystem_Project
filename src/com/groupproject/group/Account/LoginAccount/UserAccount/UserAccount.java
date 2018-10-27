@@ -4,7 +4,6 @@ import com.groupproject.group.Account.Banking.CheckingBankingAccount;
 import com.groupproject.group.Account.Banking.CreditBankingAccount;
 import com.groupproject.group.Account.Banking.SavingsBankingAccount;
 import com.groupproject.group.Account.LoginAccount.LoginAccount;
-import com.groupproject.group.Account.LoginAccount.Transaction;
 
 import java.util.ArrayList;
 

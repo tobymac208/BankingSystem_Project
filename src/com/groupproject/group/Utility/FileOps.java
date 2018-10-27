@@ -1,6 +1,6 @@
 package com.groupproject.group.Utility;
 
-import com.groupproject.group.Account.LoginAccount.Transaction;
+import com.groupproject.group.Account.LoginAccount.UserAccount.Transaction;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccount;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccountList;
 
