@@ -1,89 +1,145 @@
 package com.groupproject.group.Account.LoginAccount.UserAccount;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class UserAccountList {
-    private UserAccountNode head;
-    private UserAccountNode tail;
-    private int numberOfAccounts;
-    // private ArrayList<UserAccount> accountsList;
+public class UserAccountList implements Cloneable {
 
-    public UserAccountList(){
-        // accountsList = new ArrayList<>();
-        this.head = null;
-        this.tail = null;
-        this.numberOfAccounts = 0;
-    }
 
-    // Getters and setters
-    /** Note: This method should ONLY be called when reading in the file */
-    public void setAccountsList(ArrayList<UserAccount> accountsList){
-        for(UserAccount account : accountsList){
-            // Add each item to the list
-            addAccount(account);
+        // for right now all we are saving in studentCollections is there Report ID and not by object type student.
+        // we will change and further implement these techniques below when the time comes.
+        private UserAccountList[] users;
+        private int manyUsers;
+
+
+        // METHOD: studentCollections creates a collection of students with an intial capacity of 10 obj elements.
+
+        public UserAccountList() {
+            final int INITIAL_CAPACITY = 10;
+            manyUsers = 0;
+            users = new UserAccountList[INITIAL_CAPACITY];
+
         }
-    }
+        // METHOD: studentCollections makes sure that the initial capacity which if we were to ask the user for it
+        // ensure that the value cannot be 0 or negative.
+        public UserAccountList(int initialCapacity) {
+            if(initialCapacity < 0)
+                throw new IllegalArgumentException("initialCapacity is negative : " + initialCapacity);
+            manyUsers = 0;
+            users = new UserAccountList[initialCapacity];
+        }
+        // METHOD: add simply adds a student to the array and ensures that it can fit.
+        public void add(UserAccountList user2){
+            if(manyUsers == users.length) {
+                ensureCapacity(manyUsers*2 + 1);
+            }
+            users[manyUsers] = user2;
+            manyUsers++;
+        }
+        // METHOD: addAll adds all data from one collection to another and adds it to the end of one array.
+        public void addAll(UserAccountList addend) {
+            System.arraycopy(addend.users, 0, users, manyUsers, addend.manyUsers);
+            manyUsers += addend.manyUsers;
+        }
+        // METHOD: adds many different elements to the list but also calls ensureCapacity to make sure that they can fit.
+        public void addMany(String... elements) {
+            if(manyUsers + elements.length > users.length) {
+                ensureCapacity((manyUsers + elements.length)*2);
+            }
+            System.arraycopy(elements, 0, users, manyUsers, elements.length);
+            manyUsers += elements.length;
+        }
+        // METHOD:
+        public UserAccountList clone() {
+            UserAccountList answer;
 
-    public int getNumberOfAccounts(){return numberOfAccounts;}
-
-    /** Adds an account to the list */
-    public void addAccount(UserAccount account){
-        UserAccountNode node = new UserAccountNode(account, null);
-        // set this node's next account as the first item in the list
-        node.setLink(head);
-        // set the node as the head of the list
-        head = node;
-
-        if(numberOfAccounts == 0){
-            tail = head; // the head and tail are the same thing
+            try {
+                answer = (UserAccountList) super.clone();
+            }
+            catch(CloneNotSupportedException e) {
+                throw new RuntimeException("This class does not implement Cloneable.");
+            }
+            answer.users = users.clone();
+            return answer;
         }
 
-        numberOfAccounts++; // add 1 to the number of students
-    }
+        public int countOccurrences(UserAccountList user) {
+            int answer;
+            int index;
 
-    /** Removes the account specified, if it was found. */
-    public boolean removeAccount(UserAccount target) {
-        boolean answer = false;
-        for (UserAccountNode cursor = head, precursor = null; cursor != null; precursor = cursor, cursor = cursor.getLink()) {
-            // check for if the first element is the head
-            if (target.equals(cursor.getData()) && cursor == head) {
-                if (numberOfAccounts == 1) {
-                    head = tail = null; // empty the head and the tail
-                } else {
-                    head = head.getLink(); // erase the first element, and move the last element to the head
+
+            answer = 0;
+            for(index = 0; index < manyUsers; index++)
+                if(user.equals(users[index])) {
+                    answer++;
                 }
-                numberOfAccounts--; // subtracts one from the number of accounts
-                answer = true;
-            } else if (target.equals(cursor.getData()) && cursor == tail && precursor != null) { // we are trying to remove the tail of the list
-                if (numberOfAccounts == 1) {
-                    head = tail = null; // empty head and tail
-                } else {
-                    precursor.setLink(null); // remove this course from the link of its previous node
-                    tail = precursor;
-                }
-                numberOfAccounts--; // subtracts one from the number of accounts
-                answer = true;
-            } else if (target.equals(target) && precursor != null) { // found the item, but it's not at the beginning or end of the list
-                precursor.setLink(cursor.getLink());
-                numberOfAccounts--; // subtracts one from the number of accounts
-                answer = true;
+            return answer;
+        }
+        // METHOD: ensureCapacity takes a minimum capacity and makes sure the value can be stored
+        // in the array and if it cannot we are going to copy the smaller array to a larger array.
+        public void ensureCapacity(int minimumCapacity) {
+            UserAccountList[] biggerArray;
+            if(users.length < minimumCapacity) {
+                biggerArray = new UserAccountList[minimumCapacity];
+                System.arraycopy(users, 0, biggerArray, 0, manyUsers);
+                users = biggerArray;
             }
         }
-        return answer;
-    }
+        // METHOD: getCapacity just returns the length of the array.
+        public int getCapacity() {
+            return users.length;
+        }
+        // METHOD: remove take the parameter Student target and searches through the array starting at index value 0.
+        // If and when the Student is found we set that index to null technically removing the student from our array.
+        // resizing the array will be handled in additional methods.
+        // if we cannot find the student we send a messege to the user that we could not find the student.
+        public boolean remove(UserAccountList target) {
 
-    // TODO: Implement findAccountById()
-    public UserAccount findAccountById(int id){
-        return null;
-    }
+            for(int index = 0; index < manyUsers; index++) {
+                if(users[index].equals(target)) {
+                    users[index] = null;
+                    System.out.println("USER REMOVED");
+                    return true;
 
-//    /** Finds an account by its id */
-//    public UserAccount findById(int id){
-//        for(UserAccount currAccount : accountsList){ // run through each account in the list
-//            if(currAccount.getId() == id){
-//                return currAccount;
-//            }
-//        }
-//        return null; // didn't find an account with that id
-//    }
-}
+                }
+                else {
+                    System.out.println("USER NOT FOUND");
+                    break;
+                }
+
+            }
+            return false;
+
+
+        }
+
+        // METHOD: size just returns the length of the array.
+        public int size() {
+            return users.length;
+        }
+        // METHOD: trimToSize looks at how many Students are currently held in the array and copies the values at non-null indexes
+        // to a new array named trimmedArray. This will handle our array getting out of control and being larger than we really want.
+        public void trimToSize() {
+            UserAccountList[] trimmedArray;
+            if(users.length != manyUsers) {
+                trimmedArray = new UserAccountList[manyUsers];
+                System.arraycopy(users, 0, trimmedArray, 0, manyUsers);
+                users = trimmedArray;
+            }
+        }
+        // METHOD: a union. A union method is so that we can connect two seperate student collection linked list
+        // and combines them together in one single list.
+        public static UserAccountList union(UserAccountList b1, UserAccountList b2) {
+            UserAccountList answer = new UserAccountList(b1.getCapacity() + b2.getCapacity());
+            System.arraycopy(b1.users, 0, answer.users, 0, b1.manyUsers);
+            System.arraycopy(b2.users, 0, answer.users, 0, b2.manyUsers);
+            answer.manyUsers = b1.manyUsers + b2.manyUsers;
+            return answer;
+        }
+        // METHOD: toString so we can print the information from array out.
+        @Override
+        public String toString() {
+            return "studentCollections data=" + Arrays.toString(users) ;
+        }
+
+    }
