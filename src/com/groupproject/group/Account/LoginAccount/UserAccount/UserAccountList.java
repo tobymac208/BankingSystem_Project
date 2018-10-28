@@ -1,11 +1,10 @@
 package com.groupproject.group.Account.LoginAccount.UserAccount;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class UserAccountList implements Cloneable {
 
-
+        // manyUsers will be one greater than size always. we must account for this if we call size.
         // for right now all we are saving in studentCollections is there Report ID and not by object type student.
         // we will change and further implement these techniques below when the time comes.
         private UserAccountList[] users;
@@ -38,6 +37,7 @@ public class UserAccountList implements Cloneable {
         }
         // METHOD: addAll adds all data from one collection to another and adds it to the end of one array.
         public void addAll(UserAccountList addend) {
+            // we might need to use a if statement.
             System.arraycopy(addend.users, 0, users, manyUsers, addend.manyUsers);
             manyUsers += addend.manyUsers;
         }
