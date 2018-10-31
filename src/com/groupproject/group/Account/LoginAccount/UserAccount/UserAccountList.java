@@ -7,16 +7,16 @@ public class UserAccountList implements Cloneable {
         // manyUsers will be one greater than size always. we must account for this if we call size.
         // for right now all we are saving in studentCollections is there Report ID and not by object type student.
         // we will change and further implement these techniques below when the time comes.
-        private UserAccountList[] users;
+        private UserAccount[] users;
         private int manyUsers;
 
 
-        // METHOD: studentCollections creates a collection of students with an intial capacity of 10 obj elements.
+        // METHOD: studentCollections creates a collection of students with an initial capacity of 10 obj elements.
 
         public UserAccountList() {
             final int INITIAL_CAPACITY = 10;
             manyUsers = 0;
-            users = new UserAccountList[INITIAL_CAPACITY];
+            users = new UserAccount[INITIAL_CAPACITY];
 
         }
         // METHOD: studentCollections makes sure that the initial capacity which if we were to ask the user for it
@@ -25,10 +25,10 @@ public class UserAccountList implements Cloneable {
             if(initialCapacity < 0)
                 throw new IllegalArgumentException("initialCapacity is negative : " + initialCapacity);
             manyUsers = 0;
-            users = new UserAccountList[initialCapacity];
+            users = new UserAccount[initialCapacity];
         }
         // METHOD: add simply adds a student to the array and ensures that it can fit.
-        public void add(UserAccountList user2){
+        public void add(UserAccount user2){
             if(manyUsers == users.length) {
                 ensureCapacity(manyUsers*2 + 1);
             }
@@ -62,6 +62,56 @@ public class UserAccountList implements Cloneable {
             answer.users = users.clone();
             return answer;
         }
+        public boolean findByUserName(String target) {
+            for (int index = 0; index < manyUsers; index++) {
+                if (users[index].getUsername().equals(target)) {
+                    System.out.println("USER REMOVED");
+                    return true;
+
+                } else {
+                    System.out.println("USER NOT FOUND");
+                }
+
+
+                return false;
+            }
+            // literally nothing in thr array this is not good
+            return false;
+        }
+        public UserAccount getUser(UserAccount account){
+            for(int index = 0; index < manyUsers; index++) {
+                if(users[index].equals(account)) {
+                    users[index] = null;
+                    System.out.println("USER REMOVED");
+                    return account;
+
+                }
+                else {
+                    System.out.println("USER NOT FOUND");
+                    break;
+                }
+
+            }
+            return null;
+        }
+        public boolean verifyPassword(String password){
+            for (int index = 0; index < manyUsers; index++) {
+                if (users[index].getPassword().equals(password)) {
+                    System.out.println("VERIFIED");
+                    return true;
+
+                } else {
+                    System.out.println("PASSWORD IS INCORRECT");
+                }
+
+
+                return false;
+            }
+            // literally nothing in thr array this is not good
+            return false;
+        }
+
+
 
         public int countOccurrences(UserAccountList user) {
             int answer;
@@ -78,9 +128,9 @@ public class UserAccountList implements Cloneable {
         // METHOD: ensureCapacity takes a minimum capacity and makes sure the value can be stored
         // in the array and if it cannot we are going to copy the smaller array to a larger array.
         public void ensureCapacity(int minimumCapacity) {
-            UserAccountList[] biggerArray;
+            UserAccount[] biggerArray;
             if(users.length < minimumCapacity) {
-                biggerArray = new UserAccountList[minimumCapacity];
+                biggerArray = new UserAccount[minimumCapacity];
                 System.arraycopy(users, 0, biggerArray, 0, manyUsers);
                 users = biggerArray;
             }
@@ -120,9 +170,9 @@ public class UserAccountList implements Cloneable {
         // METHOD: trimToSize looks at how many Students are currently held in the array and copies the values at non-null indexes
         // to a new array named trimmedArray. This will handle our array getting out of control and being larger than we really want.
         public void trimToSize() {
-            UserAccountList[] trimmedArray;
+            UserAccount[] trimmedArray;
             if(users.length != manyUsers) {
-                trimmedArray = new UserAccountList[manyUsers];
+                trimmedArray = new UserAccount[manyUsers];
                 System.arraycopy(users, 0, trimmedArray, 0, manyUsers);
                 users = trimmedArray;
             }

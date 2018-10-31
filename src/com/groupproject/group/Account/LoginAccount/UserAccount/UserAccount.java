@@ -13,6 +13,7 @@ public class UserAccount extends LoginAccount {
     private CreditBankingAccount ccAccount;
     private static int id = 100; // auto-incremented id
     private int current_user_id; // holds the id for the current user
+    // trans node list here << here
     private ArrayList<Transaction> transactionArrayList;
     private double balance;
     private boolean hasCreditAccount; // keeps track of if the user decided to have a credit account included
@@ -29,11 +30,15 @@ public class UserAccount extends LoginAccount {
         this.checkingAccount = new CheckingBankingAccount();
         if(creditAccountFlag) //flag for if user wants to open up credit account when they open an account
             this.ccAccount = new CreditBankingAccount(); // otherwise, this is left null
+        // here:: <---- trans node
         transactionArrayList = new ArrayList<>(); // initializes the list
         this.hasCreditAccount = creditAccountFlag;
         id++; // increment the id
+
         current_user_id = id; // sets the current id to the most recent id
+
     }
+
 
     // GETTERS & SETTERS
     // transactionsList
@@ -55,6 +60,8 @@ public class UserAccount extends LoginAccount {
     public void setBalance(double balance) {this.balance = balance;}
     // id
     public int getId(){return current_user_id;}
+
+
 
     /** Helper method - adds a transaction to the ArrayList of transaction items */
     private void addTransaction(int type, String description){
