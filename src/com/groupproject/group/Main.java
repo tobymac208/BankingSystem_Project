@@ -18,7 +18,7 @@ import java.util.Scanner;
  */
 
 public class Main {
-    // TODO: Require a user to create this account if there isn't one already created -- currently implemented below, like this, for debugging.
+    // TODO: Require a user to create this account if there isn't one already created -- currently implemented, below, like this for debugging.
     private static ManagerAccount managerAccount = new ManagerAccount("John", "Burtanelly", 42, "startrekfan101", "startrekisawesomesauce");
     private static UserAccount currentAccountOpen; // used for holding the current account's info
     private static UserAccountList accountList = new UserAccountList();
@@ -29,7 +29,7 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<UserAccount> readInList = FileOps.readFromFile(); // read in the items
 
-        /**   TODO: WE NEED TO FIGURE OUT HOW THE BAG TECHNIQUE IS GONNA WORK FOR THIS SO THAT WE CAN PROPERALLY READ IT IN**/
+        // TODO: WE NEED TO FIGURE OUT HOW THE BAG TECHNIQUE IS GONNA WORK FOR THIS SO THAT WE CAN PROPERLY READ IT IN
         //accountList.setAccountsList(readInList); // populates all of the fields in accountsList object
 
         // make sure to add acctNum to some sort of list or something that we can test.

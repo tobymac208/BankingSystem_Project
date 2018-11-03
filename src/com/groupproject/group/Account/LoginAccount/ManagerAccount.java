@@ -19,8 +19,8 @@ public class ManagerAccount extends LoginAccount {
         this.userAccounts.add(account);
     }
     /** Remove a user */
-    public void removeUser(UserAccount account){
-        // TODO: Implement removeUser() in ManagerAccount
-        userAccounts.removeUserAccount(account);
+    public boolean removeUser(UserAccount account){
+        // return the result of the call to removeUserAccount
+        return userAccounts.removeUserAccount(account);
     }
 }

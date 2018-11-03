@@ -169,7 +169,7 @@ public class UserAccountList implements Cloneable {
                 users = trimmedArray;
             }
         }
-        // METHOD: a union. A union method is so that we can connect two seperate student collection linked list
+        // METHOD: a union. A union method is so that we can connect two separate student collection linked list
         // and combines them together in one single list.
         public static UserAccountList union(UserAccountList b1, UserAccountList b2) {
             UserAccountList answer = new UserAccountList(b1.getCapacity() + b2.getCapacity());
@@ -178,10 +178,9 @@ public class UserAccountList implements Cloneable {
             answer.manyUsers = b1.manyUsers + b2.manyUsers;
             return answer;
         }
-        // METHOD: toString so we can print the information from array out.
+        /** toString(): Returns a formatted string of the contents for this list. */
         @Override
         public String toString() {
             return "studentCollections data=" + Arrays.toString(users) ;
         }
-
     }
