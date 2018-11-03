@@ -22,7 +22,7 @@ public class FileOps {
             }
         }
         try (PrintWriter printer = new PrintWriter(new FileOutputStream(file))) {
-            for(UserAccount elem : accountList.getAccountsList()){
+            for(UserAccount elem : accountList.getUsers()){
                 // print out the account information. Order: account name, savings account balance, checking account value, amount left in credit, and the outstanding balance due
                 if(elem.isCreditAccount()){
                     printer.println(elem.getPassword() + ", " + elem.getSavingsAccount().getBalance() +", "+ elem.getchAccount().getBalance() +", " +elem.getCcAccount().getAmountLeft());
@@ -110,7 +110,7 @@ public class FileOps {
         try(FileWriter fWriter = new FileWriter(file, true)){
             BufferedWriter bw = new BufferedWriter(fWriter);
             PrintWriter writer = new PrintWriter(bw);
-            for(UserAccount account : accountList.getAccountsList()){ // gets every account
+            for(UserAccount account : accountList.getUsers()){ // gets every account
                 for(Transaction transaction : account.getTransactionArrayList()){ // gets every transaction in each account
                     writer.println("BankingAccount #" + account.getId() + ": " + transaction.getDescription()); // write each transaction's description to the file
                 }
