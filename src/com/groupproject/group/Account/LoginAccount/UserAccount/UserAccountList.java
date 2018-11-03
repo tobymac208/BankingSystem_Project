@@ -3,21 +3,17 @@ package com.groupproject.group.Account.LoginAccount.UserAccount;
 import java.util.Arrays;
 
 public class UserAccountList implements Cloneable {
-
         // manyUsers will be one greater than size always. we must account for this if we call size.
         // for right now all we are saving in studentCollections is there Report ID and not by object type student.
         // we will change and further implement these techniques below when the time comes.
         private UserAccount[] users;
         private int manyUsers;
 
-
-        // METHOD: studentCollections creates a collection of students with an initial capacity of 10 obj elements.
-
+        /** No-arg Constructor: studentCollections creates a collection of students with an initial capacity of 10 obj elements. */
         public UserAccountList() {
             final int INITIAL_CAPACITY = 10;
             manyUsers = 0;
             users = new UserAccount[INITIAL_CAPACITY];
-
         }
         // METHOD: studentCollections makes sure that the initial capacity which if we were to ask the user for it
         // ensure that the value cannot be 0 or negative.
@@ -27,6 +23,12 @@ public class UserAccountList implements Cloneable {
             manyUsers = 0;
             users = new UserAccount[initialCapacity];
         }
+
+        /** Get the list of accounts */
+        public UserAccount[] getUsers(){
+            return users;
+        }
+
         // METHOD: add simply adds a student to the array and ensures that it can fit.
         public void add(UserAccount user2){
             if(manyUsers == users.length) {
@@ -110,8 +112,6 @@ public class UserAccountList implements Cloneable {
             // literally nothing in thr array this is not good
             return false;
         }
-
-
 
         public int countOccurrences(UserAccountList user) {
             int answer;
