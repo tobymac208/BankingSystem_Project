@@ -21,5 +21,6 @@ public class ManagerAccount extends LoginAccount {
     /** Remove a user */
     public void removeUser(UserAccount account){
         // TODO: Implement removeUser() in ManagerAccount
+        userAccounts.removeUserAccount(account);
     }
 }

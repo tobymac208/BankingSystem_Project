@@ -41,11 +41,11 @@ public class TransactionList {
                 }
                 numberOfTransactions--; // subtracts one from the number of accounts
                 answer = true;
-            } else if (target.equals(cursor.getData()) && cursor == tail && precursor != null) { // we are trying to remove the tail of the list
+            } else if (target.equals(cursor.getData()) && cursor == tail && precursor != null) { // we are trying to removeUserAccount the tail of the list
                 if (numberOfTransactions == 1) {
                     head = tail = null; // empty head and tail
                 } else {
-                    precursor.setLink(null); // remove this course from the link of its previous node
+                    precursor.setLink(null); // removeUserAccount this course from the link of its previous node
                     tail = precursor;
                 }
                 numberOfTransactions--; // subtracts one from the number of accounts

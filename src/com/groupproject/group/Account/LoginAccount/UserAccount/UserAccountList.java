@@ -139,28 +139,20 @@ public class UserAccountList implements Cloneable {
         public int getCapacity() {
             return users.length;
         }
-        // METHOD: remove take the parameter Student target and searches through the array starting at index value 0.
-        // If and when the Student is found we set that index to null technically removing the student from our array.
-        // resizing the array will be handled in additional methods.
-        // if we cannot find the student we send a messege to the user that we could not find the student.
-        public boolean remove(UserAccountList target) {
-
+        /** METHOD: removeUserAccount(): takes the parameter UserAccount (target) and searches through the array.
+        If and when the Student is found we set that index to null, removing the student from our array.
+        resizing the array will be handled in additional methods.
+        If we don't find a student, we return false; if we do, true. **/
+        public boolean removeUserAccount(UserAccount target) {
             for(int index = 0; index < manyUsers; index++) {
                 if(users[index].equals(target)) {
                     users[index] = null;
-                    System.out.println("USER REMOVED");
+                    manyUsers--; // take one user from the count
+                    trimToSize(); // trim the array
                     return true;
-
                 }
-                else {
-                    System.out.println("USER NOT FOUND");
-                    break;
-                }
-
             }
             return false;
-
-
         }
 
         // METHOD: size just returns the length of the array.
@@ -169,7 +161,7 @@ public class UserAccountList implements Cloneable {
         }
         // METHOD: trimToSize looks at how many Students are currently held in the array and copies the values at non-null indexes
         // to a new array named trimmedArray. This will handle our array getting out of control and being larger than we really want.
-        public void trimToSize() {
+        private void trimToSize() {
             UserAccount[] trimmedArray;
             if(users.length != manyUsers) {
                 trimmedArray = new UserAccount[manyUsers];
