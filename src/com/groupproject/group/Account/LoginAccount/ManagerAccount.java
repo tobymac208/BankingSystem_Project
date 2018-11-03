@@ -15,8 +15,8 @@ public class ManagerAccount extends LoginAccount {
     public UserAccountList getUserAccounts() {return userAccounts;}
 
     /** Add a user */
-    public void addUser(UserAccountList account){
-        userAccounts.add(account);
+    public void addUser(UserAccount account){
+        this.userAccounts.add(account);
     }
     /** Remove a user */
     public void removeUser(UserAccount account){

@@ -28,7 +28,9 @@ public class Main {
 
     public static void main(String[] args) {
         ArrayList<UserAccount> readInList = FileOps.readFromFile(); // read in the items
-        accountList.setAccountsList(readInList); // populates all of the fields in accountsList object
+
+        /**   TODO: WE NEED TO FIGURE OUT HOW THE BAG TECHNIQUE IS GONNA WORK FOR THIS SO THAT WE CAN PROPERALLY READ IT IN**/
+        //accountList.setAccountsList(readInList); // populates all of the fields in accountsList object
 
         // make sure to add acctNum to some sort of list or something that we can test.
         // same with passwords
@@ -169,21 +171,28 @@ public class Main {
         boolean query = true;
         do{
             try {
-                System.out.print("Please enter your id number: ");
-                int idNum = intInput.nextInt();
+                System.out.print("Please enter your User-Name: ");
+                String userName = intInput.next();
 
                 // Search for the id in the list
-                UserAccount account = accountList.findById(idNum);
+                //accountList.findByUserName(userName);
 
-                if (account != null) { // is the account NOT null?
+                if (accountList.findByUserName(userName)) { // is the account NOT null?
                     System.out.print("Please enter your password: ");
 
                     String password = stringInput.nextLine();
-                    if (account.getPassword().equals(password)) {
+                    if (accountList.verifyPassword(password)) {
                         query = false;
-                        currentAccountOpen = account;
+                        /*TODO: NOT QUITE SURE WHAT THIS WAS MEANT FOR AGAIN**/
+                        // we still have to find the index of the User from the methods above.
+                        // we can compare there index returns to verify that the object is truly the same.
+                        // we then will take that index and assign it to a new object so that we can then set
+                        // it to the currentAccountOpen so that we will not have any errors (SEE BELOW COMMENT)
+
+
+                       // currentAccountOpen = account;
                     } else {
-                        System.out.println("Password and Id did not match");
+
                         System.out.println("Enter 0 to exit or 1 to try again");
                         int tryAgain = intInput.nextInt();
                         if (tryAgain == 0)
@@ -191,9 +200,9 @@ public class Main {
                     }
 
                 } else {
-                    System.out.println("Could not find account, please check to make sure ID entered is correct.");
-                    System.out.print("Please enter your id number: ");
-                    idNum = intInput.nextInt();
+                    System.out.println("Could not find account, please check to make sure  the UserName entered is correct.");
+                    System.out.print("LINE 197");
+
                 }
             }catch(InputMismatchException e){
                 System.out.println("Invalid input. Exiting to main menu.");
@@ -240,13 +249,13 @@ public class Main {
             account = new UserAccount(null, null, 0, password, password, true);
             // add more access to the account set-up like an initial deposit amount or things of that nature.
             // add to arrayList
-            accountList.addAccount(account);
+            accountList.add(account);
             System.out.println("New BankingAccount Created (with Credit). Your ID is " + account.getId());
         }else if(ans == 2) { // they did not choose a credit account
             // TODO: Implement add account to take a username, password, and age
             account = new UserAccount(null, null, 0, null, password, false);
             // add to arrayList
-            accountList.addAccount(account);
+            accountList.add(account);
             System.out.println("New account created (without Credit). Your ID is: " + account.getId());
         }
         return account;
