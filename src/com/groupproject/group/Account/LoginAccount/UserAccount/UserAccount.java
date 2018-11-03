@@ -243,13 +243,13 @@ public class UserAccount extends LoginAccount {
             System.out.printf("Credit amount left: $%.2f\n", ccAccount.getAmountLeft());
     }
 
-    // TODO: Finish implementation of equals() in UserAccount
     public boolean equals(Object otherObj){
         if(!(otherObj instanceof UserAccount)){
-            return false;
+            return false; // not the same type of Objects
         }
-
         UserAccount otherAccount = (UserAccount)otherObj;
-        return false;
+
+        // are the id's the same?
+        return (getId() == otherAccount.getId());
     }
 }
