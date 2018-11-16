@@ -45,7 +45,6 @@ public class Main {
         }catch(ClassNotFoundException e){
             System.out.println("Class 'ManagerAccount' was not found.");
         }
-        System.out.println(managerAccount.getFirstName());
 
         ArrayList<UserAccount> readInList = FileOps.readFromFile(); // read in the items
 

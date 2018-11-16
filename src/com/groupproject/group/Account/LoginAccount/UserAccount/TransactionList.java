@@ -1,6 +1,8 @@
 package com.groupproject.group.Account.LoginAccount.UserAccount;
 
-public class TransactionList {
+import java.io.Serializable;
+
+public class TransactionList implements Serializable {
     private TransactionNode head;
     private TransactionNode tail;
     private int numberOfTransactions;

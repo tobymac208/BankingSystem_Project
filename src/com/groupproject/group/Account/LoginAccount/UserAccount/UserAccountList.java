@@ -1,8 +1,9 @@
 package com.groupproject.group.Account.LoginAccount.UserAccount;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class UserAccountList implements Cloneable {
+public class UserAccountList implements Cloneable, Serializable {
         // manyUsers will be one greater than size always. we must account for this if we call size.
         // for right now all we are saving in studentCollections is there Report ID and not by object type student.
         // we will change and further implement these techniques below when the time comes.

@@ -5,9 +5,10 @@ import com.groupproject.group.Account.Banking.CreditBankingAccount;
 import com.groupproject.group.Account.Banking.SavingsBankingAccount;
 import com.groupproject.group.Account.LoginAccount.LoginAccount;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class UserAccount extends LoginAccount {
+public class UserAccount extends LoginAccount implements Serializable {
     private SavingsBankingAccount savingsAccount;
     private CheckingBankingAccount checkingAccount;
     private CreditBankingAccount ccAccount;
