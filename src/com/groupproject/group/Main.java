@@ -20,6 +20,7 @@ import java.util.Scanner;
 
 public class Main {
     // TODO: Require a user to create this account if there isn't one already created -- currently implemented, below, like this for debugging
+    // private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password");
     private static ManagerAccount managerAccount;
     private static UserAccount currentAccountOpen; // used for holding the current account's info
     private static UserAccountList accountList = new UserAccountList();
@@ -45,6 +46,8 @@ public class Main {
         }catch(ClassNotFoundException e){
             System.out.println("Class 'ManagerAccount' was not found.");
         }
+         managerAccount.addUser(new UserAccount("Mike", "Pillbsury", 22, "username", "password", false));
+         managerAccount.addUser(new UserAccount("Jeff", "Pillbsury", 22, "yoyo", "dudebro", false));
 
         ArrayList<UserAccount> readInList = FileOps.readFromFile(); // read in the items
 

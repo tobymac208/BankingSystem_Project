@@ -11,6 +11,7 @@ public class ManagerAccount extends LoginAccount {
     public ManagerAccount(String firstName, String lastName, int age, String username, String password){
         // call the base class constructor, passing in all arguments
         super(firstName, lastName, age, username, password);
+        userAccounts = new UserAccountList();
     }
 
     /** Returns a UserAccountList */
@@ -18,7 +19,7 @@ public class ManagerAccount extends LoginAccount {
 
     /** Add a user */
     public void addUser(UserAccount account){
-        this.userAccounts.add(account);
+        userAccounts.add(account);
     }
     /** Remove a user */
     public boolean removeUser(UserAccount account){
