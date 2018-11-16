@@ -6,10 +6,7 @@ import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccount;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccountList;
 import com.groupproject.group.Utility.FileOps;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -31,6 +28,24 @@ public class Main {
     private static Scanner intInput = new Scanner(System.in);
 
     public static void main(String[] args) {
+        // DESERIALIZE managerAccount
+        final String filePath = "src/com/groupproject/group/Resources/Data/file.ser";
+        try{
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+            managerAccount = (ManagerAccount)objectInputStream.readObject();
+
+            objectInputStream.close();
+            fileInputStream.close();
+        }catch(FileNotFoundException e){
+            System.out.println("File was not found.");
+        }catch(IOException e){
+            System.out.println("IO exception");
+        }catch(ClassNotFoundException e){
+            System.out.println("Class 'ManagerAccount' was not found.");
+        }
+
         ArrayList<UserAccount> readInList = FileOps.readFromFile(); // read in the items
 
         // TODO: WE NEED TO FIGURE OUT HOW THE BAG TECHNIQUE IS GONNA WORK FOR THIS SO THAT WE CAN PROPERLY READ IT IN
@@ -167,7 +182,6 @@ public class Main {
         // FileOps.writeTransactionsToFile(accountList); // print out the transactions to the transactions file
 
         // SERIALIZE THE FILE
-        final String filePath = "src/com/groupproject/group/Resources/Data/file.ser";
         try {
             FileOutputStream file = new FileOutputStream(filePath);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(file);
