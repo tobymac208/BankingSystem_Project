@@ -1,7 +1,9 @@
 package com.groupproject.group.Account.LoginAccount;
 
+import java.io.Serializable;
+
 /** Provides a base for any accounts that need to be created -- includes Manager and UserAccount */
-public abstract class LoginAccount {
+public abstract class LoginAccount implements Serializable {
     private String firstName;
     private String lastName;
     private int age;

@@ -5,7 +5,7 @@ import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccountList;
 
 import java.io.Serializable;
 
-public class ManagerAccount extends LoginAccount implements Serializable {
+public class ManagerAccount extends LoginAccount {
     private UserAccountList userAccounts;
 
     public ManagerAccount(String firstName, String lastName, int age, String username, String password){

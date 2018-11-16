@@ -19,8 +19,8 @@ import java.util.Scanner;
  */
 
 public class Main {
-    // TODO: Require a user to create this account if there isn't one already created -- currently implemented, below, like this for debugging.
-    private static ManagerAccount managerAccount = new ManagerAccount("John", "Burtanelly", 42, "startrekfan101", "startrekisawesomesauce");
+    // TODO: Require a user to create this account if there isn't one already created -- currently implemented, below, like this for debugging
+    private static ManagerAccount managerAccount;
     private static UserAccount currentAccountOpen; // used for holding the current account's info
     private static UserAccountList accountList = new UserAccountList();
     // scanner to read in data from the user
@@ -45,6 +45,7 @@ public class Main {
         }catch(ClassNotFoundException e){
             System.out.println("Class 'ManagerAccount' was not found.");
         }
+        System.out.println(managerAccount.getFirstName());
 
         ArrayList<UserAccount> readInList = FileOps.readFromFile(); // read in the items
 
