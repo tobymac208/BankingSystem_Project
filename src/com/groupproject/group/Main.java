@@ -6,6 +6,10 @@ import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccount;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccountList;
 import com.groupproject.group.Utility.FileOps;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -159,8 +163,25 @@ public class Main {
         }while(choice != 8);
 
         // write the information to the files
-        FileOps.writeToFile(accountList); // print out the current user information
-        FileOps.writeTransactionsToFile(accountList); // print out the transactions to the transactions file
+        // FileOps.writeToFile(accountList); // print out the current user information
+        // FileOps.writeTransactionsToFile(accountList); // print out the transactions to the transactions file
+
+        // SERIALIZE THE FILE
+        final String filePath = "src/com/groupproject/group/Resources/Data/file.ser";
+        try {
+            FileOutputStream file = new FileOutputStream(filePath);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(file);
+
+            objectOutputStream.writeObject(managerAccount); // write the manager account's object to the file
+
+            objectOutputStream.close();
+            file.close();
+        }catch(FileNotFoundException e){
+            System.err.println("File not found.");
+        }catch(IOException e){
+            System.err.println("Object output stream threw an exception.");
+        }
+        System.out.println("Serialized the ManagerAccount file");
         System.out.println("Program exiting.");
     }
 
@@ -192,7 +213,6 @@ public class Main {
 
                        // currentAccountOpen = account;
                     } else {
-
                         System.out.println("Enter 0 to exit or 1 to try again");
                         int tryAgain = intInput.nextInt();
                         if (tryAgain == 0)

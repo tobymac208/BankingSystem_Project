@@ -54,7 +54,6 @@ public class UserAccountList implements Cloneable {
         // METHOD:
         public UserAccountList clone() {
             UserAccountList answer;
-
             try {
                 answer = (UserAccountList) super.clone();
             }

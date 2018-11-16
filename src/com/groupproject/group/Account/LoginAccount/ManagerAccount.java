@@ -3,7 +3,9 @@ package com.groupproject.group.Account.LoginAccount;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccount;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccountList;
 
-public class ManagerAccount extends LoginAccount {
+import java.io.Serializable;
+
+public class ManagerAccount extends LoginAccount implements Serializable {
     private UserAccountList userAccounts;
 
     public ManagerAccount(String firstName, String lastName, int age, String username, String password){
