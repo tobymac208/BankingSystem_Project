@@ -31,17 +31,14 @@ public class Main {
     public static void main(String[] args) {
         // DESERIALIZE managerAccount
         managerAccount = FileOps.deserialize();
-        UserAccount account1 = new UserAccount("Mike", "Pillbsury", 22, "username", "password", false);
-        UserAccount account2 = new UserAccount("Jeff", "Pillbsury", 22, "yoyo", "dudebro", false);
-         managerAccount.addUser(account1);
-         managerAccount.addUser(account2);
+        if(managerAccount == null) {
+            // kill the program
+            System.out.println("ManagerAccount object is empty.\nExiting program.");
+            System.exit(0);
+        }
 
-        // TODO: WE NEED TO FIGURE OUT HOW THE BAG TECHNIQUE IS GONNA WORK FOR THIS SO THAT WE CAN PROPERLY READ IT IN
-        //accountList.setAccountsList(readInList); // populates all of the fields in accountsList object
-
-        // make sure to add acctNum to some sort of list or something that we can test.
+         // make sure to add acctNum to some sort of list or something that we can test.
         // same with passwords
-        // accountList.addAccount(account);
         String stringChoice;
         int choice;
         System.out.println("==============================================");
