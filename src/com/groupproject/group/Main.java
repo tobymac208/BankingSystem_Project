@@ -6,16 +6,14 @@ import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccount;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccountList;
 import com.groupproject.group.Utility.FileOps;
 
-import java.io.*;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /*
  * Authors: Nik F, Joe K, Mike H
  * Description: A simple banking system.
- *              Allows a manager to manage accounts, and users to use their accounts.
- * Due date:
+ *              Allows a manager to manage accounts, and add users to use their accounts.
+ * Due date: 12/13/2018
  */
 
 public class Main {
@@ -182,9 +180,9 @@ public class Main {
                 String userName = intInput.next();
 
                 // Search for the id in the list
-                //accountList.findByUserName(userName);
+                //accountList.removeByUserName(userName);
 
-                if (accountList.findByUserName(userName)) { // is the account NOT null?
+                if (accountList.removeByUserName(userName)) { // is the account NOT null?
                     System.out.print("Please enter your password: ");
 
                     String password = stringInput.nextLine();
@@ -265,5 +263,17 @@ public class Main {
             System.out.println("New account created (without Credit). Your ID is: " + account.getId());
         }
         return account;
+    }
+
+    /** method that allows the manager to remove an account */
+    public static void removeAccount(){
+        String username, password;
+        UserAccount accountToRemove = null;
+
+        System.out.println("Please enter username and password for the account you'd like to remove.");
+        System.out.print("Username:");
+        username = stringInput.nextLine();
+        System.out.print("Password: ");
+        password = stringInput.nextLine();
     }
 }

@@ -31,19 +31,26 @@ public class UserAccountList implements Cloneable, Serializable {
         }
 
         // METHOD: add simply adds a student to the array and ensures that it can fit.
-        public void add(UserAccount user2){
+        public boolean add(UserAccount user){
+            // does an account with that username already exist?
+            if(findByUsername(user.getUsername()) == null){
+                return false; // it does. So return false.
+            }
             if(manyUsers == users.length) {
                 ensureCapacity(manyUsers*2 + 1);
             }
-            users[manyUsers] = user2;
+            users[manyUsers] = user;
             manyUsers++;
+            return true;
         }
+
         // METHOD: addAll adds all data from one collection to another and adds it to the end of one array.
         public void addAll(UserAccountList addend) {
             // we might need to use a if statement.
             System.arraycopy(addend.users, 0, users, manyUsers, addend.manyUsers);
             manyUsers += addend.manyUsers;
         }
+
         // METHOD: adds many different elements to the list but also calls ensureCapacity to make sure that they can fit.
         public void addMany(String... elements) {
             if(manyUsers + elements.length > users.length) {
@@ -52,7 +59,8 @@ public class UserAccountList implements Cloneable, Serializable {
             System.arraycopy(elements, 0, users, manyUsers, elements.length);
             manyUsers += elements.length;
         }
-        // METHOD:
+
+        /** Clone the current UserAccount object. */
         public UserAccountList clone() {
             UserAccountList answer;
             try {
@@ -64,22 +72,32 @@ public class UserAccountList implements Cloneable, Serializable {
             answer.users = users.clone();
             return answer;
         }
-        public boolean findByUserName(String target) {
-            for (int index = 0; index < manyUsers; index++) {
-                if (users[index].getUsername().equals(target)) {
-                    System.out.println("USER REMOVED");
+
+        /** Remove a user by username. */
+        public boolean removeByUsername(String target){
+            for(int index = 0, manyItems = users.length; index < manyItems; index++){
+                if(manyItems > 0 && users[index].getUsername().equals(target)){
+                    UserAccount temp = users[manyItems-1];
+                    users[index] = null;
+                    users[manyItems-1] = null;
+                    users[index] = temp;
+                    manyItems--; // take 1 away from manyItems
                     return true;
-
-                } else {
-                    System.out.println("USER NOT FOUND");
-                }
-
-
-                return false;
-            }
-            // literally nothing in thr array this is not good
-            return false;
+                } // if statement
+            } // for loop
+            return false; // didn't remove anything
         }
+
+        /** Find a user by their username */
+        public UserAccount findByUsername(String target){
+            for(UserAccount account : users){
+                if(account.getUsername().equals(target)){
+                    return account;
+                }
+            }
+            return null;
+        }
+
         public UserAccount getUser(UserAccount account){
             for(int index = 0; index < manyUsers; index++) {
                 if(users[index].equals(account)) {
@@ -96,17 +114,15 @@ public class UserAccountList implements Cloneable, Serializable {
             }
             return null;
         }
+
         public boolean verifyPassword(String password){
             for (int index = 0; index < manyUsers; index++) {
                 if (users[index].getPassword().equals(password)) {
                     System.out.println("VERIFIED");
                     return true;
-
                 } else {
                     System.out.println("PASSWORD IS INCORRECT");
                 }
-
-
                 return false;
             }
             // literally nothing in thr array this is not good
