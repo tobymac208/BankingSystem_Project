@@ -181,7 +181,7 @@ public class Main {
                 // Search for the id in the list
                 //accountList.removeByUserName(userName);
 
-                if (accountList.removeByUserName(userName)) { // is the account NOT null?
+                if (accountList.findByUsername(userName) != null) { // is the account NOT null?
                     System.out.print("Please enter your password: ");
 
                     String password = stringInput.nextLine();
@@ -192,8 +192,6 @@ public class Main {
                         // we can compare there index returns to verify that the object is truly the same.
                         // we then will take that index and assign it to a new object so that we can then set
                         // it to the currentAccountOpen so that we will not have any errors (SEE BELOW COMMENT)
-
-
                        // currentAccountOpen = account;
                     } else {
                         System.out.println("Enter 0 to exit or 1 to try again");
@@ -203,8 +201,7 @@ public class Main {
                     }
 
                 } else {
-                    System.out.println("Could not find account, please check to make sure  the UserName entered is correct.");
-                    System.out.print("LINE 197");
+                    System.out.println("Could not find account, please check to make sure the UserName entered is correct.");
 
                 }
             }catch(InputMismatchException e){
