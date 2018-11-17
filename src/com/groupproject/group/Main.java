@@ -46,10 +46,11 @@ public class Main {
         }catch(ClassNotFoundException e){
             System.out.println("Class 'ManagerAccount' was not found.");
         }
-         managerAccount.addUser(new UserAccount("Mike", "Pillbsury", 22, "username", "password", false));
-         managerAccount.addUser(new UserAccount("Jeff", "Pillbsury", 22, "yoyo", "dudebro", false));
+        UserAccount account1 = new UserAccount("Mike", "Pillbsury", 22, "username", "password", false);
+        UserAccount account2 = new UserAccount("Jeff", "Pillbsury", 22, "yoyo", "dudebro", false);
 
-        ArrayList<UserAccount> readInList = FileOps.readFromFile(); // read in the items
+         managerAccount.addUser(account1);
+         managerAccount.addUser(account2);
 
         // TODO: WE NEED TO FIGURE OUT HOW THE BAG TECHNIQUE IS GONNA WORK FOR THIS SO THAT WE CAN PROPERLY READ IT IN
         //accountList.setAccountsList(readInList); // populates all of the fields in accountsList object

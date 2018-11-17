@@ -15,7 +15,7 @@ public class UserAccount extends LoginAccount implements Serializable {
     private static int id = 100; // auto-incremented id
     private int current_user_id; // holds the id for the current user
     // trans node list here << here
-    private ArrayList<Transaction> transactionArrayList;
+    private TransactionList transactionList;
     private double balance;
     private boolean hasCreditAccount; // keeps track of if the user decided to have a credit account included
 
@@ -32,10 +32,9 @@ public class UserAccount extends LoginAccount implements Serializable {
         if(creditAccountFlag) //flag for if user wants to open up credit account when they open an account
             this.ccAccount = new CreditBankingAccount(); // otherwise, this is left null
         // here:: <---- trans node
-        transactionArrayList = new ArrayList<>(); // initializes the list
+        transactionList = new TransactionList(); // initializes the list
         this.hasCreditAccount = creditAccountFlag;
         id++; // increment the id
-
         current_user_id = id; // sets the current id to the most recent id
 
     }
@@ -43,7 +42,9 @@ public class UserAccount extends LoginAccount implements Serializable {
 
     // GETTERS & SETTERS
     // transactionsList
-    public ArrayList<Transaction> getTransactionArrayList(){return this.transactionArrayList;}
+    public TransactionList getTransactionList() {
+        return transactionList;
+    }
     // savings account
     public SavingsBankingAccount getSavingsAccount(){return savingsAccount;}
     public void setSavingsAccount(SavingsBankingAccount savingsAccount){this.savingsAccount = savingsAccount;}
@@ -68,13 +69,13 @@ public class UserAccount extends LoginAccount implements Serializable {
     private void addTransaction(int type, String description){
         switch (type){
             case SAVINGS_ID:
-                transactionArrayList.add(new Transaction(description + ", to Savings Account"));
+                transactionList.addTransaction(new Transaction(description + ", to Savings Account"));
                 break;
             case CHECKING_ID:
-                transactionArrayList.add(new Transaction(description + ", to Checking Account"));
+                transactionList.addTransaction(new Transaction(description + ", to Checking Account"));
                 break;
             case CREDIT_ID:
-                transactionArrayList.add(new Transaction(description + ", to Credit Account"));
+                transactionList.addTransaction(new Transaction(description + ", to Credit Account"));
                 break;
         }
     }
@@ -87,14 +88,14 @@ public class UserAccount extends LoginAccount implements Serializable {
                     savingsAccount.setBalance(savingsAccount.getBalance() + amount);
                     System.out.println("Deposit Successful\nNew savings account balance is: " + savingsAccount.getBalance());
                     //addTransaction(type, "Deposit, Amount deposited: " + amount + ", Total in account: " + savingsAccount.getBalance());
-                    transactionArrayList.add(new Transaction("Deposited " + amount + " into your savings account. Current savings account balance is: " + savingsAccount.getBalance()));
+                    transactionList.addTransaction(new Transaction("Deposited " + amount + " into your savings account. Current savings account balance is: " + savingsAccount.getBalance()));
                 } else System.out.println("Please select an amount greater than 0.");
                 break;
             case 2:
                 if(amount > 0) {
                     checkingAccount.setBalance(checkingAccount.getBalance() + amount);
                     System.out.println("Deposit Successful\nNew checking account balance is: " + checkingAccount.getBalance());
-                    transactionArrayList.add(new Transaction("Deposited " + amount + " into your checking account. Current checking account balance is: " + checkingAccount.getBalance()));
+                    transactionList.addTransaction(new Transaction("Deposited " + amount + " into your checking account. Current checking account balance is: " + checkingAccount.getBalance()));
                 } else System.out.println("Please select an amount greater than 0.");
                 break;
             default:
@@ -103,7 +104,7 @@ public class UserAccount extends LoginAccount implements Serializable {
         }
         return true;
     }
-    /** Deposits money into a default account */
+    /** Deposits money into the savings account. */
     public boolean deposit(double amount){
         savingsAccount.setBalance(savingsAccount.getBalance() + amount);
         return true;
@@ -119,7 +120,7 @@ public class UserAccount extends LoginAccount implements Serializable {
                 if(balanceFlag){
                     savingsAccount.setBalance(savingsAccount.getBalance() - amount);
                     System.out.println("Withdrawal Successful\nRemaining savings account balance is: " + savingsAccount.getBalance());
-                    transactionArrayList.add(new Transaction("Withdrew " + amount + " from savings account. Current balance is: " + savingsAccount.getBalance()));
+                    transactionList.addTransaction(new Transaction("Withdrew " + amount + " from savings account. Current balance is: " + savingsAccount.getBalance()));
                 }else
                     System.out.println("Insufficient Funds");
                 break;
@@ -128,7 +129,7 @@ public class UserAccount extends LoginAccount implements Serializable {
                 if(balanceFlag){
                     checkingAccount.setBalance(checkingAccount.getBalance() - amount);
                     System.out.println("Withdrawal Successful\nRemaining checking account balance is: " + checkingAccount.getBalance());
-                    transactionArrayList.add(new Transaction("Withdrew " + amount + " from checking account. Current balance is: " + checkingAccount.getBalance()));
+                    transactionList.addTransaction(new Transaction("Withdrew " + amount + " from checking account. Current balance is: " + checkingAccount.getBalance()));
                 }else
                     System.out.println("Insufficient Funds");
                 break;
@@ -151,14 +152,14 @@ public class UserAccount extends LoginAccount implements Serializable {
                         checkingAccount.setBalance(checkingAccount.getBalance() + amount);
                         System.out.println("Transfer Successful\nRemaining savings account balance is: " + savingsAccount.getBalance() +
                                 "\nNew checking account balance is: " + checkingAccount.getBalance());
-                        transactionArrayList.add(new Transaction("Transferred " + amount + " from savings account to checking account." +
+                        transactionList.addTransaction(new Transaction("Transferred " + amount + " from savings account to checking account." +
                                 "Current savings account balance is: " + savingsAccount.getBalance() + "Current checking account balance is: " + checkingAccount.getBalance()));
                     } else if (toAccount == 3) {
                         ccAccount.setAmountLeft(-amount);
                         checkingAccount.setBalance(checkingAccount.getBalance() + amount);
                         System.out.println("Transfer Successful\nRemaining savings account balance is: " + savingsAccount.getBalance() +
                                 "\nAvailable credit: " + ccAccount.getAmountLeft());
-                        transactionArrayList.add(new Transaction("Transferred " + amount + " from savings account to credit account. " +
+                        transactionList.addTransaction(new Transaction("Transferred " + amount + " from savings account to credit account. " +
                                 "Current savings account balance is: " + savingsAccount.getBalance() + ". Current available credit is: " + ccAccount.getAmountLeft()));
                     } else {
                         System.out.println("Please choose a valid account to transfer to.");
@@ -175,14 +176,14 @@ public class UserAccount extends LoginAccount implements Serializable {
                         savingsAccount.setBalance(savingsAccount.getBalance() + amount);
                         System.out.println("Transfer Successful\nRemaining checking account balance is: " + checkingAccount.getBalance() +
                                 "\nNew savings account balance is: " + savingsAccount.getBalance());
-                        transactionArrayList.add(new Transaction("Transferred " + amount + " from checking account to savings account. " +
+                        transactionList.addTransaction(new Transaction("Transferred " + amount + " from checking account to savings account. " +
                                 "Current checking account balance is: " + checkingAccount.getBalance() + ". Current savings account balance is: " + savingsAccount.getBalance()));
                     }
                     else if (toAccount == 3) {
                         ccAccount.setAmountLeft(-amount);
                         System.out.println("Transfer Successful\nRemaining checking account balance is: " + checkingAccount.getBalance() +
                                 "\nAvailable Credit: " + ccAccount.getAmountLeft());
-                        transactionArrayList.add(new Transaction("Transferred " + amount + " from checking account to credit account. " +
+                        transactionList.addTransaction(new Transaction("Transferred " + amount + " from checking account to credit account. " +
                                 "Current checking account balance is: " + checkingAccount.getBalance() + ". Current credit account balance is: " + ccAccount.getAmountLeft()));
                     }
                     else{
