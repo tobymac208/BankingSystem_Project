@@ -3,8 +3,6 @@ package com.groupproject.group.Account.LoginAccount;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccount;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccountList;
 
-import java.io.Serializable;
-
 public class ManagerAccount extends LoginAccount {
     private UserAccountList userAccounts;
 
@@ -23,7 +21,7 @@ public class ManagerAccount extends LoginAccount {
     }
     /** Remove a user */
     public boolean removeUser(UserAccount account){
-        // return the result of the call to removeUserAccount
-        return userAccounts.removeUserAccount(account);
+        // return the result of the call to removeAccount
+        return userAccounts.removeAccount(account);
     }
 }

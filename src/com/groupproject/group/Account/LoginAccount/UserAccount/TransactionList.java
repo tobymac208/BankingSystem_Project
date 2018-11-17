@@ -43,11 +43,11 @@ public class TransactionList implements Serializable {
                 }
                 numberOfTransactions--; // subtracts one from the number of accounts
                 answer = true;
-            } else if (target.equals(cursor.getData()) && cursor == tail && precursor != null) { // we are trying to removeUserAccount the tail of the list
+            } else if (target.equals(cursor.getData()) && cursor == tail && precursor != null) { // we are trying to removeAccount the tail of the list
                 if (numberOfTransactions == 1) {
                     head = tail = null; // empty head and tail
                 } else {
-                    precursor.setLink(null); // removeUserAccount this course from the link of its previous node
+                    precursor.setLink(null); // removeAccount this course from the link of its previous node
                     tail = precursor;
                 }
                 numberOfTransactions--; // subtracts one from the number of accounts

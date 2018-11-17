@@ -35,8 +35,7 @@ public class Main {
             System.exit(0);
         }
 
-         // make sure to add acctNum to some sort of list or something that we can test.
-        // same with passwords
+        // make sure to add acctNum to some sort of list or something that we can test. Same with passwords.
         String stringChoice;
         int choice;
         System.out.println("==============================================");
@@ -267,13 +266,18 @@ public class Main {
 
     /** method that allows the manager to remove an account */
     public static void removeAccount(){
-        String username, password;
+        String username;
         UserAccount accountToRemove = null;
 
-        System.out.println("Please enter username and password for the account you'd like to remove.");
-        System.out.print("Username:");
+        System.out.print("Please enter username of the account you'd like to remove:");
         username = stringInput.nextLine();
-        System.out.print("Password: ");
-        password = stringInput.nextLine();
+
+        accountToRemove = managerAccount.getUserAccounts().findByUsername(username);
+        if(accountToRemove != null){
+            System.out.println("Account removed.");
+            managerAccount.removeUser(accountToRemove);
+        }else{
+            System.out.println("Account does not exist. Nothing removed.");
+        }
     }
 }

@@ -73,21 +73,6 @@ public class UserAccountList implements Cloneable, Serializable {
             return answer;
         }
 
-        /** Remove a user by username. */
-        public boolean removeByUsername(String target){
-            for(int index = 0, manyItems = users.length; index < manyItems; index++){
-                if(manyItems > 0 && users[index].getUsername().equals(target)){
-                    UserAccount temp = users[manyItems-1];
-                    users[index] = null;
-                    users[manyItems-1] = null;
-                    users[index] = temp;
-                    manyItems--; // take 1 away from manyItems
-                    return true;
-                } // if statement
-            } // for loop
-            return false; // didn't remove anything
-        }
-
         /** Find a user by their username */
         public UserAccount findByUsername(String target){
             for(UserAccount account : users){
@@ -155,13 +140,14 @@ public class UserAccountList implements Cloneable, Serializable {
         public int getCapacity() {
             return users.length;
         }
-        /** METHOD: removeUserAccount(): takes the parameter UserAccount (target) and searches through the array.
+        /** METHOD: removeAccount(): takes the parameter UserAccount (target) and searches through the array.
         If and when the Student is found we set that index to null, removing the student from our array.
         resizing the array will be handled in additional methods.
         If we don't find a student, we return false; if we do, true. **/
-        public boolean removeUserAccount(UserAccount target) {
+        public boolean removeAccount(UserAccount target) {
             for(int index = 0; index < manyUsers; index++) {
-                if(users[index].equals(target)) {
+                // are the user names the same?
+                if(users[index].getUsername().equals(target.getUsername())) { // remove the respective account from the list
                     users[index] = null;
                     manyUsers--; // take one user from the count
                     trimToSize(); // trim the array
