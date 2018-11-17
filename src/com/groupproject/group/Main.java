@@ -30,25 +30,9 @@ public class Main {
 
     public static void main(String[] args) {
         // DESERIALIZE managerAccount
-        final String filePath = "src/com/groupproject/group/Resources/Data/file.ser";
-        try{
-            FileInputStream fileInputStream = new FileInputStream(filePath);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-
-            managerAccount = (ManagerAccount)objectInputStream.readObject();
-
-            objectInputStream.close();
-            fileInputStream.close();
-        }catch(FileNotFoundException e){
-            System.out.println("File was not found.");
-        }catch(IOException e){
-            System.out.println("IO exception");
-        }catch(ClassNotFoundException e){
-            System.out.println("Class 'ManagerAccount' was not found.");
-        }
+        managerAccount = FileOps.deserialize();
         UserAccount account1 = new UserAccount("Mike", "Pillbsury", 22, "username", "password", false);
         UserAccount account2 = new UserAccount("Jeff", "Pillbsury", 22, "yoyo", "dudebro", false);
-
          managerAccount.addUser(account1);
          managerAccount.addUser(account2);
 
@@ -181,25 +165,12 @@ public class Main {
             }
         }while(choice != 8);
 
-        // write the information to the files
-        // FileOps.writeToFile(accountList); // print out the current user information
-        // FileOps.writeTransactionsToFile(accountList); // print out the transactions to the transactions file
-
-        // SERIALIZE THE FILE
-        try {
-            FileOutputStream file = new FileOutputStream(filePath);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(file);
-
-            objectOutputStream.writeObject(managerAccount); // write the manager account's object to the file
-
-            objectOutputStream.close();
-            file.close();
-        }catch(FileNotFoundException e){
-            System.err.println("File not found.");
-        }catch(IOException e){
-            System.err.println("Object output stream threw an exception.");
+        boolean serialized = FileOps.serialize(managerAccount);
+        if(serialized){
+            System.out.println("Serialized the ManagerAccount");
+        }else{
+            System.out.println("Serialization failed.");
         }
-        System.out.println("Serialized the ManagerAccount file");
         System.out.println("Program exiting.");
     }
 
