@@ -9,6 +9,8 @@ import com.groupproject.group.Utility.FileOps;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import static com.groupproject.group.Utility.FileOps.deserialize;
+
 /*
  * Authors: Nik F, Joe K, Mike H
  * Description: A simple banking system.
@@ -28,7 +30,7 @@ public class Main {
 
     public static void main(String[] args) {
         // DESERIALIZE managerAccount
-        managerAccount = FileOps.deserialize();
+        managerAccount = deserialize();
         if(managerAccount == null) {
             System.out.println("There is no manager account. You must create one.");
             managerAccount = createManager();
@@ -177,26 +179,26 @@ public class Main {
     private static void login() {
         // Control variable for when the loop will end.
         boolean query = true;
-        do{
+        do {
             try {
                 System.out.print("Please enter your User-Name: ");
                 String userName = intInput.next();
 
-                // Search for the id in the list
-                //accountList.removeByUserName(userName);
-
-                if (accountList.findByUsername(userName) != null) { // is the account NOT null?
-                    System.out.print("Please enter your password: ");
+                // we have to search through the manager accounts list now because that's where we are adding them.
+                if (managerAccount.findUser(userName) != null)
+                    { // is the account NOT null?
+                        System.out.print("Please enter your password: ");
 
                     String password = stringInput.nextLine();
                     if (accountList.verifyPassword(password)) {
+
                         query = false;
                         /*TODO: NOT QUITE SURE WHAT THIS WAS MEANT FOR AGAIN**/
                         // we still have to find the index of the User from the methods above.
                         // we can compare there index returns to verify that the object is truly the same.
                         // we then will take that index and assign it to a new object so that we can then set
                         // it to the currentAccountOpen so that we will not have any errors (SEE BELOW COMMENT)
-                       // currentAccountOpen = account;
+                        // currentAccountOpen = account;
                     } else {
                         System.out.println("Enter 0 to exit or 1 to try again");
                         int tryAgain = intInput.nextInt();
@@ -208,11 +210,11 @@ public class Main {
                     System.out.println("Could not find account, please check to make sure the UserName entered is correct.");
 
                 }
-            }catch(InputMismatchException e){
+            } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Exiting to main menu.");
                 query = false; // exit the loop
             }
-        }while(query); // run until query is false
+        } while(query); // run until query is false
     }
 
     /** Prints menu for users to see */
@@ -313,7 +315,15 @@ public class Main {
 
         if(password.equals(reenterPassword)){ // do the passwords match?
             theManager = new ManagerAccount(firstName, lastName, age, username, password);
+            System.out.println("Manager Account Created! WELCOME " + theManager.getUsername());
         }
+        else{
+            // throws a message to the user that either the password entered did not match
+            // or they mist spelled something before we close program let the user know what had happened.
+            System.out.println("Passwords did not match");
+            System.out.println("Exiting!");
+        }
+
 
         return theManager; // may return null or a filled ManagerAccount object.
     }

@@ -19,6 +19,10 @@ public class ManagerAccount extends LoginAccount {
     public void addUser(UserAccount account){
         userAccounts.add(account);
     }
+    public String findUser(String target){
+        userAccounts.findByUsername(target);
+        return "User Found";
+    }
     /** Remove a user */
     public boolean removeUser(UserAccount account){
         // return the result of the call to removeAccount
