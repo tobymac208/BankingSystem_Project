@@ -21,7 +21,6 @@ public class FileOps {
         }catch(FileNotFoundException e){
             System.out.println("File not found.");
         }catch(IOException e){
-            System.out.println("IOException.");
         }catch(ClassNotFoundException e){
             System.out.println("\"ManagerAccount\" class was not found.");
         }
@@ -35,8 +34,7 @@ public class FileOps {
         }catch(FileNotFoundException e){
             System.out.println("File not found.");
             return false;
-        }catch(IOException e){
-            System.out.println("IO Exception thrown.");
+        }catch(IOException e){ // there was nothing in the file
             return false;
         }
         return true;

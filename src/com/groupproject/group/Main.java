@@ -30,12 +30,12 @@ public class Main {
         // DESERIALIZE managerAccount
         managerAccount = FileOps.deserialize();
         if(managerAccount == null) {
-            // kill the program
             System.out.println("There is no manager account. You must create one.");
             managerAccount = createManager();
-            if(managerAccount == null){
+            if(managerAccount == null){ // did the account creation fail?
                 System.out.println("Account creation failed.\nProject exiting.");
-                System.exit(0); // close the program
+                // close the program
+                System.exit(0);
             }
         }
 
@@ -239,29 +239,48 @@ public class Main {
     /** method that allows a user to create a new account */
     public static UserAccount addAccount(){
         UserAccount account = null;
-        String password;
-        int ans;
+        String firstName, lastName, username, password, reenterPassword;
+        int answer, age;
+        boolean isCreditAccount;
         System.out.println("*****************************");
         System.out.println("CREATE NEW ACCOUNT");
-        System.out.print("Please Enter BankingAccount Password: ");
+        // first name
+        System.out.print("First name: ");
+        firstName = stringInput.nextLine();
+        // last name
+        System.out.print("Last name: ");
+        lastName = stringInput.nextLine();
+        // age
+        System.out.print("Age (integer only): ");
+        age = intInput.nextInt();
+        // username
+        System.out.print("Username: ");
+        username = stringInput.nextLine();
+        // password
+        System.out.print("Password: ");
         password = stringInput.nextLine();
+        // re-enter password
+        System.out.print("Re-enter password: ");
+        reenterPassword = stringInput.nextLine();
 
         System.out.println("Did you want to add a credit account? (1) for yes (2) for no ");
-        ans = intInput.nextInt();
-        if(ans == 1) { // this did choose a credit account
-            // TODO: Implement add account to take a username, password, and age
-            account = new UserAccount(null, null, 0, password, password, true);
-            // add more access to the account set-up like an initial deposit amount or things of that nature.
-            // add to arrayList
-            accountList.add(account);
-            System.out.println("New BankingAccount Created (with Credit). Your ID is " + account.getId());
-        }else if(ans == 2) { // they did not choose a credit account
-            // TODO: Implement add account to take a username, password, and age
-            account = new UserAccount(null, null, 0, null, password, false);
-            // add to arrayList
-            accountList.add(account);
-            System.out.println("New account created (without Credit). Your ID is: " + account.getId());
+        answer = intInput.nextInt();
+        if(answer == 1){
+            isCreditAccount = true;
+        }else{
+            isCreditAccount = false;
         }
+
+        if(password.equals(reenterPassword)){ // do the password match?
+            // create the new account
+            account = new UserAccount(firstName, lastName, 0, username, password, isCreditAccount);
+            // add the account to the Manager Account
+            managerAccount.addUser(account);
+            System.out.println("New account created. Username: " + account.getUsername());
+        }else{
+            System.out.println("Passwords don't match.\n Creation failed.");
+        }
+
         return account;
     }
 
