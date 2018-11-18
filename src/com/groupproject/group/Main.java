@@ -31,8 +31,12 @@ public class Main {
         managerAccount = FileOps.deserialize();
         if(managerAccount == null) {
             // kill the program
-            System.out.println("ManagerAccount object is empty.\nExiting program.");
-            System.exit(0);
+            System.out.println("There is no manager account. You must create one.");
+            managerAccount = createManager();
+            if(managerAccount == null){
+                System.out.println("Account creation failed.\nProject exiting.");
+                System.exit(0); // close the program
+            }
         }
 
         // make sure to add acctNum to some sort of list or something that we can test. Same with passwords.
@@ -261,6 +265,41 @@ public class Main {
         return account;
     }
 
+    /** Method that creates a manager account */
+    public static ManagerAccount createManager(){
+        ManagerAccount theManager = null;
+        String firstName, lastName, username, password, reenterPassword;
+        int age;
+
+        System.out.println("Welcome to the Manager Account creation!");
+        System.out.println("Please enter the following required fields, and then press ENTER.");
+        // take the required information from the user
+        // first name
+        System.out.print("First name: ");
+        firstName = stringInput.nextLine();
+        // last name
+        System.out.print("Last name: ");
+        lastName = stringInput.nextLine();
+        // age
+        System.out.print("Age: ");
+        age = intInput.nextInt();
+        // username
+        System.out.print("Username: ");
+        username = stringInput.nextLine();
+        // password
+        System.out.print("Password: ");
+        password = stringInput.nextLine();
+        // re-enter password
+        System.out.print("Re-enter password: ");
+        reenterPassword = stringInput.nextLine();
+
+        if(password.equals(reenterPassword)){ // do the passwords match?
+            theManager = new ManagerAccount(firstName, lastName, age, username, password);
+        }
+
+        return theManager; // may return null or a filled ManagerAccount object.
+    }
+
     /** method that allows the manager to remove an account */
     public static void removeAccount(){
         String username;
@@ -271,8 +310,8 @@ public class Main {
 
         accountToRemove = managerAccount.getUserAccounts().findByUsername(username);
         if(accountToRemove != null){
-            System.out.println("Account removed.");
             managerAccount.removeUser(accountToRemove);
+            System.out.println("Account removed.");
         }else{
             System.out.println("Account does not exist. Nothing removed.");
         }
