@@ -29,7 +29,7 @@ public class Main {
     private static Scanner intInput = new Scanner(System.in);
 
     public static void main(String[] args) {
-        // DESERIALIZE managerAccount
+        // DESERIALIZE managerAccount//
         managerAccount = deserialize();
         if(managerAccount == null) {
             System.out.println("There is no manager account. You must create one.");
