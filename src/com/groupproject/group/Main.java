@@ -273,7 +273,7 @@ public class Main {
 
         if(password.equals(reenterPassword)){ // do the password match?
             // create the new account
-            account = new UserAccount(firstName, lastName, 0, username, password, isCreditAccount);
+            account = new UserAccount(firstName, lastName, age, username, password, isCreditAccount);
             // add the account to the Manager Account
             managerAccount.addUser(account);
             System.out.println("New account created. Username: " + account.getUsername());
