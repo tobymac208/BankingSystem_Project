@@ -75,7 +75,7 @@ public class Main {
                     double amount;
                     double type;
 
-                    System.out.print("Please enter account type to deposit to(1:Savings 2:Checking 5:Cancel): ");
+                    System.out.print("Please enter account type to deposit to (1: Savings 2: Checking 5: Cancel): ");
                     type = intInput.nextDouble();
                     // input validation code
                     while(type != 1 && type != 2 && type != 5){
@@ -276,11 +276,10 @@ public class Main {
             account = new UserAccount(firstName, lastName, age, username, password, isCreditAccount);
             // add the account to the Manager Account
             managerAccount.addUser(account);
-            System.out.println("New account created. Username: " + account.getUsername());
+            // System.out.println("New account created. Username: " + account.getUsername());
         }else{
             System.out.println("Passwords don't match.\n Creation failed.");
         }
-
         return account;
     }
 

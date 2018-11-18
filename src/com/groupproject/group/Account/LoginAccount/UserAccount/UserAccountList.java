@@ -33,7 +33,7 @@ public class UserAccountList implements Cloneable, Serializable {
         // METHOD: add simply adds a student to the array and ensures that it can fit.
         public boolean add(UserAccount user){
             // does an account with that username already exist?
-            if(findByUsername(user.getUsername()) == null){
+            if(findByUsername(user.getUsername()) != null){
                 return false; // it does. So return false.
             }
             if(manyUsers == users.length) {
@@ -43,6 +43,16 @@ public class UserAccountList implements Cloneable, Serializable {
             manyUsers++;
             return true;
         }
+
+    /** Find a user by their username */
+    public UserAccount findByUsername(String target){
+        for(UserAccount account : users){
+            if(account != null && account.getUsername().equals(target)){
+                return account;
+            }
+        }
+        return null;
+    }
 
         // METHOD: addAll adds all data from one collection to another and adds it to the end of one array.
         public void addAll(UserAccountList addend) {
@@ -71,16 +81,6 @@ public class UserAccountList implements Cloneable, Serializable {
             }
             answer.users = users.clone();
             return answer;
-        }
-
-        /** Find a user by their username */
-        public UserAccount findByUsername(String target){
-            for(UserAccount account : users){
-                if(account.getUsername().equals(target)){
-                    return account;
-                }
-            }
-            return null;
         }
 
         public UserAccount getUser(UserAccount account){
