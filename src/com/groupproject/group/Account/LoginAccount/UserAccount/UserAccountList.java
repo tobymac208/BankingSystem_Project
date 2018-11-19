@@ -45,6 +45,9 @@ public class UserAccountList implements Cloneable, Serializable {
         }
 
     /** Find a user by their username */
+    // read this thing online that says iterating w for-each loops in array doesn't allow you to change them.
+    // just thought I would throw this in here. Idk if the return will be what we want it to be if it isn't the
+    // correct copy of the array. Might cause us issues if we are using this method to gain access to the accounts data.
     public UserAccount findByUsername(String target){
         for(UserAccount account : users){
             if(account != null && account.getUsername().equals(target)){
