@@ -12,7 +12,7 @@ import java.util.Scanner;
 /*
  * Authors: Nik F, Joe K, Mike H
  * Description: A simple banking system.
- *              Allows a manager to manage accounts, and add users to use their accounts.
+ *              Allows a manager to manage accounts and add users to use their accounts.
  * Due date: 12/13/2018
  */
 
@@ -180,13 +180,8 @@ public class Main {
             }
         }while(choice != 8);
 
-        // SERIALIZE THE FILE
-        boolean serialized = FileOps.serialize(managerAccount);
-        if(serialized){
-            System.out.println("Manager account serialized successfully.");
-        }else{
-            System.err.println("Manager account not serialized.");
-        }
+        // save settings
+        saveSettings();
 
         // print a shutdown message to the user
         System.out.println("Program exiting.");
