@@ -27,16 +27,8 @@ public class Main {
     private static Scanner intInput = new Scanner(System.in);
 
     public static void main(String[] args) {
-        // DESERIALIZE managerAccount//
+        // DESERIALIZE managerAccount
         managerAccount = FileOps.deserialize();
-        // testing here
-//       accountList.addAll(managerAccount.getUserAccounts());
-
-//       tests manager account to display data.
-//           System.out.println(managerAccount.getUsername());
-           // find user switched to boolean for easier test output.
- //          System.out.println(managerAccount.findUser("joejoek"));
-//       }
         if(managerAccount == null) {
             System.out.println("There is no manager account. You must create one.");
             managerAccount = createManager();
@@ -61,11 +53,12 @@ public class Main {
             // need to update what account is currently logged in too.
             login();
         } else if (stringChoice.toUpperCase().equals("REGISTER")) {
-            /*
-            we gotta do something here so that that the accounts that are added can be
-            accessed though the managerAccount Object.
-            */
-            currentAccountOpen = addAccount(); // adds an account
+            // create a new account
+            UserAccount newAccount = addAccount();
+            // add it to the ManagerAccount object
+            managerAccount.addUser(newAccount);
+            // make the currentAccountOpen hold the instance of the account just created.
+            currentAccountOpen = managerAccount.findByUsername(newAccount.getUsername());
         }else{
             System.out.println("You didn't choose 'Register' or 'Login'. Program closing.");
             System.exit(0); // kill the program
@@ -255,7 +248,7 @@ public class Main {
         System.out.println("---------------MENU---------------");
         System.out.println("----------------------------------");
         if(currentAccountOpen != null){
-            System.out.println("Logged into account #" + currentAccountOpen.getId());
+            System.out.println("Logged into account #" + currentAccountOpen.getUsername());
         }
         System.out.println("----------------------------------");
         System.out.println("1. Deposit");
