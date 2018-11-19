@@ -185,12 +185,12 @@ public class Main {
                 String userName = intInput.next();
 
                 // we have to search through the manager accounts list now because that's where we are adding them.
-                if (managerAccount.findUser(userName) != null)
+                if (managerAccount.getUsername().equals(userName))
                     { // is the account NOT null?
                         System.out.print("Please enter your password: ");
 
                     String password = stringInput.nextLine();
-                    if (accountList.verifyPassword(password)) {
+                    if (managerAccount.getPassword().equals(password)) {
 
                         query = false;
                         /*TODO: NOT QUITE SURE WHAT THIS WAS MEANT FOR AGAIN**/
