@@ -170,12 +170,15 @@ public class Main {
             }
         }while(choice != 8);
 
+        // SERIALIZE THE FILE
         boolean serialized = FileOps.serialize(managerAccount);
         if(serialized){
-            System.out.println("Serialized the ManagerAccount");
+            System.out.println("Manager account serialized successfully.");
         }else{
-            System.out.println("Serialization failed.");
+            System.err.println("Manager account not serialized.");
         }
+
+        // print a shutdown message to the user
         System.out.println("Program exiting.");
     }
 
