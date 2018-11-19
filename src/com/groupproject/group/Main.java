@@ -39,7 +39,6 @@ public class Main {
             }
         }
 
-        // make sure to add acctNum to some sort of list or something that we can test. Same with passwords.
         String stringChoice;
         int choice;
         System.out.println("==============================================");
@@ -57,13 +56,14 @@ public class Main {
             UserAccount newAccount = addAccount();
             // add it to the ManagerAccount object
             managerAccount.addUser(newAccount);
+            // save settings
+            saveSettings();
             // make the currentAccountOpen hold the instance of the account just created.
             currentAccountOpen = managerAccount.findByUsername(newAccount.getUsername());
         }else{
             System.out.println("You didn't choose 'Register' or 'Login'. Program closing.");
             System.exit(0); // kill the program
         }
-
         // MENU
         do {
             // print the menu, and request entry
@@ -92,8 +92,11 @@ public class Main {
                     currentAccountOpen.displayAnAccountBalance(type);
                     System.out.print("Please enter the amount to deposit: ");
                     amount = intInput.nextDouble();
-                    if(type == 1 || type == 2)
+                    if(type == 1 || type == 2) {
                         currentAccountOpen.deposit(type, amount);
+                        // save settings
+                        saveSettings();
+                    }
                     break;
                 case 2: // WITHDRAWAL
                     System.out.println("WITHDRAW");
@@ -109,8 +112,11 @@ public class Main {
                     currentAccountOpen.displayAnAccountBalance(type);
                     System.out.println("Please enter the amount to withdraw: ");
                     amount = intInput.nextDouble();
-                    if(type == 1 || type == 2)
+                    if(type == 1 || type == 2) {
                         currentAccountOpen.withdraw(type, amount);
+                        // save settings
+                        saveSettings();
+                    }
                     break;
                 case 3: // TRANSFER
                     System.out.println("TRANSFER");
@@ -138,15 +144,17 @@ public class Main {
                             toType = intInput.nextInt();
                         }
                     }
-                    if((fromType == 1 || fromType == 2) && (toType == 1 || toType == 2 || toType == 3))
+                    if((fromType == 1 || fromType == 2) && (toType == 1 || toType == 2 || toType == 3)) {
                         currentAccountOpen.transferBetweenAccounts(fromType, toType, amount);
+                        // save settings
+                        saveSettings();
+                    }
                     break;
                 case 4:
                     addAccount(); // adds an account
                     break;
                 case 5:
-
-                    login();
+                    login(); // logs into an account
                     break;
                 case 6:
                     if (currentAccountOpen.isCreditAccount()){
@@ -154,6 +162,8 @@ public class Main {
                     }else {
                         currentAccountOpen.setCreditFlag(true);
                         currentAccountOpen.setCcAccount(new CreditBankingAccount());
+                        // save settings
+                        saveSettings();
                         System.out.println("Your new credit account is now open");
                     }
                     break;
@@ -254,12 +264,13 @@ public class Main {
             System.out.println("Logged into account #" + currentAccountOpen.getUsername());
         }
         System.out.println("----------------------------------");
-        System.out.println("1. Deposit");
-        System.out.println("2. Withdrawal");
-        System.out.println("3. Transfer Money Between Accounts");
-        System.out.println("4. Register New BankingAccount");
+        System.out.println("1. Deposit"); // serialize
+        System.out.println("2. Withdrawal"); // serialize
+        System.out.println("3. Transfer Money Between Accounts"); // serialize
+        // TODO: Only allow option 4 for ManagerAccount
+        System.out.println("4. Register New BankingAccount"); // serialize
         System.out.println("5. Switch Accounts");
-        System.out.println("6. Open a Credit BankingAccount");
+        System.out.println("6. Open a Credit BankingAccount"); // serialize here
         System.out.println("7. Display BankingAccount Balances");
         System.out.println("8. Exit/Logout");
         System.out.println("----------------------------------");
@@ -370,6 +381,15 @@ public class Main {
             System.out.println("Account removed.");
         }else{
             System.out.println("Account does not exist. Nothing removed.");
+        }
+    }
+
+    /** Save settings to the file */
+    public static void saveSettings(){
+        // serialize the file
+        boolean didSerialize = FileOps.serialize(managerAccount);
+        if(didSerialize){
+            System.out.println("*saved settings*");
         }
     }
 }
