@@ -9,8 +9,6 @@ import com.groupproject.group.Utility.FileOps;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import static com.groupproject.group.Utility.FileOps.deserialize;
-
 /*
  * Authors: Nik F, Joe K, Mike H
  * Description: A simple banking system.
@@ -30,7 +28,7 @@ public class Main {
 
     public static void main(String[] args) {
         // DESERIALIZE managerAccount//
-        managerAccount = deserialize();
+        managerAccount = FileOps.deserialize();
         // testing here
 //       accountList.addAll(managerAccount.getUserAccounts());
 

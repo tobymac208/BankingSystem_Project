@@ -17,12 +17,15 @@ public class ManagerAccount extends LoginAccount {
         return userAccounts;
     }
 
-    /** Add a user */
+    /** Add a user, given a user account object. */
     public void addUser(UserAccount account){
         userAccounts.add(account);
     }
-    public UserAccount findUser(String target){
-
+    /** Returns an account if it exists, by username, in the manager account's list of UserAccount objects.
+     * Pre-condition: Pass in a valid string.
+     * Post-condition: Get a valid account returned.
+     * Throws: May return a null object that will result in a NullPointerException. Be careful about that.*/
+    public UserAccount findByUsername(String target){
         return userAccounts.findByUsername(target);
     }
     /** Remove a user */
