@@ -13,15 +13,17 @@ public class ManagerAccount extends LoginAccount {
     }
 
     /** Returns a UserAccountList */
-    public UserAccountList getUserAccounts() {return userAccounts;}
+    public UserAccountList getUserAccounts() {
+        return userAccounts;
+    }
 
     /** Add a user */
     public void addUser(UserAccount account){
         userAccounts.add(account);
     }
-    public String findUser(String target){
-        userAccounts.findByUsername(target);
-        return "User Found";
+    public UserAccount findUser(String target){
+
+        return userAccounts.findByUsername(target);
     }
     /** Remove a user */
     public boolean removeUser(UserAccount account){

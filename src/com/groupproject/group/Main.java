@@ -31,6 +31,14 @@ public class Main {
     public static void main(String[] args) {
         // DESERIALIZE managerAccount//
         managerAccount = deserialize();
+        // testing here
+//       accountList.addAll(managerAccount.getUserAccounts());
+
+//       tests manager account to display data.
+//           System.out.println(managerAccount.getUsername());
+           // find user switched to boolean for easier test output.
+ //          System.out.println(managerAccount.findUser("joejoek"));
+//       }
         if(managerAccount == null) {
             System.out.println("There is no manager account. You must create one.");
             managerAccount = createManager();
@@ -52,8 +60,13 @@ public class Main {
         stringChoice = stringInput.nextLine();
 
         if(stringChoice.toUpperCase().equals("LOGIN")) {
+            // need to update what account is currently logged in too.
             login();
         } else if (stringChoice.toUpperCase().equals("REGISTER")) {
+            /*
+            we gotta do something here so that that the accounts that are added can be
+            accessed though the managerAccount Object.
+            */
             currentAccountOpen = addAccount(); // adds an account
         }else{
             System.out.println("You didn't choose 'Register' or 'Login'. Program closing.");
@@ -141,6 +154,7 @@ public class Main {
                     addAccount(); // adds an account
                     break;
                 case 5:
+
                     login();
                     break;
                 case 6:
@@ -184,14 +198,33 @@ public class Main {
                 System.out.print("Please enter your User-Name: ");
                 String userName = intInput.next();
 
-                // we have to search through the manager accounts list now because that's where we are adding them.
-                if (managerAccount.getUsername().equals(userName))
+                /*
+
+                this call only seems to be recognizing the first object only nothing else.
+                managerAccount.findByUsername(userName);
+                this call only recognizes the most recent entry in the serialization file.
+                are either of these even different? = it looks like we can continue to login.
+                but are the accounts we are created all managers?
+                System.out.println(managerAccount.getUserAccounts().getUsers().toString());
+                System.out.println(managerAccount.getUsername().toString());
+                */
+
+                // based on this call we should be able to differentiate between the Users in the Users-Account-List and the manager that has that list.
+                // maybe the call is wrong.
+                if (managerAccount.getUserAccounts().findByUsername(userName) !=null || managerAccount.getUsername().equals(userName))
                     { // is the account NOT null?
                         System.out.print("Please enter your password: ");
 
                     String password = stringInput.nextLine();
                     if (managerAccount.getPassword().equals(password)) {
 
+                        if(managerAccount.getUserAccounts().findByUsername(userName) !=null){
+                            currentAccountOpen = managerAccount.getUserAccounts().findByUsername(userName);
+                        }
+                        else{
+                            if(managerAccount.getUsername().equals(userName)){
+                            }
+                        }
                         query = false;
                         /*TODO: NOT QUITE SURE WHAT THIS WAS MEANT FOR AGAIN**/
                         // we still have to find the index of the User from the methods above.
@@ -282,6 +315,7 @@ public class Main {
         }else{
             System.out.println("Passwords don't match.\n Creation failed.");
         }
+        // we need to serialize the manager account to the file now. so that it will read in when we next open main.
         return account;
     }
 
