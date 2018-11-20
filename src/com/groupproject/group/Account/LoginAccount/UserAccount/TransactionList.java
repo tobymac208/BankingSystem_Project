@@ -60,4 +60,17 @@ public class TransactionList implements Serializable {
         }
         return answer;
     }
+
+    /** Prints out a styled list of al transactions. */
+    public void printTransactions(){
+        String stringToPrint = "";
+        for(TransactionNode curretNode = head; curretNode != null; curretNode = curretNode.getLink()){
+            stringToPrint += "\"" + curretNode.getData().getDescription() + "\"";
+            if(curretNode.getLink() != null){
+                stringToPrint += "->";
+            }
+        }
+
+        System.out.println(stringToPrint);
+    }
 }
