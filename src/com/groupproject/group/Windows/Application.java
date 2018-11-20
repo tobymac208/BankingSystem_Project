@@ -1,15 +1,18 @@
 package com.groupproject.group.Windows;
 
+import com.groupproject.group.Account.Banking.CreditBankingAccount;
+import com.groupproject.group.Account.LoginAccount.ManagerAccount;
+import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccount;
+import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccountList;
+import com.groupproject.group.Utility.FileOps;
+
+import java.awt.*;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
 
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -23,10 +26,18 @@ import javax.swing.JFrame;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Toolkit;
+
+import static com.groupproject.group.Main.createManager;
 
 
-public class Application extends JPanel{
+public class Application extends JPanel {
+    // private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password");
+    private static ManagerAccount managerAccount;
+    private static UserAccount currentAccountOpen; // used for holding the current account's info
+    private static UserAccountList accountList = new UserAccountList();
+    // scanner to read in data from the user
+    private static Scanner stringInput = new Scanner(System.in);
+    private static Scanner intInput = new Scanner(System.in);
     JFrame frame = new JFrame();
 
     /**
@@ -96,7 +107,24 @@ public class Application extends JPanel{
         JButton btnNewButton = new JButton("LOGIN");
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == btnNewButton) {
+                if (e.getSource() == btnNewButton) {
+                    String username = textField.getText();
+                    String password = passwordField.getSelectedText();
+                    if (managerAccount.getUserAccounts().findByUsername(username) !=null || managerAccount.getUsername().equals(username)){
+                        // username found either user or manager
+                        if (managerAccount.getUserAccounts().findByUsername(password) != null || managerAccount.getPassword().equals(password)) {
+                            // password matches either user or manager
+                            if(managerAccount.getUserAccounts().findByUsername(username) !=null){
+                                currentAccountOpen = managerAccount.getUserAccounts().findByUsername(username);
+                            }
+                            else{
+                                if(managerAccount.getUsername().equals(username)){
+                                }
+                            }
+                        }
+                    }
+                    System.out.println("LOGGED IN");
+                    // we have to use the methods from login before.
                     // have to show the third panel from here.
                     //c1.show(panelCont,"3"
 
@@ -112,9 +140,9 @@ public class Application extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 // we are going to open the other GUI after we verify CREATE has been clicked.
                 // well we need to use this.dispose() to close previous GUI's
-                if(e.getSource() == btnNewButton_1) {
+                if (e.getSource() == btnNewButton_1) {
                     // Similar Catch/Block statement used in main to intially launch the application.
-                    c1.show(panelCont,"2");
+                    c1.show(panelCont, "2");
                 }
             }
         });
@@ -123,6 +151,7 @@ public class Application extends JPanel{
         btnNewButton_1.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_3.add(btnNewButton_1);
     }
+
     public void AccountPanel() {
         secondpanel = new JPanel();
         secondpanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -223,16 +252,18 @@ public class Application extends JPanel{
     }
 
     /**
-     * WE LAUNCH THE APPLICATION HERE AND EVERYTHING NEEDS TO BE CALLED AND ADDED HERE**/
+     * WE LAUNCH THE APPLICATION HERE AND EVERYTHING NEEDS TO BE CALLED AND ADDED HERE
+     **/
     public Application() {
+
         // call panels here
         LoginPanel();
         AccountPanel();
         // everything gets added to here now panel wise. we just have to give it the attributes we did
         panelCont.setLayout(c1);
         // we have to finally add this panel to the panelCont.
-        panelCont.add(firstpanel,"1");
-        panelCont.add(secondpanel,"2");
+        panelCont.add(firstpanel, "1");
+        panelCont.add(secondpanel, "2");
         // this is what panel we want to show right away.
         c1.show(panelCont, "1");
         // finally add it to the frame.
@@ -246,15 +277,91 @@ public class Application extends JPanel{
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
+
+
+        EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                // place other main here.
+                // DESERIALIZE managerAccount
+                managerAccount = FileOps.deserialize();
+                if (managerAccount == null) {
+                    System.out.println("There is no manager account. You must create one.");
+                    managerAccount = createManager();
+                    if (managerAccount == null) { // did the account creation fail?
+                        System.out.println("Account creation failed.\nProject exiting.");
+                        // close the program
+                        System.exit(0);
+                    }
 
-                new Application();
+                    new Application();
+                }
             }
+
         });
     }
+    private static void login() {
+        // Control variable for when the loop will end.
+        boolean query = true;
+        do {
+            try {
+                System.out.print("Please enter your User-Name: ");
+                String userName = intInput.next();
+
+                /*
+
+                this call only seems to be recognizing the first object only nothing else.
+                managerAccount.findByUsername(userName);
+                this call only recognizes the most recent entry in the serialization file.
+                are either of these even different? = it looks like we can continue to login.
+                but are the accounts we are created all managers?
+                System.out.println(managerAccount.getUserAccounts().getUsers().toString());
+                System.out.println(managerAccount.getUsername().toString());
+                */
+
+                // based on this call we should be able to differentiate between the Users in the Users-Account-List and the manager that has that list.
+                // maybe the call is wrong.
+                if (managerAccount.getUserAccounts().findByUsername(userName) !=null || managerAccount.getUsername().equals(userName))
+                { // is the account NOT null?
+                    System.out.print("Please enter your password: ");
+
+                    String password = stringInput.nextLine();
+                    if (managerAccount.getUserAccounts().findByUsername(userName) != null || managerAccount.getPassword().equals(password)) {
+
+                        if(managerAccount.getUserAccounts().findByUsername(userName) !=null){
+                            currentAccountOpen = managerAccount.getUserAccounts().findByUsername(userName);
+                        }
+                        else{
+                            if(managerAccount.getUsername().equals(userName)){
+                            }
+                        }
+                        query = false;
+
+                        // we still have to find the index of the User from the methods above.
+                        // we can compare there index returns to verify that the object is truly the same.
+                        // we then will take that index and assign it to a new object so that we can then set
+                        // it to the currentAccountOpen so that we will not have any errors (SEE BELOW COMMENT)
+                        // currentAccountOpen = account;
+                    } else {
+                        System.out.println("Enter 0 to exit or 1 to try again");
+                        int tryAgain = intInput.nextInt();
+                        if (tryAgain == 0)
+                            System.exit(0);
+                    }
+
+                } else {
+                    System.out.println("Could not find account, please check to make sure the UserName entered is correct.");
+
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Exiting to main menu.");
+                query = false; // exit the loop
+            }
+        } while(query); // run until query is false
+    }
+
 }
+
 
 
 
