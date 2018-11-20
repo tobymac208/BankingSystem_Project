@@ -31,7 +31,7 @@ import static com.groupproject.group.Main.createManager;
 
 
 public class Application extends JPanel {
-    // private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password");
+     //private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password");
     private static ManagerAccount managerAccount;
     private static UserAccount currentAccountOpen; // used for holding the current account's info
     private static UserAccountList accountList = new UserAccountList();
@@ -123,7 +123,7 @@ public class Application extends JPanel {
                             }
                         }
                     }
-                    System.out.println("LOGGED IN");
+                    System.err.println("LOGGED IN");
                     // we have to use the methods from login before.
                     // have to show the third panel from here.
                     //c1.show(panelCont,"3"
@@ -280,10 +280,9 @@ public class Application extends JPanel {
 
 
         EventQueue.invokeLater(new Runnable() {
+
             @Override
             public void run() {
-                // place other main here.
-                // DESERIALIZE managerAccount
                 managerAccount = FileOps.deserialize();
                 if (managerAccount == null) {
                     System.out.println("There is no manager account. You must create one.");
@@ -293,71 +292,26 @@ public class Application extends JPanel {
                         // close the program
                         System.exit(0);
                     }
+                    // place other main here.
+                    // DESERIALIZE managerAccount
+
 
                     new Application();
+
                 }
             }
 
         });
+
+
     }
-    private static void login() {
-        // Control variable for when the loop will end.
-        boolean query = true;
-        do {
-            try {
-                System.out.print("Please enter your User-Name: ");
-                String userName = intInput.next();
-
-                /*
-
-                this call only seems to be recognizing the first object only nothing else.
-                managerAccount.findByUsername(userName);
-                this call only recognizes the most recent entry in the serialization file.
-                are either of these even different? = it looks like we can continue to login.
-                but are the accounts we are created all managers?
-                System.out.println(managerAccount.getUserAccounts().getUsers().toString());
-                System.out.println(managerAccount.getUsername().toString());
-                */
-
-                // based on this call we should be able to differentiate between the Users in the Users-Account-List and the manager that has that list.
-                // maybe the call is wrong.
-                if (managerAccount.getUserAccounts().findByUsername(userName) !=null || managerAccount.getUsername().equals(userName))
-                { // is the account NOT null?
-                    System.out.print("Please enter your password: ");
-
-                    String password = stringInput.nextLine();
-                    if (managerAccount.getUserAccounts().findByUsername(userName) != null || managerAccount.getPassword().equals(password)) {
-
-                        if(managerAccount.getUserAccounts().findByUsername(userName) !=null){
-                            currentAccountOpen = managerAccount.getUserAccounts().findByUsername(userName);
-                        }
-                        else{
-                            if(managerAccount.getUsername().equals(userName)){
-                            }
-                        }
-                        query = false;
-
-                        // we still have to find the index of the User from the methods above.
-                        // we can compare there index returns to verify that the object is truly the same.
-                        // we then will take that index and assign it to a new object so that we can then set
-                        // it to the currentAccountOpen so that we will not have any errors (SEE BELOW COMMENT)
-                        // currentAccountOpen = account;
-                    } else {
-                        System.out.println("Enter 0 to exit or 1 to try again");
-                        int tryAgain = intInput.nextInt();
-                        if (tryAgain == 0)
-                            System.exit(0);
-                    }
-
-                } else {
-                    System.out.println("Could not find account, please check to make sure the UserName entered is correct.");
-
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Exiting to main menu.");
-                query = false; // exit the loop
-            }
-        } while(query); // run until query is false
+    /** Save settings to the file */
+    public static void saveSettings(){
+        // serialize the file
+        boolean didSerialize = FileOps.serialize(managerAccount);
+        if(didSerialize){
+            System.out.println("*saved settings*");
+        }
     }
 
 }

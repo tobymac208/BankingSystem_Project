@@ -18,13 +18,14 @@ import java.util.Scanner;
 
 public class Main {
     // TODO: Require a user to create this account if there isn't one already created -- currently implemented, below, like this for debugging
-    // private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password");
-    private static ManagerAccount managerAccount;
+     private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password");
+   // private static ManagerAccount managerAccount;
     private static UserAccount currentAccountOpen; // used for holding the current account's info
     private static UserAccountList accountList = new UserAccountList();
     // scanner to read in data from the user
     private static Scanner stringInput = new Scanner(System.in);
     private static Scanner intInput = new Scanner(System.in);
+
 
     public static void main(String[] args) {
         // DESERIALIZE managerAccount
