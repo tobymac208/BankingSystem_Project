@@ -1,13 +1,11 @@
 package com.groupproject.group.Windows;
 
-import com.groupproject.group.Account.Banking.CreditBankingAccount;
 import com.groupproject.group.Account.LoginAccount.ManagerAccount;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccount;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccountList;
 import com.groupproject.group.Utility.FileOps;
 
 import java.awt.*;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -16,7 +14,6 @@ import javax.swing.JLabel;
 
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.SoftBevelBorder;
@@ -56,7 +53,7 @@ public class Application extends JPanel {
     private JTextField textField_2;
     private JTextField textField_3;
 
-    public void LoginPanel() {
+    public void CreateLoginPanel() {
         // all of this is now from the login menu itself and can be created using the building tool and we can hook it up from there
         JPanel panel = new JPanel();
         firstpanel = new JPanel();
@@ -152,7 +149,7 @@ public class Application extends JPanel {
         panel_3.add(btnNewButton_1);
     }
 
-    public void AccountPanel() {
+    public void CreateAccountPanel() {
         secondpanel = new JPanel();
         secondpanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         secondpanel.setLayout(new BorderLayout(0, 0));
@@ -204,7 +201,7 @@ public class Application extends JPanel {
         panel_4.add(textField_2);
         textField_2.setColumns(10);
 
-        JLabel lblNewLabel_5 = new JLabel("NEW LABEL");
+        JLabel lblNewLabel_5 = new JLabel("AGE ");
         lblNewLabel_5.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_4.add(lblNewLabel_5);
 
@@ -257,8 +254,8 @@ public class Application extends JPanel {
     public Application() {
 
         // call panels here
-        LoginPanel();
-        AccountPanel();
+        CreateLoginPanel();
+        CreateAccountPanel();
         // everything gets added to here now panel wise. we just have to give it the attributes we did
         panelCont.setLayout(c1);
         // we have to finally add this panel to the panelCont.
