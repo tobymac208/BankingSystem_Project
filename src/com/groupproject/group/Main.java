@@ -52,6 +52,7 @@ public class Main {
             // need to update what account is currently logged in too.
             login();
         } else if (stringChoice.toUpperCase().equals("REGISTER")) {
+            createManager();
             // create a new account
             UserAccount newAccount = addAccount();
             // add it to the ManagerAccount object
@@ -263,7 +264,7 @@ public class Main {
         System.out.println("2. Withdrawal"); // serialize
         System.out.println("3. Transfer Money Between Accounts"); // serialize
         // TODO: Only allow option 4 for ManagerAccount
-        System.out.println("4. Register New BankingAccount"); // serialize
+        System.out.println("4. Register New BankingAccount: Manager's Only"); // serialize
         System.out.println("5. Switch Accounts");
         System.out.println("6. Open a Credit BankingAccount"); // serialize here
         System.out.println("7. Display BankingAccount Balances");
@@ -355,7 +356,7 @@ public class Main {
             // throws a message to the user that either the password entered did not match
             // or they mist spelled something before we close program let the user know what had happened.
             System.out.println("Passwords did not match");
-            System.out.println("Exiting!");
+            createManager();
         }
 
 
