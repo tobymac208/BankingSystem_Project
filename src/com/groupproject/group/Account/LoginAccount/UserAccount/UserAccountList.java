@@ -161,8 +161,8 @@ public class UserAccountList implements Cloneable, Serializable {
         }
 
         // METHOD: size just returns the length of the array.
-        public int size() {
-            return users.length;
+        public int getSize() {
+            return manyUsers;
         }
         // METHOD: trimToSize looks at how many Students are currently held in the array and copies the values at non-null indexes
         // to a new array named trimmedArray. This will handle our array getting out of control and being larger than we really want.

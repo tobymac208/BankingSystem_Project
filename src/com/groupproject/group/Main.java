@@ -3,7 +3,6 @@ package com.groupproject.group;
 import com.groupproject.group.Account.Banking.CreditBankingAccount;
 import com.groupproject.group.Account.LoginAccount.ManagerAccount;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccount;
-import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccountList;
 import com.groupproject.group.Utility.FileOps;
 
 import java.util.InputMismatchException;
@@ -12,20 +11,17 @@ import java.util.Scanner;
 /*
  * Authors: Nik F, Joe K, Mike H
  * Description: A simple banking system.
- *              Allows a manager to manage accounts, and add users to use their accounts.
+ *              Allows a manager to manage accounts and add users to use their accounts.
  * Due date: 12/13/2018
  */
 
 public class Main {
-    // TODO: Require a user to create this account if there isn't one already created -- currently implemented, below, like this for debugging
-     private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password");
-   // private static ManagerAccount managerAccount;
+    // private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password");
+    private static ManagerAccount managerAccount;
     private static UserAccount currentAccountOpen; // used for holding the current account's info
-    private static UserAccountList accountList = new UserAccountList();
     // scanner to read in data from the user
     private static Scanner stringInput = new Scanner(System.in);
     private static Scanner intInput = new Scanner(System.in);
-
 
     public static void main(String[] args) {
         // DESERIALIZE managerAccount
@@ -52,7 +48,7 @@ public class Main {
         if(stringChoice.toUpperCase().equals("LOGIN")) {
             // need to update what account is currently logged in too.
             login();
-        } else if (stringChoice.toUpperCase().equals("REGISTER")) {
+        } else if (stringChoice.toUpperCase().equals("REGISTER")) { // for creating a new user account
             // create a new account
             UserAccount newAccount = addAccount();
             // add it to the ManagerAccount object
@@ -181,13 +177,8 @@ public class Main {
             }
         }while(choice != 8);
 
-        // SERIALIZE THE FILE
-        boolean serialized = FileOps.serialize(managerAccount);
-        if(serialized){
-            System.out.println("Manager account serialized successfully.");
-        }else{
-            System.err.println("Manager account not serialized.");
-        }
+        // save settings
+        saveSettings();
 
         // print a shutdown message to the user
         System.out.println("Program exiting.");
@@ -216,8 +207,7 @@ public class Main {
 
                 // based on this call we should be able to differentiate between the Users in the Users-Account-List and the manager that has that list.
                 // maybe the call is wrong.
-                if (managerAccount.getUserAccounts().findByUsername(userName) !=null || managerAccount.getUsername().equals(userName))
-                    { // is the account NOT null?
+                if (managerAccount.getUserAccounts().findByUsername(userName) !=null || managerAccount.getUsername().equals(userName)) { // is the account NOT null?
                         System.out.print("Please enter your password: ");
 
                     String password = stringInput.nextLine();
@@ -231,7 +221,6 @@ public class Main {
                             }
                         }
                         query = false;
-                        /*TODO: NOT QUITE SURE WHAT THIS WAS MEANT FOR AGAIN**/
                         // we still have to find the index of the User from the methods above.
                         // we can compare there index returns to verify that the object is truly the same.
                         // we then will take that index and assign it to a new object so that we can then set
@@ -269,7 +258,7 @@ public class Main {
         System.out.println("2. Withdrawal"); // serialize
         System.out.println("3. Transfer Money Between Accounts"); // serialize
         // TODO: Only allow option 4 for ManagerAccount
-        System.out.println("4. Register New BankingAccount"); // serialize
+        System.out.println("4. Register New BankingAccount: Manager's Only"); // serialize
         System.out.println("5. Switch Accounts");
         System.out.println("6. Open a Credit BankingAccount"); // serialize here
         System.out.println("7. Display BankingAccount Balances");
@@ -361,7 +350,7 @@ public class Main {
             // throws a message to the user that either the password entered did not match
             // or they mist spelled something before we close program let the user know what had happened.
             System.out.println("Passwords did not match");
-            System.out.println("Exiting!");
+            createManager();
         }
 
 
