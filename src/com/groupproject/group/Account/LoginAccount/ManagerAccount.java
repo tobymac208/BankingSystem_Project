@@ -49,4 +49,18 @@ public class ManagerAccount extends LoginAccount {
             }
         }
     }
+
+    /** Print a certain user's transactions. */
+    public void printTransactionsByUsername(String target){
+        UserAccount userAccount = userAccounts.findByUsername(target);
+        if(userAccount == null){ // user account doesn't exist.
+            System.out.println("That username doesn't exist.");
+            return; // simple leave the method
+        }
+
+        // Print the user's transactions
+        System.out.println("Transactions, for user " + "\"" + userAccount.getUsername() + "\":");
+         // print out their transactions
+        userAccount.getTransactionList().printTransactions();
+    }
 }
