@@ -218,7 +218,7 @@ public class Application extends JPanel{
         JLabel lblNewLabel_1 = new JLabel("");
         lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
         // please edit me or make me larger so i can fill the screen.
-        lblNewLabel_1.setIcon(new ImageIcon(Account_Menu.class.getResource("/com/groupproject/group/Resources/Images/texture2.jpg")));
+        lblNewLabel_1.setIcon(new ImageIcon(("/com/groupproject/group/Resources/Images/texture2.jpg")));
         panel_6.add(lblNewLabel_1);
     }
 
