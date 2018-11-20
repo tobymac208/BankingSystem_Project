@@ -215,7 +215,7 @@ public class Main {
                         System.out.print("Please enter your password: ");
 
                     String password = stringInput.nextLine();
-                    if (managerAccount.getPassword().equals(password)) {
+                    if (managerAccount.getUserAccounts().findByUsername(userName) != null || managerAccount.getPassword().equals(password)) {
 
                         if(managerAccount.getUserAccounts().findByUsername(userName) !=null){
                             currentAccountOpen = managerAccount.getUserAccounts().findByUsername(userName);
