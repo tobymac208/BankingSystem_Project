@@ -17,21 +17,21 @@ public class Login_Menu extends JFrame{
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    Login_Menu frame = new Login_Menu();
-
-
-                    frame.setVisible(true);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+//    public static void main(String[] args) {
+//        EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                try {
+//                    Login_Menu frame = new Login_Menu();
+//
+//
+//                    frame.setVisible(true);
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
 
     /**
      * Create the frame.
@@ -103,20 +103,17 @@ public class Login_Menu extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 // we are going to open the other GUI after we verify CREATE has been clicked.
                 // well we need to use this.dispose() to close previous GUI's
+                // Similar Catch/Block statement used in main to intially launch the applicatio
                 if(e.getSource() == btnNewButton_1) {
-                    // Similar Catch/Block statement used in main to intially launch the application.
-                    Account_Menu frame = null;
-
-
                     try {
 
-                        frame = new Account_Menu();
+                        Account_Menu frame = new Account_Menu();
+                        frame.setVisible(true);
 
                     } catch (IOException e1) {
 
                         e1.printStackTrace();
                     }
-                    frame.setVisible(true);
                 }
             }
         });
@@ -136,8 +133,8 @@ public class Login_Menu extends JFrame{
         public Account_Menu() throws IOException {
             setResizable(false);
             setTitle("CREATE ACCOUNT");
-            setIconImage(Toolkit.getDefaultToolkit().getImage(Account_Menu.class.getResource("/com/groupproject/group/folder-red-java-icon.png")));
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setIconImage(Toolkit.getDefaultToolkit().getImage("/com/groupproject/group/folder-red-java-icon.png"));
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             setBounds(100, 100, 606, 455); // mimicks the first windows size.
             contentPane = new JPanel();
             contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -232,7 +229,7 @@ public class Login_Menu extends JFrame{
             JPanel panel_6 = new JPanel();
             panel_1.add(panel_6);
 
-            JLabel lblNewLabel_1 = new JLabel("");
+            JLabel lblNewLabel_1 = new JLabel(" ");
             lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
             lblNewLabel_1.setIcon(new ImageIcon(Account_Menu.class.getResource("/com/groupproject/group/texture2.jpg")));
             panel_6.add(lblNewLabel_1);
@@ -243,8 +240,9 @@ public class Login_Menu extends JFrame{
             JPanel panel_2 = new JPanel();
 
 
-
+            dispose();
         }
+
 
     }
 

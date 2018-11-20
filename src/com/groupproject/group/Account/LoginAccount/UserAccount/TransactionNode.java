@@ -1,6 +1,8 @@
 package com.groupproject.group.Account.LoginAccount.UserAccount;
 
-public class TransactionNode {
+import java.io.Serializable;
+
+public class TransactionNode implements Serializable {
     private Transaction data;
     private TransactionNode link;
 

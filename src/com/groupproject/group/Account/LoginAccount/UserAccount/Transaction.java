@@ -1,6 +1,8 @@
 package com.groupproject.group.Account.LoginAccount.UserAccount;
 
-public class Transaction {
+import java.io.Serializable;
+
+public class Transaction implements Serializable {
     private static int id = 0;
     private String description;
 

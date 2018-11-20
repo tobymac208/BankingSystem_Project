@@ -5,7 +5,6 @@ public class CreditBankingAccount extends BankingAccount {
     private double amountLeft;
     private double oustandingBalance; // variable for tracking how much the user has used
     private double interestRate;
-    // TODO: Add in Date variable and functionality
 
     public CreditBankingAccount(){
         super("Credit BankingAccount", 3); // calls the super-class's default constructor -- passing in default values

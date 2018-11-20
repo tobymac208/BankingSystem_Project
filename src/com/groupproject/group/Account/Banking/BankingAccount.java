@@ -1,7 +1,9 @@
 package com.groupproject.group.Account.Banking;
 
+import java.io.Serializable;
+
 /** Abstract class for making other BankingAccount classes */
-public abstract class BankingAccount {
+public abstract class BankingAccount implements Serializable {
     private int id; // an id to identify which account type it is
     private String account_name; // name of the account
 

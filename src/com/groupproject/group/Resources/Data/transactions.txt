@@ -1,3 +1,0 @@
-Account #101: Deposited 45.45 into your savings account. Current savings account balance is: 45.45
-Account #101: Withdrew 25.0 from savings account. Current balance is: 20.450000000000003
-Account #102: Deposited 9000.0 into your savings account. Current savings account balance is: 9000.0
