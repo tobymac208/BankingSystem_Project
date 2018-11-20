@@ -21,7 +21,10 @@ public class CreditBankingAccount extends BankingAccount {
 
     /** Allows the user to pay off a portion/all of their balance */
     public boolean payAmount(double amount){
-        // TODO: Add in functionality
+        if(amount <= oustandingBalance){
+            oustandingBalance -= amount; // remove that amount from the outstanding balance
+            return true;
+        }
         return false;
     }
 }
