@@ -20,7 +20,7 @@ public class CreditBankingAccount extends BankingAccount {
     public double getOustandingBalance(){return oustandingBalance;}
 
     /** Allows the user to pay off a portion/all of their balance */
-    public boolean paymentAmount(double amount){
+    public boolean payAmount(double amount){
         // TODO: Add in functionality
         return false;
     }

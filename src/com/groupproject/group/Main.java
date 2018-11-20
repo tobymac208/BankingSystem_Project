@@ -207,8 +207,7 @@ public class Main {
 
                 // based on this call we should be able to differentiate between the Users in the Users-Account-List and the manager that has that list.
                 // maybe the call is wrong.
-                if (managerAccount.getUserAccounts().findByUsername(userName) !=null || managerAccount.getUsername().equals(userName))
-                    { // is the account NOT null?
+                if (managerAccount.getUserAccounts().findByUsername(userName) !=null || managerAccount.getUsername().equals(userName)) { // is the account NOT null?
                         System.out.print("Please enter your password: ");
 
                     String password = stringInput.nextLine();
@@ -222,7 +221,6 @@ public class Main {
                             }
                         }
                         query = false;
-                        /*TODO: NOT QUITE SURE WHAT THIS WAS MEANT FOR AGAIN**/
                         // we still have to find the index of the User from the methods above.
                         // we can compare there index returns to verify that the object is truly the same.
                         // we then will take that index and assign it to a new object so that we can then set
