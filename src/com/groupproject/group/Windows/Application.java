@@ -1,5 +1,7 @@
 package com.groupproject.group.Windows;
 
+import com.groupproject.group.Account.LoginAccount.ManagerAccount;
+
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
@@ -27,6 +29,7 @@ import java.awt.Toolkit;
 
 
 public class Application extends JPanel{
+    private ManagerAccount managerAccount;
     JFrame frame = new JFrame();
 
     /**
@@ -123,7 +126,7 @@ public class Application extends JPanel{
         btnNewButton_1.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_3.add(btnNewButton_1);
     }
-    public void AccountPanel() {
+    public void CreateAccountPanel() {
         secondpanel = new JPanel();
         secondpanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         secondpanel.setLayout(new BorderLayout(0, 0));
@@ -175,7 +178,7 @@ public class Application extends JPanel{
         panel_4.add(textField_2);
         textField_2.setColumns(10);
 
-        JLabel lblNewLabel_5 = new JLabel("NEW LABEL");
+        JLabel lblNewLabel_5 = new JLabel("RE-ENTER PASSWORD");
         lblNewLabel_5.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_4.add(lblNewLabel_5);
 
@@ -225,9 +228,12 @@ public class Application extends JPanel{
     /**
      * WE LAUNCH THE APPLICATION HERE AND EVERYTHING NEEDS TO BE CALLED AND ADDED HERE**/
     public Application() {
+        // read in the file
+        
+
         // call panels here
         LoginPanel();
-        AccountPanel();
+        CreateAccountPanel();
         // everything gets added to here now panel wise. we just have to give it the attributes we did
         panelCont.setLayout(c1);
         // we have to finally add this panel to the panelCont.
