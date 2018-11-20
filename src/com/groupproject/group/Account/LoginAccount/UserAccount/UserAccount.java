@@ -7,6 +7,7 @@ import com.groupproject.group.Account.LoginAccount.LoginAccount;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.text.NumberFormat;
 
 public class UserAccount extends LoginAccount implements Serializable {
     private SavingsBankingAccount savingsAccount;
@@ -82,11 +83,12 @@ public class UserAccount extends LoginAccount implements Serializable {
 
     /** Allows a user to deposit money into an account */
     public boolean deposit(double type, double amount){
+        NumberFormat fm = NumberFormat.getCurrencyInstance();
         switch((int)type){
             case 1:
                 if(amount > 0) {
                     savingsAccount.setBalance(savingsAccount.getBalance() + amount);
-                    System.out.println("Deposit Successful\nNew savings account balance is: " + savingsAccount.getBalance());
+                    System.out.println("Deposit Successful\nNew savings account balance is: " + fm.format(savingsAccount.getBalance()));
                     //addTransaction(type, "Deposit, Amount deposited: " + amount + ", Total in account: " + savingsAccount.getBalance());
                     transactionList.addTransaction(new Transaction("Deposited " + amount + " into your savings account. Current savings account balance is: " + savingsAccount.getBalance()));
                 } else System.out.println("Please select an amount greater than 0.");
@@ -94,7 +96,7 @@ public class UserAccount extends LoginAccount implements Serializable {
             case 2:
                 if(amount > 0) {
                     checkingAccount.setBalance(checkingAccount.getBalance() + amount);
-                    System.out.println("Deposit Successful\nNew checking account balance is: " + checkingAccount.getBalance());
+                    System.out.println("Deposit Successful\nNew checking account balance is: " + fm.format(checkingAccount.getBalance()));
                     transactionList.addTransaction(new Transaction("Deposited " + amount + " into your checking account. Current checking account balance is: " + checkingAccount.getBalance()));
                 } else System.out.println("Please select an amount greater than 0.");
                 break;
@@ -117,19 +119,21 @@ public class UserAccount extends LoginAccount implements Serializable {
         switch ((int)type) {
             case 1://savings account withdrawal
                 balanceFlag = checkFunds(type, amount);
+                NumberFormat fm = NumberFormat.getCurrencyInstance();
                 if(balanceFlag){
                     savingsAccount.setBalance(savingsAccount.getBalance() - amount);
-                    System.out.println("Withdrawal Successful\nRemaining savings account balance is: " + savingsAccount.getBalance());
-                    transactionList.addTransaction(new Transaction("Withdrew " + amount + " from savings account. Current balance is: " + savingsAccount.getBalance()));
+                    System.out.println("Withdrawal Successful\nRemaining savings account balance is: " + fm.format(savingsAccount.getBalance()));
+                    transactionList.addTransaction(new Transaction("Withdrew " + amount + " from savings account. Current balance is: " + fm.format(savingsAccount.getBalance())));
                 }else
                     System.out.println("Insufficient Funds");
                 break;
             case 2://checking account withdrawal
                 balanceFlag = checkFunds(type, amount);
+                NumberFormat fm2 = NumberFormat.getCurrencyInstance();
                 if(balanceFlag){
                     checkingAccount.setBalance(checkingAccount.getBalance() - amount);
-                    System.out.println("Withdrawal Successful\nRemaining checking account balance is: " + checkingAccount.getBalance());
-                    transactionList.addTransaction(new Transaction("Withdrew " + amount + " from checking account. Current balance is: " + checkingAccount.getBalance()));
+                    System.out.println("Withdrawal Successful\nRemaining checking account balance is: " + fm2.format(checkingAccount.getBalance()));
+                    transactionList.addTransaction(new Transaction("Withdrew " + amount + " from checking account. Current balance is: " + fm2.format(checkingAccount.getBalance())));
                 }else
                     System.out.println("Insufficient Funds");
                 break;
@@ -144,23 +148,24 @@ public class UserAccount extends LoginAccount implements Serializable {
     /** Allows a user to transfer money between accounts */
     public boolean transferBetweenAccounts(double fromAccount, double toAccount, double amount){
         boolean balanceFlag = checkFunds(fromAccount, amount);
+        NumberFormat fm = NumberFormat.getCurrencyInstance();
         switch((int)fromAccount){
             case 1:                                                     //transferring money from savings
                 if (balanceFlag){
                     savingsAccount.setBalance(savingsAccount.getBalance() - amount);
                     if (toAccount == 2) {
                         checkingAccount.setBalance(checkingAccount.getBalance() + amount);
-                        System.out.println("Transfer Successful\nRemaining savings account balance is: " + savingsAccount.getBalance() +
-                                "\nNew checking account balance is: " + checkingAccount.getBalance());
+                        System.out.println("Transfer Successful\nRemaining savings account balance is: " + fm.format(savingsAccount.getBalance()) +
+                                "\nNew checking account balance is: " + fm.format(checkingAccount.getBalance()));
                         transactionList.addTransaction(new Transaction("Transferred " + amount + " from savings account to checking account." +
-                                "Current savings account balance is: " + savingsAccount.getBalance() + "Current checking account balance is: " + checkingAccount.getBalance()));
+                                "Current savings account balance is: " + fm.format(savingsAccount.getBalance()) + "Current checking account balance is: " + fm.format(checkingAccount.getBalance())));
                     } else if (toAccount == 3) {
                         ccAccount.setAmountLeft(-amount);
                         checkingAccount.setBalance(checkingAccount.getBalance() + amount);
-                        System.out.println("Transfer Successful\nRemaining savings account balance is: " + savingsAccount.getBalance() +
+                        System.out.println("Transfer Successful\nRemaining savings account balance is: " + fm.format(savingsAccount.getBalance()) +
                                 "\nAvailable credit: " + ccAccount.getAmountLeft());
                         transactionList.addTransaction(new Transaction("Transferred " + amount + " from savings account to credit account. " +
-                                "Current savings account balance is: " + savingsAccount.getBalance() + ". Current available credit is: " + ccAccount.getAmountLeft()));
+                                "Current savings account balance is: " + fm.format(savingsAccount.getBalance()) + ". Current available credit is: " + fm.format(ccAccount.getAmountLeft())));
                     } else {
                         System.out.println("Please choose a valid account to transfer to.");
                     }
@@ -169,22 +174,25 @@ public class UserAccount extends LoginAccount implements Serializable {
                     System.out.println("Please check your information and input a valid amount to transfer.");
                 }
                 break;
-            case 2:                                                 //transferring from checking account
+
+            case 2:
+                NumberFormat fm2 = NumberFormat.getCurrencyInstance();
+                //transferring from checking account
                 if (balanceFlag){
                     checkingAccount.setBalance(checkingAccount.getBalance() - amount);
                     if (toAccount == 1) {
                         savingsAccount.setBalance(savingsAccount.getBalance() + amount);
-                        System.out.println("Transfer Successful\nRemaining checking account balance is: " + checkingAccount.getBalance() +
-                                "\nNew savings account balance is: " + savingsAccount.getBalance());
+                        System.out.println("Transfer Successful\nRemaining checking account balance is: " + fm2.format(checkingAccount.getBalance()) +
+                                "\nNew savings account balance is: " + fm2.format(savingsAccount.getBalance()));
                         transactionList.addTransaction(new Transaction("Transferred " + amount + " from checking account to savings account. " +
-                                "Current checking account balance is: " + checkingAccount.getBalance() + ". Current savings account balance is: " + savingsAccount.getBalance()));
+                                "Current checking account balance is: " + fm2.format(checkingAccount.getBalance()) + ". Current savings account balance is: " + fm2.format(savingsAccount.getBalance())));
                     }
                     else if (toAccount == 3) {
                         ccAccount.setAmountLeft(-amount);
-                        System.out.println("Transfer Successful\nRemaining checking account balance is: " + checkingAccount.getBalance() +
-                                "\nAvailable Credit: " + ccAccount.getAmountLeft());
+                        System.out.println("Transfer Successful\nRemaining checking account balance is: " + fm2.format(checkingAccount.getBalance()) +
+                                "\nAvailable Credit: " + fm2.format(ccAccount.getAmountLeft()));
                         transactionList.addTransaction(new Transaction("Transferred " + amount + " from checking account to credit account. " +
-                                "Current checking account balance is: " + checkingAccount.getBalance() + ". Current credit account balance is: " + ccAccount.getAmountLeft()));
+                                "Current checking account balance is: " + fm2.format(checkingAccount.getBalance()) + ". Current credit account balance is: " + fm2.format(ccAccount.getAmountLeft())));
                     }
                     else{
                         System.out.println("Please choose a valid account to transfer to.");
