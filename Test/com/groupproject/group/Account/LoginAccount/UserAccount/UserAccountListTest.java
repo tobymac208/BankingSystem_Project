@@ -21,7 +21,6 @@ class UserAccountListTest {
      */
     @Test
     void getUsers() {
-        int numUsers;
         UserAccount newUser = new UserAccount("yo", "yo", 42, "username", "password", true);
         // add a user to the list
         users.add(newUser);
