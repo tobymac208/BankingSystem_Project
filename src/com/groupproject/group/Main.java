@@ -22,7 +22,7 @@ public class Main {
     // scanner to read in data from the user
     private static Scanner stringInput = new Scanner(System.in);
     private static Scanner intInput = new Scanner(System.in);
-
+    @Deprecated
     public static void main(String[] args) {
         // DESERIALIZE managerAccount
         managerAccount = FileOps.deserialize();
