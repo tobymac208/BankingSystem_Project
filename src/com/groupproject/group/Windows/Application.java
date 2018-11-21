@@ -32,10 +32,9 @@ import static com.groupproject.group.Main.createManager;
 
 
 public class Application extends JPanel {
-     //private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password");
+     //private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password"); -- here for testing purposes
     private static ManagerAccount managerAccount;
     private static UserAccount currentAccountOpen; // used for holding the current account's info
-    private static UserAccountList accountList = new UserAccountList();
     // scanner to read in data from the user
     private static Scanner stringInput = new Scanner(System.in);
     private static Scanner intInput = new Scanner(System.in);
@@ -392,6 +391,7 @@ public class Application extends JPanel {
 
             @Override
             public void run() {
+                // DESERIALIZE managerAccount
                 managerAccount = FileOps.deserialize();
                 if (managerAccount == null) {
                     System.out.println("There is no manager account. You must create one.");
@@ -401,18 +401,14 @@ public class Application extends JPanel {
                         // close the program
                         System.exit(0);
                     }
-                    // place other main here.
-                    // DESERIALIZE managerAccount
-
-
-                    new Application();
-
                 }
+
+//               ManagerAccount differentManagerAccount = new ManagerAccount("Jeff", "Linkman", 43, "username", "password");
+//               FileOps.serialize(differentManagerAccount);
+//               System.exit(0);
+                new Application();
             }
-
         });
-
-
     }
     /** Save settings to the file */
     public static void saveSettings(){
