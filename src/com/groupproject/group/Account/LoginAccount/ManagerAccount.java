@@ -8,7 +8,7 @@ public class ManagerAccount extends LoginAccount {
 
     public ManagerAccount(String firstName, String lastName, int age, String username, String password){
         // call the base class constructor, passing in all arguments
-        super(firstName, lastName, age, username, password);
+        super(firstName, lastName, age, username, password, 0);
         userAccounts = new UserAccountList();
     }
 
