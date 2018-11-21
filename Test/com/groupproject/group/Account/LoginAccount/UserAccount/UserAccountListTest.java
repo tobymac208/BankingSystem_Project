@@ -12,84 +12,78 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 class UserAccountListTest {
+    // Create a users object to work with
+    UserAccountList users = new UserAccountList();
 
+    /* Edited by: Nik
+     * Note: Deal directly with the 'users' object.
+     * Tip: Add something to the object, or remove something (depending on what the operation requires.)
+     */
     @Test
     void getUsers() {
-        double users;
-        UserAccountList.getUsers(usres);
-        assertEquals(users);
+        int numUsers;
+        UserAccount newUser = new UserAccount("yo", "yo", 42, "username", "password", true);
+        // add a user to the list
+        users.add(newUser);
+        // initialize  a list of UserAccounts
+        UserAccount[] list = users.getUsers();
+        // make sure it added the account to the list
+        UserAccount userFound = users.findByUsername(newUser.getUsername());
+        assertEquals(newUser.getFirstName(), userFound.getFirstName());
     }
 
     @Test
     void add() {
-        double manyUsers;
-        UserAccountList.add(user);
-        assertEquals(user, manyUsers);
-    }
-
-    @Test
-    void getUsers1() { //  <<<< last name?
-        UserAccountList.getUsersl();
-        assertEquals();
+        // TODO: Implement
     }
 
     @Test
     void add1() {
-            assertEquals();
-        }
+        // TODO: Implement
     }
 
     @Test
     void findByUsername() {
-        String UserAccount;
-        UserAccount account = new UserAccount();
-        UserAccountList.findByUsername(account);
-                assertEquals(account, UserAccount);
+        // TODO: Implement
     }
 
     @Test
     void addAll() {
-             UserAccountList.addAll(users;
-            assertEquals(users, manyUsers);
+        // TODO: Implement
     }
 
     @Test
     void getUser() {
-            UserAccountList.getUser(user);
-            assertEquals(user, manyUsers)
+        // TODO: Implement
     }
 
     @Test
     void verifyPassword() {
-            String password;
-            UserAccountList.verifyPassword(password);
-            assertEquals(password, user);
+        // TODO: Implement
     }
 
     @Test
     void countOccurrences() {
+        // TODO: Implement
     }
 
     @Test
     void ensureCapacity() {
-               UserAccountList.ensureCapacity(manyUsers)
-               assertEquals(biggerArray, users);
+        // TODO: Implement
     }
 
     @Test
     void getCapacity() {
-                UserAccountList.getCapacity(users.length);
-                assertEquals(users.length);
-            }
+        // TODO: Implement
     }
 
     @Test
     void removeAccount() {
+        // TODO: Implement
     }
 
     @Test
     void getSize() {
-            UserAccountList.getSize(manyUsers);
-            assertEquals(manyUsers);
+        // TODO: Implement
     }
 }
