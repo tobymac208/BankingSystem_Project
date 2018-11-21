@@ -20,7 +20,11 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import javax.swing.JTextPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -44,6 +48,7 @@ public class Application extends JPanel {
     JPanel panelCont = new JPanel();
     private JPanel firstpanel;
     private JPanel secondpanel;
+    private JPanel thirdpanel;
     CardLayout c1 = new CardLayout();
 
     // then the other variables that we needed.
@@ -52,6 +57,9 @@ public class Application extends JPanel {
     private JTextField textField_1;
     private JTextField textField_2;
     private JTextField textField_3;
+
+
+
 
     public void CreateLoginPanel() {
         // all of this is now from the login menu itself and can be created using the building tool and we can hook it up from there
@@ -105,17 +113,23 @@ public class Application extends JPanel {
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == btnNewButton) {
+                    // TODO: WE NEED TO FIGURE THIS BUG OUT HERE AND PROPERLY CALL cl.show(panelCont, "3");
+                    // also since we dont have the gui for the user account yet can we place a comment
+                    // with the call cl.show(panelCont, "#"); #indicates what frame will show next.
                     String username = textField.getText();
                     String password = passwordField.getSelectedText();
                     if (managerAccount.getUserAccounts().findByUsername(username) !=null || managerAccount.getUsername().equals(username)){
                         // username found either user or manager
+                        System.out.println("Logged IN");
                         if (managerAccount.getUserAccounts().findByUsername(password) != null || managerAccount.getPassword().equals(password)) {
                             // password matches either user or manager
-                            if(managerAccount.getUserAccounts().findByUsername(username) !=null){
+                            System.out.println("LOGGED IN");
+                            if(managerAccount.getUserAccounts().findByUsername(username) !=null)
                                 currentAccountOpen = managerAccount.getUserAccounts().findByUsername(username);
-                            }
+
                             else{
                                 if(managerAccount.getUsername().equals(username)){
+                                    c1.show(panelCont, "3");
                                 }
                             }
                         }
@@ -123,7 +137,7 @@ public class Application extends JPanel {
                     System.err.println("LOGGED IN");
                     // we have to use the methods from login before.
                     // have to show the third panel from here.
-                    //c1.show(panelCont,"3"
+                    c1.show(panelCont,"3");
 
                 }
             }
@@ -248,6 +262,102 @@ public class Application extends JPanel {
         panel_6.add(lblNewLabel_1);
     }
 
+    public void CreateManagerPanel(){
+        thirdpanel = new JPanel();
+        thirdpanel.setBackground(Color.LIGHT_GRAY);
+        thirdpanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        thirdpanel.setLayout(new BorderLayout(0, 0));
+
+
+        JLabel headerLabel = new JLabel("MANAGER ACCOUNT\r\n");
+        headerLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        headerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        thirdpanel.add(headerLabel, BorderLayout.NORTH);
+
+        JLabel footerLabel = new JLabel("VERSION 1.08\r\n");
+        footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        thirdpanel.add(footerLabel, BorderLayout.SOUTH);
+
+        JPanel mangerControlPanel = new JPanel();
+        mangerControlPanel.setBackground(Color.LIGHT_GRAY);
+        thirdpanel.add(mangerControlPanel, BorderLayout.WEST);
+        // 3 rows 1 col
+        mangerControlPanel.setLayout(new GridLayout(6,1));
+
+        JButton addBtn = new JButton("ADD-USER");
+        addBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        mangerControlPanel.add(addBtn);
+
+        JButton removeBtn = new JButton("REMOVE-USER");
+        removeBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        mangerControlPanel.add(removeBtn);
+
+        JButton historyBtn = new JButton("USER-HISTORY");
+        historyBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        mangerControlPanel.add(historyBtn);
+
+        JButton transBtn = new JButton("TRANSACTIONS");
+        transBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        mangerControlPanel.add(transBtn);
+
+        JPanel panel = new JPanel();
+        thirdpanel.add(panel, BorderLayout.CENTER);
+        panel.setLayout(new BorderLayout(0, 0));
+
+        JPanel footpanel = new JPanel();
+        footpanel.setBackground(Color.LIGHT_GRAY);
+        panel.add(footpanel, BorderLayout.SOUTH);
+
+        JLabel lblNewLabel = new JLabel("");
+        lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Joe Kelly\\Pictures\\LOGOS\\texture3.jpg"));
+        footpanel.add(lblNewLabel);
+
+        JPanel panel_2 = new JPanel();
+        panel_2.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+        panel.add(panel_2, BorderLayout.CENTER);
+        panel_2.setLayout(new GridLayout(0, 1, 0, 0));
+
+        JPanel panel_3 = new JPanel();
+        panel_3.setBackground(Color.LIGHT_GRAY);
+        panel_2.add(panel_3);
+
+        JLabel usernameLbl = new JLabel("USERNAME");
+        usernameLbl.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_3.add(usernameLbl);
+
+        textField = new JTextField();
+        panel_3.add(textField);
+        textField.setColumns(10);
+
+        JLabel lblNewLabel_2 = new JLabel("RE-ENTER");
+        lblNewLabel_2.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_3.add(lblNewLabel_2);
+
+        textField_1 = new JTextField();
+        panel_3.add(textField_1);
+        textField_1.setColumns(10);
+
+        JButton btnNewButton = new JButton("SEARCH");
+        btnNewButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_3.add(btnNewButton);
+
+        JButton btnNewButton_1 = new JButton("CLEAR");
+        btnNewButton_1.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_3.add(btnNewButton_1);
+
+        JPanel panel_5 = new JPanel();
+        panel_5.setBackground(Color.LIGHT_GRAY);
+        panel_2.add(panel_5);
+
+        JTextPane textPane = new JTextPane();
+        textPane.setContentType("MESSEGE CENTER\r\n");
+        panel_5.add(textPane);
+        textPane.setToolTipText("MESSEGE CENTER");
+        textPane.setText("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n                                                                                                                                      ");
+    }
+
+
+
     /**
      * WE LAUNCH THE APPLICATION HERE AND EVERYTHING NEEDS TO BE CALLED AND ADDED HERE
      **/
@@ -256,11 +366,13 @@ public class Application extends JPanel {
         // call panels here
         CreateLoginPanel();
         CreateAccountPanel();
+        CreateManagerPanel();
         // everything gets added to here now panel wise. we just have to give it the attributes we did
         panelCont.setLayout(c1);
         // we have to finally add this panel to the panelCont.
         panelCont.add(firstpanel, "1");
         panelCont.add(secondpanel, "2");
+        panelCont.add(thirdpanel, "3");
         // this is what panel we want to show right away.
         c1.show(panelCont, "1");
         // finally add it to the frame.
