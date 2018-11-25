@@ -245,7 +245,7 @@ public class Application extends JPanel {
         JPanel panel_5 = new JPanel();
         panel_5.add(chckbxNewCheckBox);
 
-        JCheckBox chckbxNewCheckBox_1 = new JCheckBox("SAVINGS ACCT");
+        JCheckBox chckbxNewCheckBox_1 = new JCheckBox("CREDIT ACCT");
         panel_5.add(chckbxNewCheckBox_1);
 
         JPanel panel_7 = new JPanel();
