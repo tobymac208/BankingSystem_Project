@@ -61,6 +61,7 @@ public class Application extends JPanel {
     private JTextField textField_1;
     private JTextField textField_2;
     private JTextField textField_3;
+    private JTextField textField_4;
     private JTextField amountTextF;
 
 
@@ -232,6 +233,14 @@ public class Application extends JPanel {
         textField_3 = new JTextField();
         textField_3.setColumns(10);
         panel_4.add(textField_3);
+
+        JLabel lblNewLabel_6 = new JLabel("USERNAME ");
+        lblNewLabel_6.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_4.add(lblNewLabel_6);
+
+        textField_4 = new JTextField();
+        textField_4.setColumns(10);
+        panel_4.add(textField_4);
         JCheckBox chckbxNewCheckBox = new JCheckBox("CHECKING ACCT");
         JPanel panel_5 = new JPanel();
         panel_5.add(chckbxNewCheckBox);
@@ -258,6 +267,59 @@ public class Application extends JPanel {
         panel_1.add(panel_8);
 
         JButton btnNewButton = new JButton("CREATE");
+        // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
+        btnNewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
+                if(textField.getText()!=null && textField_1.getText()!=null && textField_2.getText()!=null && textField_3.getText()!=null && textField_4.getText()!=null)
+                {
+                    // if the fields are not null we are going to expect that they have entered the information correctly
+                    // create temp variables to create user.
+                    String firstName = textField.getText();
+                    String lastName = textField_1.getText();
+                    String password = textField_2.getText();
+                    String age =  textField_3.getText();
+                    String userName = textField_4.getText();
+                    int age2 = Integer.parseInt(age);
+                    // create user account and then add each account type that they specify on wanting.
+                    // create a new account
+                    UserAccount newAccount = new UserAccount(firstName,lastName,age2,userName,password,false);
+                    // add it to the ManagerAccount object
+                      managerAccount.addUser(newAccount);
+                      System.out.println("Added"+ newAccount.getUsername());
+                    // save settings
+                    //saveSettings();
+
+                        // could also be checkBox
+                    if(chckbxNewCheckBox_2.getActionCommand().equals("CHECKING ACCT")){
+
+                        // create the checking account
+
+
+                    }
+                    if(chckbxNewCheckBox_2.getActionCommand() == null){
+                        // they didnt select anything
+                    }
+                    // could also be checkBox 2
+                    if(chckbxNewCheckBox_3.getActionCommand().equals("SAVINGS ACCT")){
+                        // create the savings account
+
+                    }
+                    if(chckbxNewCheckBox_3.getActionCommand() == null){
+                        // they did not select a savings account.
+
+
+                    }
+
+
+
+
+
+                }
+            }
+
+        });
         panel_8.add(btnNewButton);
         btnNewButton.setBackground(Color.LIGHT_GRAY);
         btnNewButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
