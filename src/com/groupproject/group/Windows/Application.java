@@ -241,12 +241,7 @@ public class Application extends JPanel {
         textField_4 = new JTextField();
         textField_4.setColumns(10);
         panel_4.add(textField_4);
-        JCheckBox chckbxNewCheckBox = new JCheckBox("CHECKING ACCT");
-        JPanel panel_5 = new JPanel();
-        panel_5.add(chckbxNewCheckBox);
 
-        JCheckBox chckbxNewCheckBox_1 = new JCheckBox("CREDIT ACCT");
-        panel_5.add(chckbxNewCheckBox_1);
 
         JPanel panel_7 = new JPanel();
         panel_7.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
