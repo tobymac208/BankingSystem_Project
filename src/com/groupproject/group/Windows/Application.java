@@ -292,25 +292,19 @@ public class Application extends JPanel {
                     //saveSettings();
 
                         // could also be checkBox
-                    if(chckbxNewCheckBox_2.getActionCommand().equals("CHECKING ACCT")){
+                    if(chckbxNewCheckBox_2.isSelected()){
 
                         // create the checking account
 
 
                     }
-                    if(chckbxNewCheckBox_2.getActionCommand() == null){
-                        // they didnt select anything
-                    }
+
                     // could also be checkBox 2
-                    if(chckbxNewCheckBox_3.getActionCommand().equals("SAVINGS ACCT")){
+                    if(chckbxNewCheckBox_3.isSelected()){
                         // create the savings account
 
                     }
-                    if(chckbxNewCheckBox_3.getActionCommand() == null){
-                        // they did not select a savings account.
 
-
-                    }
 
 
 
