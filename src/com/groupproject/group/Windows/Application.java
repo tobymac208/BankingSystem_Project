@@ -241,12 +241,7 @@ public class Application extends JPanel {
         textField_4 = new JTextField();
         textField_4.setColumns(10);
         panel_4.add(textField_4);
-        JCheckBox chckbxNewCheckBox = new JCheckBox("CHECKING ACCT");
-        JPanel panel_5 = new JPanel();
-        panel_5.add(chckbxNewCheckBox);
 
-        JCheckBox chckbxNewCheckBox_1 = new JCheckBox("SAVINGS ACCT");
-        panel_5.add(chckbxNewCheckBox_1);
 
         JPanel panel_7 = new JPanel();
         panel_7.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -292,25 +287,20 @@ public class Application extends JPanel {
                     //saveSettings();
 
                         // could also be checkBox
-                    if(chckbxNewCheckBox_2.getActionCommand().equals("CHECKING ACCT")){
+                    if(chckbxNewCheckBox_2.isSelected()){
 
                         // create the checking account
+                        // we are putting this line here for push.
 
 
                     }
-                    if(chckbxNewCheckBox_2.getActionCommand() == null){
-                        // they didnt select anything
-                    }
+
                     // could also be checkBox 2
-                    if(chckbxNewCheckBox_3.getActionCommand().equals("SAVINGS ACCT")){
+                    if(chckbxNewCheckBox_3.isSelected()){
                         // create the savings account
 
                     }
-                    if(chckbxNewCheckBox_3.getActionCommand() == null){
-                        // they did not select a savings account.
 
-
-                    }
 
 
 
