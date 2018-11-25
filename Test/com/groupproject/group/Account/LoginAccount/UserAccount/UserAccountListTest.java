@@ -27,11 +27,20 @@ class UserAccountListTest {
         // initialize  a list of UserAccounts
         UserAccount[] list = users.getUsers();
         assertNotNull(list[0].getFirstName());
+        users.removeAccount(newUser);
     }
 
     @Test
     void add() {
-        // TODO: Implement
+        UserAccount newUser = new UserAccount("example", "example", 18, true);
+        // Add a new user
+        users.add(newUser);
+        // Create a UserAccountList add a user to the list
+        UserAccount[] list = users.add(newUser);
+        // Checking to see if there is a user inside the account.
+        assertNotNull(list[0].getFirstName());
+        // Removes the new account for future testing.
+        users.removeAccount(newUser);
     }
 
     @Test
