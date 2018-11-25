@@ -27,6 +27,10 @@ import java.awt.Font;
 import javax.swing.JTextPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
+import javax.swing.JTextArea;
+
 
 import static com.groupproject.group.Main.createManager;
 
@@ -48,6 +52,7 @@ public class Application extends JPanel {
     private JPanel firstpanel;
     private JPanel secondpanel;
     private JPanel thirdpanel;
+    private JPanel fourthpanel;
     CardLayout c1 = new CardLayout();
 
     // then the other variables that we needed.
@@ -56,6 +61,9 @@ public class Application extends JPanel {
     private JTextField textField_1;
     private JTextField textField_2;
     private JTextField textField_3;
+    private JTextField amountTextF;
+
+
 
 
 
@@ -136,6 +144,9 @@ public class Application extends JPanel {
                     System.err.println("LOGGED IN");
                     // we have to use the methods from login before.
                     // have to show the third panel from here.
+                    // once we figure out login
+                    // user panel is\
+                    // c1.show(panelCont, "4");
                     c1.show(panelCont,"3");
 
                 }
@@ -354,6 +365,161 @@ public class Application extends JPanel {
         textPane.setToolTipText("MESSEGE CENTER");
         textPane.setText("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n                                                                                                                                      ");
     }
+    public void createUserActPanel(){
+        fourthpanel = new JPanel();
+        // row, col
+        fourthpanel.setLayout(new GridLayout(4,3));
+
+        JPanel depPanel = new JPanel();
+        fourthpanel.add(depPanel);
+
+        JButton depositBtn = new JButton("DEPOSIT");
+        depPanel.add(depositBtn);
+
+        JLabel amountLbl = new JLabel("AMOUNT:");
+        depPanel.add(amountLbl);
+
+        amountTextF = new JTextField();
+        amountTextF.setText("$");
+        depPanel.add(amountTextF);
+        amountTextF.setColumns(10);
+
+        JLabel toLbl = new JLabel("TO:");
+        depPanel.add(toLbl);
+
+        JList list1 = new JList();
+        list1.setModel(new AbstractListModel() {
+            String[] values = new String[] {"Savings", "Checking", "Credit"};
+            public int getSize() {
+                return values.length;
+            }
+            public Object getElementAt(int index) {
+                return values[index];
+            }
+        });
+        depPanel.add(list1);
+
+        JLabel fromLbl = new JLabel("FROM:");
+        depPanel.add(fromLbl);
+
+        JList list2 = new JList();
+        list2.setModel(new AbstractListModel() {
+            String[] values = new String[] {"Savings", "Checking", "Credit"};
+            public int getSize() {
+                return values.length;
+            }
+            public Object getElementAt(int index) {
+                return values[index];
+            }
+        });
+        depPanel.add(list2);
+
+        JPanel withPanel = new JPanel();
+        fourthpanel.add(withPanel);
+
+        JButton withdrawBtn = new JButton("WITHDRAW");
+        withdrawBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+            }
+        });
+        withPanel.add(withdrawBtn);
+
+        JLabel amntLbl = new JLabel("AMOUNT:");
+        withPanel.add(amntLbl);
+
+        textField = new JTextField();
+        textField.setText("$");
+        withPanel.add(textField);
+        textField.setColumns(10);
+
+        JLabel lblNewLabel_1 = new JLabel("TO:");
+        withPanel.add(lblNewLabel_1);
+
+        JList list3 = new JList();
+        list3.setModel(new AbstractListModel() {
+            String[] values = new String[] {"Savings", "Checking", "Credit"};
+            public int getSize() {
+                return values.length;
+            }
+            public Object getElementAt(int index) {
+                return values[index];
+            }
+        });
+        withPanel.add(list3);
+
+        JLabel lblNewLabel_2 = new JLabel("FROM:");
+        withPanel.add(lblNewLabel_2);
+
+        JList list4 = new JList();
+        list4.setModel(new AbstractListModel() {
+            String[] values = new String[] {"Savings", "Checking", "Credit"};
+            public int getSize() {
+                return values.length;
+            }
+            public Object getElementAt(int index) {
+                return values[index];
+            }
+        });
+        withPanel.add(list4);
+
+        JPanel TranPanel = new JPanel();
+        fourthpanel.add(TranPanel);
+
+        JButton tranBtn = new JButton("TRANSFER");
+        tranBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        TranPanel.add(tranBtn);
+
+        JLabel lblNewLabel = new JLabel("AMOUNT:");
+        TranPanel.add(lblNewLabel);
+
+        textField_1 = new JTextField();
+        textField_1.setText("$");
+        TranPanel.add(textField_1);
+        textField_1.setColumns(10);
+
+        JLabel lblNewLabel_3 = new JLabel("TO:");
+        TranPanel.add(lblNewLabel_3);
+
+        JList list5 = new JList();
+        list5.setModel(new AbstractListModel() {
+            String[] values = new String[] {"Savings", "Checking", "Credit"};
+            public int getSize() {
+                return values.length;
+            }
+            public Object getElementAt(int index) {
+                return values[index];
+            }
+        });
+        TranPanel.add(list5);
+
+        JLabel lblNewLabel_4 = new JLabel("FROM:");
+        TranPanel.add(lblNewLabel_4);
+
+        JList list6 = new JList();
+        list6.setModel(new AbstractListModel() {
+            String[] values = new String[] {"Savings", "Checking", "Credit"};
+            public int getSize() {
+                return values.length;
+            }
+            public Object getElementAt(int index) {
+                return values[index];
+            }
+        });
+        TranPanel.add(list6);
+
+        JPanel panel = new JPanel();
+        fourthpanel.add(panel);
+
+        JTextArea textArea = new JTextArea();
+        textArea.setColumns(52);
+        textArea.setRows(3);
+        panel.add(textArea);
+    }
+
+
 
 
 
@@ -372,6 +538,7 @@ public class Application extends JPanel {
         panelCont.add(firstpanel, "1");
         panelCont.add(secondpanel, "2");
         panelCont.add(thirdpanel, "3");
+        panelCont.add(fourthpanel, "4");
         // this is what panel we want to show right away.
         c1.show(panelCont, "1");
         // finally add it to the frame.
