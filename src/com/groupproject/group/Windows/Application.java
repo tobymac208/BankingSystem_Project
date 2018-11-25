@@ -532,6 +532,7 @@ public class Application extends JPanel {
         CreateLoginPanel();
         CreateAccountPanel();
         CreateManagerPanel();
+        createUserActPanel();
         // everything gets added to here now panel wise. we just have to give it the attributes we did
         panelCont.setLayout(c1);
         // we have to finally add this panel to the panelCont.
