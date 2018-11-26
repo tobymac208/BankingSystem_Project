@@ -62,14 +62,10 @@ public class Application extends JPanel {
     private JTextField textField_2;
     private JTextField textField_3;
     private JTextField textField_4;
-    private JTextField amountTextF;
+    private JTextField amountTextField;
 
-
-
-
-
-
-    public void CreateLoginPanel() {
+    public void LoginPanel() {
+        // TODO: Check if user a manager or a user account with LoginAccount variable
         // all of this is now from the login menu itself and can be created using the building tool and we can hook it up from there
         JPanel panel = new JPanel();
         firstpanel = new JPanel();
@@ -90,6 +86,11 @@ public class Application extends JPanel {
         lblNewLabel_2.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_1.add(lblNewLabel_2);
 
+        // This label is to alert the user if something worked or not
+        JLabel successMessage = new JLabel("");
+        successMessage.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_1.add(successMessage); // add the label
+
         JPanel panel_2 = new JPanel();
         firstpanel.add(panel_2, BorderLayout.CENTER);
         panel_2.setLayout(new BorderLayout(0, 0));
@@ -101,6 +102,11 @@ public class Application extends JPanel {
 
         JPanel panel_3 = new JPanel();
         panel_2.add(panel_3, BorderLayout.SOUTH);
+
+        JCheckBox isAdminCheckbox = new JCheckBox("admin");
+        isAdminCheckbox.setBackground(Color.LIGHT_GRAY);
+        isAdminCheckbox.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_3.add(isAdminCheckbox);
 
         JLabel lblNewLabel_4 = new JLabel("USERNAME:");
         lblNewLabel_4.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 11));
@@ -120,35 +126,42 @@ public class Application extends JPanel {
         JButton btnNewButton = new JButton("LOGIN");
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == btnNewButton) {
-                    // TODO: WE NEED TO FIGURE THIS BUG OUT HERE AND PROPERLY CALL cl.show(panelCont, "3");
-                    // also since we dont have the gui for the user account yet can we place a comment
-                    // with the call cl.show(panelCont, "#"); #indicates what frame will show next.
-                    String username = textField.getText();
-                    String password = passwordField.getSelectedText();
-                    if (managerAccount.getUserAccounts().findByUsername(username) !=null || managerAccount.getUsername().equals(username)){
-                        // username found either user or manager
-                        System.out.println("Logged IN");
-                        if (managerAccount.getUserAccounts().findByUsername(password) != null || managerAccount.getPassword().equals(password)) {
-                            // password matches either user or manager
-                            System.out.println("LOGGED IN");
-                            if(managerAccount.getUserAccounts().findByUsername(username) !=null)
-                                currentAccountOpen = managerAccount.getUserAccounts().findByUsername(username);
-
-                            else{
-                                if(managerAccount.getUsername().equals(username)){
-                                    c1.show(panelCont, "3");
+                if (e.getSource() == btnNewButton) { // they btnNew was clicked
+                    // there is no manager account yet
+                    if(managerAccount == null){
+                        successMessage.setText("Login failed. No manager account exists.");
+                    }
+                    // The manager account is not null
+                    else{
+                        String username = textField.getText(), password = passwordField.getSelectedText();
+                        if(isAdminCheckbox.isSelected()){ // try to login the administrator
+                            if(managerAccount.getUsername().equals(username) && managerAccount.getPassword().equals(password)){
+                                c1.show(panelCont, "3");
+                                successMessage.setText("Login successful! Manager logged in.");
+                            }
+                        // login a user account
+                        }else{
+                            // TODO: WE NEED TO FIGURE THIS BUG OUT HERE AND PROPERLY CALL cl.show(panelCont, "3");
+                            // also since we dont have the gui for the user account yet can we place a comment
+                            // with the call cl.show(panelCont, "#"); #indicates what frame will show next.
+                            if (managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
+                                // username found
+                                UserAccount accountLoggingIn = managerAccount.findByUsername(username);
+                                if (accountLoggingIn.getPassword().equals(password)) { // password is the same
+                                    currentAccountOpen = managerAccount.findByUsername(username); // login the user
+                                    successMessage.setText("Account logged in.");
+                                    c1.show(panelCont, "4");
                                 }
                             }
                         }
+//                        System.err.println("LOGGED IN");
+//                        // we have to use the methods from login before.
+//                        // have to show the third panel from here.
+//                        // once we figure out login
+//                        // user panel is
+//                        // c1.show(panelCont, "4");
+//                        c1.show(panelCont,"3");
                     }
-                    System.err.println("LOGGED IN");
-                    // we have to use the methods from login before.
-                    // have to show the third panel from here.
-                    // once we figure out login
-                    // user panel is\
-                    // c1.show(panelCont, "4");
-                    c1.show(panelCont,"3");
 
                 }
             }
@@ -247,16 +260,10 @@ public class Application extends JPanel {
         panel_7.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
         panel_1.add(panel_7);
 
-        JCheckBox chckbxNewCheckBox_2 = new JCheckBox("CHECKING ACCT");
-        chckbxNewCheckBox_2.setBackground(Color.LIGHT_GRAY);
-        chckbxNewCheckBox_2.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel_7.add(chckbxNewCheckBox_2);
-
-        JCheckBox chckbxNewCheckBox_3 = new JCheckBox("SAVINGS ACCT");
-        chckbxNewCheckBox_3.setBackground(Color.LIGHT_GRAY);
-        chckbxNewCheckBox_3.setForeground(Color.BLACK);
-        chckbxNewCheckBox_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel_7.add(chckbxNewCheckBox_3);
+        JCheckBox chckbxNewCheckBox_1 = new JCheckBox("CREDIT ACCOUNT");
+        chckbxNewCheckBox_1.setBackground(Color.LIGHT_GRAY);
+        chckbxNewCheckBox_1.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_7.add(chckbxNewCheckBox_1);
 
         JPanel panel_8 = new JPanel();
         panel_1.add(panel_8);
@@ -279,33 +286,13 @@ public class Application extends JPanel {
                     int age2 = Integer.parseInt(age);
                     // create user account and then add each account type that they specify on wanting.
                     // create a new account
-                    UserAccount newAccount = new UserAccount(firstName,lastName,age2,userName,password,false);
+                    boolean hasCreditAccount = chckbxNewCheckBox_1.isSelected();
+                    UserAccount newAccount = new UserAccount(firstName, lastName, age2, userName, password, hasCreditAccount);
                     // add it to the ManagerAccount object
-                      managerAccount.addUser(newAccount);
-                      System.out.println("Added"+ newAccount.getUsername());
+                    managerAccount.addUser(newAccount);
+                    System.out.println("Added: " + newAccount.getUsername());
                     // save settings
-                    //saveSettings();
-
-                        // could also be checkBox
-                    if(chckbxNewCheckBox_2.isSelected()){
-
-                        // create the checking account
-                        // we are putting this line here for push.
-
-
-                    }
-
-                    // could also be checkBox 2
-                    if(chckbxNewCheckBox_3.isSelected()){
-                        // create the savings account
-
-                    }
-
-
-
-
-
-
+                    saveSettings();
                 }
             }
 
@@ -324,7 +311,7 @@ public class Application extends JPanel {
         panel_6.add(lblNewLabel_1);
     }
 
-    public void CreateManagerPanel(){
+    public void ManagerPanel(){
         thirdpanel = new JPanel();
         thirdpanel.setBackground(Color.LIGHT_GRAY);
         thirdpanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -417,7 +404,8 @@ public class Application extends JPanel {
         textPane.setToolTipText("MESSEGE CENTER");
         textPane.setText("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n                                                                                                                                      ");
     }
-    public void createUserActPanel(){
+
+    public void UserActPanel(){
         fourthpanel = new JPanel();
         // row, col
         fourthpanel.setLayout(new GridLayout(4,3));
@@ -431,10 +419,10 @@ public class Application extends JPanel {
         JLabel amountLbl = new JLabel("AMOUNT:");
         depPanel.add(amountLbl);
 
-        amountTextF = new JTextField();
-        amountTextF.setText("$");
-        depPanel.add(amountTextF);
-        amountTextF.setColumns(10);
+        amountTextField = new JTextField();
+        amountTextField.setText("$");
+        depPanel.add(amountTextField);
+        amountTextField.setColumns(10);
 
         JLabel toLbl = new JLabel("TO:");
         depPanel.add(toLbl);
@@ -571,20 +559,15 @@ public class Application extends JPanel {
         panel.add(textArea);
     }
 
-
-
-
-
     /**
      * WE LAUNCH THE APPLICATION HERE AND EVERYTHING NEEDS TO BE CALLED AND ADDED HERE
      **/
     public Application() {
-
         // call panels here
-        CreateLoginPanel();
+        LoginPanel();
         CreateAccountPanel();
-        CreateManagerPanel();
-        createUserActPanel();
+        ManagerPanel();
+        UserActPanel();
         // everything gets added to here now panel wise. we just have to give it the attributes we did
         panelCont.setLayout(c1);
         // we have to finally add this panel to the panelCont.
@@ -605,8 +588,6 @@ public class Application extends JPanel {
     }
 
     public static void main(String[] args) {
-
-
         EventQueue.invokeLater(new Runnable() {
 
             @Override
@@ -638,11 +619,4 @@ public class Application extends JPanel {
             System.out.println("*saved settings*");
         }
     }
-
 }
-
-
-
-
-
-

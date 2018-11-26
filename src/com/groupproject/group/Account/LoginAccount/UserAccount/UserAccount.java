@@ -26,7 +26,7 @@ public class UserAccount extends LoginAccount implements Serializable {
 
     public UserAccount(String firstName, String lastName, int age, String username, String password, boolean creditAccountFlag){
         // Call super class constructor
-        super(firstName, lastName, age, username, password, 1);
+        super(firstName, lastName, age, username, password);
         this.balance = 0.0; // we don't set this by default, because this is the overall total of all of the accounts
         this.savingsAccount = new SavingsBankingAccount();
         this.checkingAccount = new CheckingBankingAccount();

@@ -353,7 +353,7 @@ public class Main {
             createManager();
         }
 
-
+        saveSettings(); // save the settings
         return theManager; // may return null or a filled ManagerAccount object.
     }
 
