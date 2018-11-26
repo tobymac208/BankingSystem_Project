@@ -55,8 +55,6 @@ public class Application extends JPanel {
     CardLayout c1 = new CardLayout();
 
     // then the other variables that we needed.
-    private JTextField usernameTextField;
-    private JPasswordField passwordField;
     private JTextField textField_1;
     private JTextField textField_2;
     private JTextField textField_3;
@@ -72,10 +70,10 @@ public class Application extends JPanel {
         firstpanel.setLayout(new BorderLayout(0, 0));
         firstpanel.add(panel, BorderLayout.NORTH);
 
-        JLabel lblNewLabel = new JLabel("BANKING PORTAL");
-        lblNewLabel.setBackground(Color.BLACK);
-        lblNewLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel.add(lblNewLabel);
+        JLabel titleLabel = new JLabel("BANKING PORTAL");
+        titleLabel.setBackground(Color.BLACK);
+        titleLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel.add(titleLabel);
 
         JPanel panel_1 = new JPanel();
         firstpanel.add(panel_1, BorderLayout.SOUTH);
@@ -110,14 +108,14 @@ public class Application extends JPanel {
         usernameLabel.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 11));
         panel_3.add(usernameLabel);
 
-        usernameTextField = new JTextField(10);
-        panel_3.add(usernameTextField);
+        JTextField usernameField = new JTextField(10);
+        panel_3.add(usernameField);
 
         JLabel passwordLabel = new JLabel("PASSWORD:");
         passwordLabel.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 11));
         panel_3.add(passwordLabel);
 
-        passwordField = new JPasswordField(10);
+        JPasswordField passwordField = new JPasswordField(10);
         panel_3.add(passwordField);
 
         JButton loginButton = new JButton("LOGIN");
@@ -130,7 +128,7 @@ public class Application extends JPanel {
                     }
                     // The manager account is not null
                     else{
-                        String username = usernameTextField.getText(), password = passwordField.getText();
+                        String username = usernameField.getText(), password = passwordField.getText();
                         if(isAdminCheckbox.isSelected()){ // try to login the administrator
                             System.err.println("DEBUG CODE: Checkbox was selected.");
                             System.err.println("DEBUG CODE: Username: " + managerAccount.getUsername() + " password: " + managerAccount.getPassword());
@@ -207,7 +205,7 @@ public class Application extends JPanel {
         lblNewLabel_2.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_3.add(lblNewLabel_2);
 
-        usernameTextField = new JTextField();
+        JTextField usernameTextField = new JTextField();
         panel_3.add(usernameTextField);
         usernameTextField.setColumns(10);
 
@@ -367,7 +365,7 @@ public class Application extends JPanel {
         usernameLbl.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_3.add(usernameLbl);
 
-        usernameTextField = new JTextField();
+        JTextField usernameTextField = new JTextField();
         panel_3.add(usernameTextField);
         usernameTextField.setColumns(10);
 
@@ -460,7 +458,7 @@ public class Application extends JPanel {
         JLabel amntLbl = new JLabel("AMOUNT:");
         withPanel.add(amntLbl);
 
-        usernameTextField = new JTextField();
+        JTextField usernameTextField = new JTextField();
         usernameTextField.setText("$");
         withPanel.add(usernameTextField);
         usernameTextField.setColumns(10);
