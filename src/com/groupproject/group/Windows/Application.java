@@ -182,8 +182,8 @@ public class Application extends JPanel {
         panel_3.add(lblNewLabel_2);
 
         JTextField usernameTextField = new JTextField();
-        panel_3.add(usernameTextField);
         usernameTextField.setColumns(10);
+        panel_3.add(usernameTextField);
 
         JLabel lblNewLabel_3 = new JLabel("LAST-NAME");
         lblNewLabel_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
@@ -241,8 +241,7 @@ public class Application extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
-                if(usernameTextField.getText()!=null && textField_1.getText()!=null && textField_2.getText()!=null && textField_3.getText()!=null && textField_4.getText()!=null)
-                {
+                if(usernameTextField.getText()!=null && textField_1.getText()!=null && textField_2.getText()!=null && textField_3.getText()!=null && textField_4.getText()!=null) {
                     // if the fields are not null we are going to expect that they have entered the information correctly
                     // create temp variables to create user.
                     String firstName = usernameTextField.getText();
@@ -267,11 +266,27 @@ public class Application extends JPanel {
                     }
                 }
             }
-
         });
-        panel_8.add(btnNewButton);
         btnNewButton.setBackground(Color.LIGHT_GRAY);
         btnNewButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_8.add(btnNewButton);
+
+        JButton cancelButton = new JButton("CANCEL");
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                c1.show(panelCont, "managerAccount");
+                // empty all of the text fields
+                usernameTextField.setText("");
+                textField_1.setText("");
+                textField_2.setText("");
+                textField_3.setText("");
+                textField_4.setText("");
+            }
+        });
+        cancelButton.setBackground(Color.LIGHT_GRAY);
+        cancelButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_8.add(cancelButton);
 
         JPanel panel_6 = new JPanel();
         panel_1.add(panel_6);
@@ -357,20 +372,27 @@ public class Application extends JPanel {
         panel_3.add(usernameLbl);
 
         JTextField usernameTextField = new JTextField();
-        panel_3.add(usernameTextField);
         usernameTextField.setColumns(10);
+        panel_3.add(usernameTextField);
 
         JLabel lblNewLabel_2 = new JLabel("RE-ENTER");
         lblNewLabel_2.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_3.add(lblNewLabel_2);
 
-        textField_1 = new JTextField();
-        panel_3.add(textField_1);
-        textField_1.setColumns(10);
+        JTextField usernameReEnterField = new JTextField();
+        usernameReEnterField.setColumns(10);
+        panel_3.add(usernameReEnterField);
 
-        JButton btnNewButton = new JButton("SEARCH");
-        btnNewButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel_3.add(btnNewButton);
+        JButton searchButton = new JButton("SEARCH");
+        searchButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // search for a user
+                String usernameToSearchFor = usernameTextField.getText();
+                // TODO: Finish this
+            }
+        });
+        searchButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_3.add(searchButton);
 
         JButton btnNewButton_1 = new JButton("CLEAR");
         btnNewButton_1.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
