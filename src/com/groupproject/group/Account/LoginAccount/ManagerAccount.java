@@ -18,8 +18,8 @@ public class ManagerAccount extends LoginAccount {
     }
 
     /** Add a user, given a user account object. */
-    public void addUser(UserAccount account){
-        userAccounts.add(account);
+    public boolean addUser(UserAccount account){
+        return userAccounts.add(account);
     }
     /** Returns an account if it exists, by username, in the manager account's list of UserAccount objects.
      * Pre-condition: Pass in a valid string.

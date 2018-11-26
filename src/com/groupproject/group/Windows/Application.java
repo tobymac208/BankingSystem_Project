@@ -33,7 +33,6 @@ import javax.swing.JTextArea;
 
 import static com.groupproject.group.Main.createManager;
 
-
 public class Application extends JPanel {
      //private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password"); -- here for testing purposes
     private static ManagerAccount managerAccount;
@@ -48,10 +47,10 @@ public class Application extends JPanel {
      * 1st panel will store the remaining panels.
      */
     JPanel panelCont = new JPanel();
-    private JPanel firstpanel;
-    private JPanel secondpanel;
-    private JPanel thirdpanel;
-    private JPanel fourthpanel;
+    private JPanel loginPanel; // 1st
+    private JPanel createAccountPanel; // 2nd
+    private JPanel managerAccountPanel; // 3rd
+    private JPanel userAccountPanel; // 4th
     CardLayout c1 = new CardLayout();
 
     // then the other variables that we needed.
@@ -64,11 +63,11 @@ public class Application extends JPanel {
     public void LoginPanel() {
         // all of this is now from the login menu itself and can be created using the building tool and we can hook it up from there
         JPanel panel = new JPanel();
-        firstpanel = new JPanel();
-        firstpanel = new JPanel();
-        firstpanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        firstpanel.setLayout(new BorderLayout(0, 0));
-        firstpanel.add(panel, BorderLayout.NORTH);
+        loginPanel = new JPanel();
+        loginPanel = new JPanel();
+        loginPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        loginPanel.setLayout(new BorderLayout(0, 0));
+        loginPanel.add(panel, BorderLayout.NORTH);
 
         JLabel titleLabel = new JLabel("BANKING PORTAL");
         titleLabel.setBackground(Color.BLACK);
@@ -76,7 +75,7 @@ public class Application extends JPanel {
         panel.add(titleLabel);
 
         JPanel panel_1 = new JPanel();
-        firstpanel.add(panel_1, BorderLayout.SOUTH);
+        loginPanel.add(panel_1, BorderLayout.SOUTH);
 
         JLabel lblNewLabel_2 = new JLabel("DATE AND TIME/VERSION");
         lblNewLabel_2.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
@@ -88,7 +87,7 @@ public class Application extends JPanel {
         panel_1.add(successMessage); // add the label
 
         JPanel panel_2 = new JPanel();
-        firstpanel.add(panel_2, BorderLayout.CENTER);
+        loginPanel.add(panel_2, BorderLayout.CENTER);
         panel_2.setLayout(new BorderLayout(0, 0));
 
         JLabel lblNewLabel_3 = new JLabel("");
@@ -99,10 +98,10 @@ public class Application extends JPanel {
         JPanel panel_3 = new JPanel();
         panel_2.add(panel_3, BorderLayout.SOUTH);
 
-        JCheckBox isAdminCheckbox = new JCheckBox("admin");
-        isAdminCheckbox.setBackground(Color.LIGHT_GRAY);
-        isAdminCheckbox.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel_3.add(isAdminCheckbox);
+        JCheckBox isManagerCheckbox = new JCheckBox("manager");
+        isManagerCheckbox.setBackground(Color.LIGHT_GRAY);
+        isManagerCheckbox.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_3.add(isManagerCheckbox);
 
         JLabel usernameLabel = new JLabel("USERNAME:");
         usernameLabel.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 11));
@@ -126,23 +125,16 @@ public class Application extends JPanel {
                     if(managerAccount == null){
                         successMessage.setText("Login failed. No manager account exists.");
                     }
-                    // The manager account is not null
+                    // The manager account is not null -- try to log them in
                     else{
                         String username = usernameField.getText(), password = passwordField.getText();
-                        if(isAdminCheckbox.isSelected()){ // try to login the administrator
-                            System.err.println("DEBUG CODE: Checkbox was selected.");
-                            System.err.println("DEBUG CODE: Username: " + managerAccount.getUsername() + " password: " + managerAccount.getPassword());
-                            System.err.println("DEBUG CODE: Username: " + username + " password: " + password);
+                        if(isManagerCheckbox.isSelected()){ // try to login the administrator
                             if(managerAccount.getUsername().equals(username) && managerAccount.getPassword().equals(password)){
-                                System.err.println("DEBUG CODE: This was true.");
                                 c1.show(panelCont, "3");
                                 successMessage.setText("Login successful! Manager logged in.");
                             }
                         // login a user account
                         }else{
-                            // TODO: WE NEED TO FIGURE THIS BUG OUT HERE AND PROPERLY CALL cl.show(panelCont, "3");
-                            // also since we dont have the gui for the user account yet can we place a comment
-                            // with the call cl.show(panelCont, "#"); #indicates what frame will show next.
                             if (managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
                                 // username found
                                 UserAccount accountLoggingIn = managerAccount.findByUsername(username);
@@ -161,37 +153,36 @@ public class Application extends JPanel {
         loginButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_3.add(loginButton);
 
-        JButton createAccountButton = new JButton("CREATE");
-        createAccountButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // we are going to open the other GUI after we verify CREATE has been clicked.
-                // well we need to use this.dispose() to close previous GUI's
-                if (e.getSource() == createAccountButton) {
-                    // Similar Catch/Block statement used in main to intially launch the application.
-                    c1.show(panelCont, "2");
-                }
-            }
-        });
-
-        createAccountButton.setBackground(Color.LIGHT_GRAY);
-        createAccountButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel_3.add(createAccountButton);
+//        JButton createAccountButton = new JButton("CREATE");
+//        createAccountButton.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                // we are going to open the other GUI after we verify CREATE has been clicked.
+//                // well we need to use this.dispose() to close previous GUI's
+//                if (e.getSource() == createAccountButton) {
+//                    // Similar Catch/Block statement used in main to intially launch the application.
+//                    c1.show(panelCont, "2");
+//                }
+//            }
+//        });
+//        createAccountButton.setBackground(Color.LIGHT_GRAY);
+//        createAccountButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+//        panel_3.add(createAccountButton);
     }
 
     public void CreateAccountPanel() {
-        secondpanel = new JPanel();
-        secondpanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        secondpanel.setLayout(new BorderLayout(0, 0));
+        createAccountPanel = new JPanel();
+        createAccountPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        createAccountPanel.setLayout(new BorderLayout(0, 0));
 
         JPanel panel = new JPanel();
-        secondpanel.add(panel, BorderLayout.NORTH);
+        createAccountPanel.add(panel, BorderLayout.NORTH);
 
         JLabel lblNewLabel = new JLabel("WELCOME NEW-USER");
         lblNewLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel.add(lblNewLabel);
 
         JPanel panel_1 = new JPanel();
-        secondpanel.add(panel_1, BorderLayout.CENTER);
+        createAccountPanel.add(panel_1, BorderLayout.CENTER);
         // rows ,cols
         panel_1.setLayout(new GridLayout(5, 2));
 
@@ -209,7 +200,7 @@ public class Application extends JPanel {
         panel_3.add(usernameTextField);
         usernameTextField.setColumns(10);
 
-        JLabel lblNewLabel_3 = new JLabel(" LAST-NAME");
+        JLabel lblNewLabel_3 = new JLabel("LAST-NAME");
         lblNewLabel_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_3.add(lblNewLabel_3);
 
@@ -280,10 +271,15 @@ public class Application extends JPanel {
                     boolean hasCreditAccount = chckbxNewCheckBox_1.isSelected();
                     UserAccount newAccount = new UserAccount(firstName, lastName, age2, userName, password, hasCreditAccount);
                     // add it to the ManagerAccount object
-                    managerAccount.addUser(newAccount);
-                    System.out.println("Added: " + newAccount.getUsername());
-                    // save settings
-                    saveSettings();
+                    boolean accountAdded = managerAccount.addUser(newAccount);
+                    if(accountAdded){
+                        System.out.println("Added: " + newAccount.getUsername());
+                        // save settings
+                        saveSettings();
+                        c1.show(panelCont, "2"); // go back to the manager account panel
+                    }else{
+                        System.err.println("Account failed to add.");
+                    }
                 }
             }
 
@@ -303,45 +299,55 @@ public class Application extends JPanel {
     }
 
     public void ManagerPanel(){
-        thirdpanel = new JPanel();
-        thirdpanel.setBackground(Color.LIGHT_GRAY);
-        thirdpanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        thirdpanel.setLayout(new BorderLayout(0, 0));
-
+        managerAccountPanel = new JPanel();
+        managerAccountPanel.setBackground(Color.LIGHT_GRAY);
+        managerAccountPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        managerAccountPanel.setLayout(new BorderLayout(0, 0));
 
         JLabel headerLabel = new JLabel("MANAGER ACCOUNT\r\n");
         headerLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         headerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        thirdpanel.add(headerLabel, BorderLayout.NORTH);
+        managerAccountPanel.add(headerLabel, BorderLayout.NORTH);
 
         JLabel footerLabel = new JLabel("VERSION 1.08\r\n");
         footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        thirdpanel.add(footerLabel, BorderLayout.SOUTH);
+        managerAccountPanel.add(footerLabel, BorderLayout.SOUTH);
 
-        JPanel mangerControlPanel = new JPanel();
-        mangerControlPanel.setBackground(Color.LIGHT_GRAY);
-        thirdpanel.add(mangerControlPanel, BorderLayout.WEST);
+        JPanel managerControlPanel = new JPanel();
+        managerControlPanel.setBackground(Color.LIGHT_GRAY);
+        managerAccountPanel.add(managerControlPanel, BorderLayout.WEST);
         // 3 rows 1 col
-        mangerControlPanel.setLayout(new GridLayout(6,1));
+        managerControlPanel.setLayout(new GridLayout(6,1));
 
         JButton addBtn = new JButton("ADD-USER");
+        addBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // we are going to open the other GUI after we verify CREATE has been clicked.
+                // well we need to use this.dispose() to close previous GUI's
+                if (e.getSource() == addBtn) {
+                    // Similar catch block statement used in main to initially launch the application.
+                    c1.show(panelCont, "2");
+                }
+            }
+        });
+        addBtn.setBackground(Color.LIGHT_GRAY);
         addBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        mangerControlPanel.add(addBtn);
+        managerControlPanel.add(addBtn);
 
         JButton removeBtn = new JButton("REMOVE-USER");
         removeBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        mangerControlPanel.add(removeBtn);
+        managerControlPanel.add(removeBtn);
 
         JButton historyBtn = new JButton("USER-HISTORY");
         historyBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        mangerControlPanel.add(historyBtn);
+        managerControlPanel.add(historyBtn);
 
         JButton transBtn = new JButton("TRANSACTIONS");
         transBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        mangerControlPanel.add(transBtn);
+        managerControlPanel.add(transBtn);
 
         JPanel panel = new JPanel();
-        thirdpanel.add(panel, BorderLayout.CENTER);
+        managerAccountPanel.add(panel, BorderLayout.CENTER);
         panel.setLayout(new BorderLayout(0, 0));
 
         JPanel footpanel = new JPanel();
@@ -397,12 +403,12 @@ public class Application extends JPanel {
     }
 
     public void UserActPanel(){
-        fourthpanel = new JPanel();
+        userAccountPanel = new JPanel();
         // row, col
-        fourthpanel.setLayout(new GridLayout(4,3));
+        userAccountPanel.setLayout(new GridLayout(4,3));
 
         JPanel depPanel = new JPanel();
-        fourthpanel.add(depPanel);
+        userAccountPanel.add(depPanel);
 
         JButton depositBtn = new JButton("DEPOSIT");
         depPanel.add(depositBtn);
@@ -446,7 +452,7 @@ public class Application extends JPanel {
         depPanel.add(list2);
 
         JPanel withPanel = new JPanel();
-        fourthpanel.add(withPanel);
+        userAccountPanel.add(withPanel);
 
         JButton withdrawBtn = new JButton("WITHDRAW");
         withdrawBtn.addActionListener(new ActionListener() {
@@ -494,7 +500,7 @@ public class Application extends JPanel {
         withPanel.add(list4);
 
         JPanel TranPanel = new JPanel();
-        fourthpanel.add(TranPanel);
+        userAccountPanel.add(TranPanel);
 
         JButton tranBtn = new JButton("TRANSFER");
         tranBtn.addActionListener(new ActionListener() {
@@ -542,7 +548,7 @@ public class Application extends JPanel {
         TranPanel.add(list6);
 
         JPanel panel = new JPanel();
-        fourthpanel.add(panel);
+        userAccountPanel.add(panel);
 
         JTextArea textArea = new JTextArea();
         textArea.setColumns(52);
@@ -562,10 +568,10 @@ public class Application extends JPanel {
         // everything gets added to here now panel wise. we just have to give it the attributes we did
         panelCont.setLayout(c1);
         // we have to finally add this panel to the panelCont.
-        panelCont.add(firstpanel, "1");
-        panelCont.add(secondpanel, "2");
-        panelCont.add(thirdpanel, "3");
-        panelCont.add(fourthpanel, "4");
+        panelCont.add(loginPanel, "1");
+        panelCont.add(createAccountPanel, "2");
+        panelCont.add(managerAccountPanel, "3");
+        panelCont.add(userAccountPanel, "4");
         // this is what panel we want to show right away.
         c1.show(panelCont, "1");
         // finally add it to the frame.
