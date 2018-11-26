@@ -130,7 +130,7 @@ public class Application extends JPanel {
                         String username = usernameField.getText(), password = passwordField.getText();
                         if(isManagerCheckbox.isSelected()){ // try to login the administrator
                             if(managerAccount.getUsername().equals(username) && managerAccount.getPassword().equals(password)){
-                                c1.show(panelCont, "3");
+                                c1.show(panelCont, "managerAccount");
                                 successMessage.setText("Login successful! Manager logged in.");
                             }
                         // login a user account
@@ -141,7 +141,7 @@ public class Application extends JPanel {
                                 if (accountLoggingIn.getPassword().equals(password)) { // password is the same
                                     currentAccountOpen = managerAccount.findByUsername(username); // login the user
                                     successMessage.setText("Account logged in.");
-                                    c1.show(panelCont, "4");
+                                    c1.show(panelCont, "userAccount");
                                 }
                             }
                         }
@@ -152,21 +152,6 @@ public class Application extends JPanel {
         loginButton.setBackground(Color.LIGHT_GRAY);
         loginButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_3.add(loginButton);
-
-//        JButton createAccountButton = new JButton("CREATE");
-//        createAccountButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                // we are going to open the other GUI after we verify CREATE has been clicked.
-//                // well we need to use this.dispose() to close previous GUI's
-//                if (e.getSource() == createAccountButton) {
-//                    // Similar Catch/Block statement used in main to intially launch the application.
-//                    c1.show(panelCont, "2");
-//                }
-//            }
-//        });
-//        createAccountButton.setBackground(Color.LIGHT_GRAY);
-//        createAccountButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-//        panel_3.add(createAccountButton);
     }
 
     public void CreateAccountPanel() {
@@ -276,7 +261,7 @@ public class Application extends JPanel {
                         System.out.println("Added: " + newAccount.getUsername());
                         // save settings
                         saveSettings();
-                        c1.show(panelCont, "2"); // go back to the manager account panel
+                        c1.show(panelCont, "managerAccount"); // go back to the manager account panel
                     }else{
                         System.err.println("Account failed to add.");
                     }
@@ -326,7 +311,7 @@ public class Application extends JPanel {
                 // well we need to use this.dispose() to close previous GUI's
                 if (e.getSource() == addBtn) {
                     // Similar catch block statement used in main to initially launch the application.
-                    c1.show(panelCont, "2");
+                    c1.show(panelCont, "createAccount");
                 }
             }
         });
@@ -568,12 +553,12 @@ public class Application extends JPanel {
         // everything gets added to here now panel wise. we just have to give it the attributes we did
         panelCont.setLayout(c1);
         // we have to finally add this panel to the panelCont.
-        panelCont.add(loginPanel, "1");
-        panelCont.add(createAccountPanel, "2");
-        panelCont.add(managerAccountPanel, "3");
-        panelCont.add(userAccountPanel, "4");
+        panelCont.add(loginPanel, "login");
+        panelCont.add(createAccountPanel, "createAccount");
+        panelCont.add(managerAccountPanel, "managerAccount");
+        panelCont.add(userAccountPanel, "userAccount");
         // this is what panel we want to show right away.
-        c1.show(panelCont, "1");
+        c1.show(panelCont, "login");
         // finally add it to the frame.
         frame.getContentPane().add(panelCont);
 
