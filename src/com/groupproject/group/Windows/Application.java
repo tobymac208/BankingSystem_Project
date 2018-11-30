@@ -261,6 +261,8 @@ public class Application extends JPanel {
                         // save settings
                         saveSettings();
                         c1.show(panelCont, "managerAccount"); // go back to the manager account panel
+                        // TODO: SEE ME - if we take the textPane that we are using in the managerPanel and make it a global variable we may be able to let the manager know that the user has indeed been added.
+
                     }else{
                         System.err.println("Account failed to add.");
                     }
@@ -303,6 +305,7 @@ public class Application extends JPanel {
         managerAccountPanel.setBackground(Color.LIGHT_GRAY);
         managerAccountPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         managerAccountPanel.setLayout(new BorderLayout(0, 0));
+        JTextPane textPane = new JTextPane();
 
         JLabel headerLabel = new JLabel("MANAGER ACCOUNT\r\n");
         headerLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
@@ -388,24 +391,61 @@ public class Application extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 // search for a user
                 String usernameToSearchFor = usernameTextField.getText();
-                // TODO: Finish this
+                // TODO: Make sure that this is working and understood.
+                // make sure something is imputted here.
+                if(usernameTextField.getText() !=null && usernameReEnterField.getText() !=null){
+                    // make sure username is the same on both sides
+                    if(usernameTextField.getText().equals(usernameReEnterField.getText())){
+                        // perform the search.
+                        String username = usernameTextField.getText();
+                        if(username.equals(managerAccount.findByUsername(username))){
+                            // we have found the user.
+                            //display to textPane.
+                            textPane.setText("USER FOUND:" + username);
+
+
+                        }else{
+                            textPane.setText("USER WAS NOT FOUND");
+                            // clear the fields for the user
+                            usernameTextField.setText("");
+                            usernameReEnterField.setText("");
+                        }
+                    }else{
+                        textPane.setText("USERNAMES DO NOT MATCH TRY AGAIN!");
+                        // clear the fields for the user.
+                        usernameTextField.setText("");
+                        usernameReEnterField.setText("");
+                    }
+
+                }else{
+                    textPane.setText("PLEASE ENTER SOMETHING IN THE FIELDS!");
+                }
             }
         });
         searchButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_3.add(searchButton);
 
-        JButton btnNewButton_1 = new JButton("CLEAR");
-        btnNewButton_1.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel_3.add(btnNewButton_1);
+        JButton clrBtn = new JButton("CLEAR");
+        clrBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // clear all the fields.
+                usernameTextField.setText("");
+                usernameReEnterField.setText("");
+            }
+        });
+        clrBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_3.add(clrBtn);
 
         JPanel panel_5 = new JPanel();
         panel_5.setBackground(Color.LIGHT_GRAY);
         panel_2.add(panel_5);
 
-        JTextPane textPane = new JTextPane();
         textPane.setContentType("MESSEGE CENTER\r\n");
         panel_5.add(textPane);
         textPane.setToolTipText("MESSEGE CENTER");
+
+
         textPane.setText("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n                                                                                                                                      ");
     }
 
