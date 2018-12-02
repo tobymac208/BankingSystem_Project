@@ -44,11 +44,6 @@ class UserAccountListTest {
     }
 
     @Test
-    void add1() {
-        // TODO: Implement
-    }
-
-    @Test
     void findByUsername() {
         // TODO: Implement
     }
