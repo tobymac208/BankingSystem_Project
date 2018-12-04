@@ -1,34 +1,26 @@
 package com.groupproject.group.Windows;
 
+/**
+ * Description: This class contains all of the GUI's implementation. It is run using a Swing's CardLayout.
+ */
+
 import com.groupproject.group.Account.LoginAccount.ManagerAccount;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccount;
 import com.groupproject.group.Utility.FileOps;
 
 import java.awt.*;
 import java.util.Scanner;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.swing.*;
 
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.SoftBevelBorder;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import javax.swing.JTextPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.JTextArea;
 
 
 import static com.groupproject.group.Main.createManager;
@@ -46,12 +38,20 @@ public class Application extends JPanel {
      * Create the panel.
      * 1st panel will store the remaining panels.
      */
-    JPanel panelCont = new JPanel();
-    private JPanel loginPanel; // 1st
-    private JPanel createAccountPanel; // 2nd
-    private JPanel managerAccountPanel; // 3rd
-    private JPanel userAccountPanel; // 4th
+    private JPanel panelCont = new JPanel();
+    private JPanel login_Panel;
+    private JPanel createAccount_Panel;
+    private JPanel managerAccount_Panel;
+    private JPanel userAccount_Panel;
+    private JPanel removeUserAccount_Panel;
     CardLayout c1 = new CardLayout();
+
+    // Strings for all the panels
+    private final String loginPanel_title = "login";
+    private final String createAccountPanel_title = "createAccount";
+    private final String managerAccountPanel_title = "managerAccount";
+    private final String userAccountPanel_title = "userAccount";
+    private final String removeAccountPanel_title = "removeUserAccount";
 
     // then the other variables that we needed.
     private JTextField textField_1;
@@ -60,14 +60,44 @@ public class Application extends JPanel {
     private JTextField textField_4;
     private JTextField amountTextField;
 
+    /**
+     * WE LAUNCH THE APPLICATION HERE AND EVERYTHING NEEDS TO BE CALLED AND ADDED HERE
+     **/
+    public Application() {
+        // call panels here
+        LoginPanel();
+        CreateAccountPanel();
+        ManagerPanel();
+        UserActPanel();
+        removeUserAccountPanel();
+        // everything gets added to here now panel wise. we just have to give it the attributes we did
+        panelCont.setLayout(c1);
+        // we have to finally add this panel to the panelCont.
+        panelCont.add(login_Panel, loginPanel_title);
+        panelCont.add(createAccount_Panel, createAccountPanel_title);
+        panelCont.add(managerAccount_Panel, managerAccountPanel_title);
+        panelCont.add(userAccount_Panel, userAccountPanel_title);
+        panelCont.add(removeUserAccount_Panel, removeAccountPanel_title);
+        // this is what panel we want to show right away.
+        c1.show(panelCont, loginPanel_title);
+        // finally add it to the frame.
+        frame.getContentPane().add(panelCont);
+
+        //leave everything below this
+        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Application.class.getResource("/com/groupproject/group/Resources/Images/folder-red-java-icon.png")));
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
     public void LoginPanel() {
         // all of this is now from the login menu itself and can be created using the building tool and we can hook it up from there
         JPanel panel = new JPanel();
-        loginPanel = new JPanel();
-        loginPanel = new JPanel();
-        loginPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        loginPanel.setLayout(new BorderLayout(0, 0));
-        loginPanel.add(panel, BorderLayout.NORTH);
+        login_Panel = new JPanel();
+        login_Panel = new JPanel();
+        login_Panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        login_Panel.setLayout(new BorderLayout(0, 0));
+        login_Panel.add(panel, BorderLayout.NORTH);
 
         JLabel titleLabel = new JLabel("BANKING PORTAL");
         titleLabel.setBackground(Color.BLACK);
@@ -75,7 +105,7 @@ public class Application extends JPanel {
         panel.add(titleLabel);
 
         JPanel panel_1 = new JPanel();
-        loginPanel.add(panel_1, BorderLayout.SOUTH);
+        login_Panel.add(panel_1, BorderLayout.SOUTH);
 
         JLabel lblNewLabel_2 = new JLabel("DATE AND TIME/VERSION");
         lblNewLabel_2.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
@@ -87,7 +117,7 @@ public class Application extends JPanel {
         panel_1.add(successMessage); // add the label
 
         JPanel panel_2 = new JPanel();
-        loginPanel.add(panel_2, BorderLayout.CENTER);
+        login_Panel.add(panel_2, BorderLayout.CENTER);
         panel_2.setLayout(new BorderLayout(0, 0));
 
         JLabel lblNewLabel_3 = new JLabel("");
@@ -130,8 +160,10 @@ public class Application extends JPanel {
                         String username = usernameField.getText(), password = passwordField.getText();
                         if(isManagerCheckbox.isSelected()){ // try to login the administrator
                             if(managerAccount.getUsername().equals(username) && managerAccount.getPassword().equals(password)){
-                                c1.show(panelCont, "managerAccount");
+                                c1.show(panelCont, managerAccountPanel_title);
                                 successMessage.setText("Login successful! Manager logged in.");
+                                usernameField.setText("");
+                                passwordField.setText("");
                             }
                         // login a user account
                         }else{
@@ -141,7 +173,9 @@ public class Application extends JPanel {
                                 if (accountLoggingIn.getPassword().equals(password)) { // password is the same
                                     currentAccountOpen = managerAccount.findByUsername(username); // login the user
                                     successMessage.setText("Account logged in.");
-                                    c1.show(panelCont, "userAccount");
+                                    c1.show(panelCont, userAccountPanel_title);
+                                    usernameField.setText("");
+                                    passwordField.setText("");
                                 }
                             }
                         }
@@ -155,19 +189,19 @@ public class Application extends JPanel {
     }
 
     public void CreateAccountPanel() {
-        createAccountPanel = new JPanel();
-        createAccountPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        createAccountPanel.setLayout(new BorderLayout(0, 0));
+        createAccount_Panel = new JPanel();
+        createAccount_Panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        createAccount_Panel.setLayout(new BorderLayout(0, 0));
 
         JPanel panel = new JPanel();
-        createAccountPanel.add(panel, BorderLayout.NORTH);
+        createAccount_Panel.add(panel, BorderLayout.NORTH);
 
         JLabel lblNewLabel = new JLabel("WELCOME NEW-USER");
         lblNewLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel.add(lblNewLabel);
 
         JPanel panel_1 = new JPanel();
-        createAccountPanel.add(panel_1, BorderLayout.CENTER);
+        createAccount_Panel.add(panel_1, BorderLayout.CENTER);
         // rows ,cols
         panel_1.setLayout(new GridLayout(5, 2));
 
@@ -260,7 +294,7 @@ public class Application extends JPanel {
                         System.out.println("Added: " + newAccount.getUsername());
                         // save settings
                         saveSettings();
-                        c1.show(panelCont, "managerAccount"); // go back to the manager account panel
+                        c1.show(panelCont, managerAccountPanel_title); // go back to the manager account panel
                         // TODO: SEE ME - if we take the textPane that we are using in the managerPanel and make it a global variable we may be able to let the manager know that the user has indeed been added.
 
                     }else{
@@ -301,24 +335,24 @@ public class Application extends JPanel {
     }
 
     public void ManagerPanel(){
-        managerAccountPanel = new JPanel();
-        managerAccountPanel.setBackground(Color.LIGHT_GRAY);
-        managerAccountPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        managerAccountPanel.setLayout(new BorderLayout(0, 0));
+        managerAccount_Panel = new JPanel();
+        managerAccount_Panel.setBackground(Color.LIGHT_GRAY);
+        managerAccount_Panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        managerAccount_Panel.setLayout(new BorderLayout(0, 0));
         JTextPane textPane = new JTextPane();
 
         JLabel headerLabel = new JLabel("MANAGER ACCOUNT\r\n");
         headerLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         headerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        managerAccountPanel.add(headerLabel, BorderLayout.NORTH);
+        managerAccount_Panel.add(headerLabel, BorderLayout.NORTH);
 
         JLabel footerLabel = new JLabel("VERSION 1.08\r\n");
         footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        managerAccountPanel.add(footerLabel, BorderLayout.SOUTH);
+        managerAccount_Panel.add(footerLabel, BorderLayout.SOUTH);
 
         JPanel managerControlPanel = new JPanel();
         managerControlPanel.setBackground(Color.LIGHT_GRAY);
-        managerAccountPanel.add(managerControlPanel, BorderLayout.WEST);
+        managerAccount_Panel.add(managerControlPanel, BorderLayout.WEST);
         // 3 rows 1 col
         managerControlPanel.setLayout(new GridLayout(6,1));
 
@@ -329,15 +363,20 @@ public class Application extends JPanel {
                 // well we need to use this.dispose() to close previous GUI's
                 if (e.getSource() == addBtn) {
                     // Similar catch block statement used in main to initially launch the application.
-                    c1.show(panelCont, "createAccount");
+                    c1.show(panelCont, createAccountPanel_title);
                 }
             }
         });
-        addBtn.setBackground(Color.LIGHT_GRAY);
         addBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         managerControlPanel.add(addBtn);
 
         JButton removeBtn = new JButton("REMOVE-USER");
+        removeBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                c1.show(panelCont, removeAccountPanel_title);
+            }
+        });
         removeBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         managerControlPanel.add(removeBtn);
 
@@ -349,8 +388,18 @@ public class Application extends JPanel {
         transBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         managerControlPanel.add(transBtn);
 
+        JButton logoutBtn = new JButton("LOGOUT");
+        logoutBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                c1.show(panelCont, loginPanel_title);
+            }
+        });
+        logoutBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        managerControlPanel.add(logoutBtn);
+
         JPanel panel = new JPanel();
-        managerAccountPanel.add(panel, BorderLayout.CENTER);
+        managerAccount_Panel.add(panel, BorderLayout.CENTER);
         panel.setLayout(new BorderLayout(0, 0));
 
         JPanel footpanel = new JPanel();
@@ -392,7 +441,7 @@ public class Application extends JPanel {
                 // search for a user
                 String usernameToSearchFor = usernameTextField.getText();
                 // TODO: Make sure that this is working and understood.
-                // make sure something is imputted here.
+                // make sure something is input here.
                 if(usernameTextField.getText() !=null && usernameReEnterField.getText() !=null){
                     // make sure username is the same on both sides
                     if(usernameTextField.getText().equals(usernameReEnterField.getText())){
@@ -441,21 +490,58 @@ public class Application extends JPanel {
         panel_5.setBackground(Color.LIGHT_GRAY);
         panel_2.add(panel_5);
 
-        textPane.setContentType("MESSEGE CENTER\r\n");
+        textPane.setContentType("MESSAGE CENTER\r\n");
         panel_5.add(textPane);
-        textPane.setToolTipText("MESSEGE CENTER");
+        textPane.setToolTipText("MESSAGE CENTER");
 
 
         textPane.setText("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n                                                                                                                                      ");
     }
 
+    public void removeUserAccountPanel(){
+        removeUserAccount_Panel = new JPanel(new BorderLayout());
+        JPanel centerLayout = new JPanel(new GridLayout(2, 2));
+
+        // Components
+        JComboBox<String> userNames = new JComboBox<>();
+        // Add all the user names to the list
+        for(UserAccount account : managerAccount.getUserAccounts().getUsers()){
+            if(account != null){
+                userNames.addItem(account.getUsername());
+            }
+        }
+
+        JButton removeUserButton = new JButton("Remove");
+        removeUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Implement remove functionality
+            }
+        });
+        removeUserButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+
+        JButton cancelBtn = new JButton("Cancel");
+        cancelBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                c1.show(panelCont, managerAccountPanel_title);
+            }
+        });
+        cancelBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+
+        centerLayout.add(userNames);
+        centerLayout.add(removeUserButton);
+        centerLayout.add(cancelBtn);
+        removeUserAccount_Panel.add(centerLayout, BorderLayout.CENTER);
+    }
+
     public void UserActPanel(){
-        userAccountPanel = new JPanel();
+        userAccount_Panel = new JPanel();
         // row, col
-        userAccountPanel.setLayout(new GridLayout(4,3));
+        userAccount_Panel.setLayout(new GridLayout(4,3));
 
         JPanel depPanel = new JPanel();
-        userAccountPanel.add(depPanel);
+        userAccount_Panel.add(depPanel);
 
         JButton depositBtn = new JButton("DEPOSIT");
         depPanel.add(depositBtn);
@@ -499,7 +585,7 @@ public class Application extends JPanel {
         depPanel.add(list2);
 
         JPanel withPanel = new JPanel();
-        userAccountPanel.add(withPanel);
+        userAccount_Panel.add(withPanel);
 
         JButton withdrawBtn = new JButton("WITHDRAW");
         withdrawBtn.addActionListener(new ActionListener() {
@@ -547,7 +633,7 @@ public class Application extends JPanel {
         withPanel.add(list4);
 
         JPanel TranPanel = new JPanel();
-        userAccountPanel.add(TranPanel);
+        userAccount_Panel.add(TranPanel);
 
         JButton tranBtn = new JButton("TRANSFER");
         tranBtn.addActionListener(new ActionListener() {
@@ -595,40 +681,12 @@ public class Application extends JPanel {
         TranPanel.add(list6);
 
         JPanel panel = new JPanel();
-        userAccountPanel.add(panel);
+        userAccount_Panel.add(panel);
 
         JTextArea textArea = new JTextArea();
         textArea.setColumns(52);
         textArea.setRows(3);
         panel.add(textArea);
-    }
-
-    /**
-     * WE LAUNCH THE APPLICATION HERE AND EVERYTHING NEEDS TO BE CALLED AND ADDED HERE
-     **/
-    public Application() {
-        // call panels here
-        LoginPanel();
-        CreateAccountPanel();
-        ManagerPanel();
-        UserActPanel();
-        // everything gets added to here now panel wise. we just have to give it the attributes we did
-        panelCont.setLayout(c1);
-        // we have to finally add this panel to the panelCont.
-        panelCont.add(loginPanel, "login");
-        panelCont.add(createAccountPanel, "createAccount");
-        panelCont.add(managerAccountPanel, "managerAccount");
-        panelCont.add(userAccountPanel, "userAccount");
-        // this is what panel we want to show right away.
-        c1.show(panelCont, "login");
-        // finally add it to the frame.
-        frame.getContentPane().add(panelCont);
-
-        //leave everything below this
-        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Application.class.getResource("/com/groupproject/group/Resources/Images/folder-red-java-icon.png")));
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
     }
 
     public static void main(String[] args) {
@@ -654,6 +712,7 @@ public class Application extends JPanel {
             }
         });
     }
+
     /** Save settings to the file */
     public static void saveSettings(){
         // serialize the file
