@@ -15,6 +15,8 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -311,7 +313,7 @@ public class Application extends JPanel {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                c1.show(panelCont, "managerAccount");
+                c1.show(panelCont, "managerAccount");                                                                                                                                                                                                                        
                 // empty all of the text fields
                 usernameTextField.setText("");
                 textField_1.setText("");
@@ -536,6 +538,8 @@ public class Application extends JPanel {
     }
 
     public void UserActPanel(){
+        JList list1 = new JList();
+        JTextArea textArea = new JTextArea();
         userAccount_Panel = new JPanel();
         // row, col
         userAccount_Panel.setLayout(new GridLayout(4,3));
@@ -544,6 +548,24 @@ public class Application extends JPanel {
         userAccount_Panel.add(depPanel);
 
         JButton depositBtn = new JButton("DEPOSIT");
+        depositBtn.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int index = list1.getSelectedIndex();
+                if(amountTextField!=null && index == 0){
+                    textArea.setText("deposit to savings acct");
+
+                }
+                if(amountTextField!=null && index == 1){
+                    textArea.setText("deposit to checking acct");
+                }
+                if(amountTextField!=null && index == 2){
+                    textArea.setText("deposit to credit acct");
+                }
+
+            }
+        });
         depPanel.add(depositBtn);
 
         JLabel amountLbl = new JLabel("AMOUNT:");
@@ -557,7 +579,34 @@ public class Application extends JPanel {
         JLabel toLbl = new JLabel("TO:");
         depPanel.add(toLbl);
 
-        JList list1 = new JList();
+
+        list1.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                // make a variable so that the list variable can be copied and compared to what the user selected.
+                int index = list1.getSelectedIndex();
+                if(index == 0){
+                    // we are in savings account.
+
+
+                    //works
+                   // textArea.setText("Savings selected");
+                }
+                else if(index == 1){
+                    // we are in checkings account
+
+                    //works
+                   // textArea.setText("Checking selected");
+
+                }
+                else if(index == 2) {
+                    // we are in credit account.
+
+                    //works
+                   // textArea.setText("Credit selected");
+                }
+            }
+        });
         list1.setModel(new AbstractListModel() {
             String[] values = new String[] {"Savings", "Checking", "Credit"};
             public int getSize() {
@@ -569,20 +618,6 @@ public class Application extends JPanel {
         });
         depPanel.add(list1);
 
-        JLabel fromLbl = new JLabel("FROM:");
-        depPanel.add(fromLbl);
-
-        JList list2 = new JList();
-        list2.setModel(new AbstractListModel() {
-            String[] values = new String[] {"Savings", "Checking", "Credit"};
-            public int getSize() {
-                return values.length;
-            }
-            public Object getElementAt(int index) {
-                return values[index];
-            }
-        });
-        depPanel.add(list2);
 
         JPanel withPanel = new JPanel();
         userAccount_Panel.add(withPanel);
@@ -590,6 +625,7 @@ public class Application extends JPanel {
         JButton withdrawBtn = new JButton("WITHDRAW");
         withdrawBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+
             }
         });
         withPanel.add(withdrawBtn);
@@ -683,7 +719,7 @@ public class Application extends JPanel {
         JPanel panel = new JPanel();
         userAccount_Panel.add(panel);
 
-        JTextArea textArea = new JTextArea();
+
         textArea.setColumns(52);
         textArea.setRows(3);
         panel.add(textArea);
