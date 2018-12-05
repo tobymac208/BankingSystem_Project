@@ -538,8 +538,11 @@ public class Application extends JPanel {
     }
 
     public void UserActPanel(){
+        //deposit
         JList list1 = new JList();
         JTextArea textArea = new JTextArea();
+        // withdraw (WE SHOULD CHANGE NAME TO LIST2)
+        JList list3 = new JList();
         userAccount_Panel = new JPanel();
         // row, col
         userAccount_Panel.setLayout(new GridLayout(4,3));
@@ -549,19 +552,66 @@ public class Application extends JPanel {
 
         JButton depositBtn = new JButton("DEPOSIT");
         depositBtn.addActionListener(new ActionListener() {
+            // we just have to make sure that the "$" that we are creating in the box is added to the value of amount.
 
             @Override
+            // amountextfields cannot be negative or a none number. must not take either.
             public void actionPerformed(ActionEvent e) {
                 int index = list1.getSelectedIndex();
                 if(amountTextField!=null && index == 0){
-                    textArea.setText("deposit to savings acct");
+                    try {
+                        double amount = Double.parseDouble(amountTextField.getText());
 
-                }
+                        // account types: 1 = savings, 2= checking.
+                        // have to surround this call with a try or catch if the cast fails due to an error.
+
+                        // type, amount.
+                        currentAccountOpen.deposit(1, amount);
+                        textArea.setText("deposit to savings acct" + amount);
+                        // clear the textField and save this information.
+                        amountTextField.setText("");
+                        saveSettings();
+
+
+                }catch (Exception b){
+                        // input is not casting correctly.
+                        // maybe instead of throwing the exception we try to help the user out.
+                        textArea.setText("PLEASE RE-ENTER AMOUNT!");
+                        amountTextField.setText("");
+                    //throw new NumberFormatException();
+                    // b.printStackTrace();
+                }}
                 if(amountTextField!=null && index == 1){
-                    textArea.setText("deposit to checking acct");
+                    try {
+                        double amount = Double.parseDouble(amountTextField.getText());
+                        currentAccountOpen.deposit(2, amount);
+                        textArea.setText("deposit to checking acct");
+                        // clear the textArea and save the information.
+                        textArea.setText("");
+                        saveSettings();
+                    }catch (Exception c){
+                        // textfield amount is not casting correctly.
+                        throw new NumberFormatException();
+                        // c.printStackTrace();
+                    }
                 }
+                // TODO: MAKE SURE DEPOSIT METHOD LETS TYPE 3 FOR CREDIT ACCOUNT. deposit(types,amount)
                 if(amountTextField!=null && index == 2){
-                    textArea.setText("deposit to credit acct");
+                    try {
+                        double amount = Double.parseDouble(amountTextField.getText());
+                        textArea.setText("deposit to credit acct");
+
+                        currentAccountOpen.deposit(3, amount);
+                        textArea.setText("");
+                        saveSettings();
+                    }catch (Exception d){
+                        throw new NumberFormatException();
+                        //d.printStackTrace();
+                    }
+                }
+                else if(amountTextField == null ){
+                    // do something if they dont enter something and want to click on the button
+                    textArea.setText("PLEASE ENTER AN AMOUNT!");
                 }
 
             }
@@ -572,7 +622,6 @@ public class Application extends JPanel {
         depPanel.add(amountLbl);
 
         amountTextField = new JTextField();
-        amountTextField.setText("$");
         depPanel.add(amountTextField);
         amountTextField.setColumns(10);
 
@@ -625,6 +674,60 @@ public class Application extends JPanel {
         JButton withdrawBtn = new JButton("WITHDRAW");
         withdrawBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+                int index = list3.getSelectedIndex();
+                if(amountTextField !=null && index == 0) {
+                    try {
+                        double amount = Double.parseDouble(amountTextField.getText());
+                        // savings account
+
+                        currentAccountOpen.withdraw(1, amount);
+                        // let the user know what happened and save settings.
+                        textArea.setText(amount + " " + " withdrawn from savings account");
+                        amountTextField.setText("");
+                        saveSettings();
+                    }catch (Exception f){
+                        //f.printStackTrace()
+                        //throw new NumberFormatException();
+                        textArea.setText("PLEASE RE-ENTER AMOUNT!");
+                        amountTextField.setText("");
+                    }
+
+                }
+                else if(amountTextField !=null && index == 1){
+                    // checking account
+                    try{
+                        double amount = Double.parseDouble(amountTextField.getText());
+                        currentAccountOpen.withdraw(2,amount);
+                        // let the user know what happened
+                        textArea.setText(amount + " " + " withdrawn from Checking Account");
+                        amountTextField.setText("");
+                        saveSettings();
+
+                    }catch (Exception g){
+                        //g.printStackTrace();
+                        //throw new NumberFormatException();
+                        textArea.setText("PLEASE RE-ENTER AMOUNT");
+                        amountTextField.setText("");
+                    }
+
+                }
+                else if(amountTextField !=null && index == 2){
+                    // credit account
+                    try{
+                        double amount = Double.parseDouble(amountTextField.getText());
+                        currentAccountOpen.withdraw(3,amount);
+                        textArea.setText(amount + " " + " withdrawn from Credit Account");
+                        amountTextField.setText("");
+                        saveSettings();
+                    }catch (Exception h){
+                        //h.printStackTrace();
+                        //throw new NumberFormatException
+                        textArea.setText("PLEASE RE-ENTER AMOUNT");
+                        amountTextField.setText("");
+                    }
+
+                }
+
 
             }
         });
@@ -634,14 +737,14 @@ public class Application extends JPanel {
         withPanel.add(amntLbl);
 
         JTextField usernameTextField = new JTextField();
-        usernameTextField.setText("$");
         withPanel.add(usernameTextField);
         usernameTextField.setColumns(10);
 
         JLabel lblNewLabel_1 = new JLabel("TO:");
         withPanel.add(lblNewLabel_1);
 
-        JList list3 = new JList();
+        //      CONFUSING BECAUSE WE HAD REMOVED PREVIOS LIST FROM ABOVE SO NOW THE SECOND LIST IS REALLY LABELED AS THE THIRD.
+
         list3.setModel(new AbstractListModel() {
             String[] values = new String[] {"Savings", "Checking", "Credit"};
             public int getSize() {
@@ -653,20 +756,6 @@ public class Application extends JPanel {
         });
         withPanel.add(list3);
 
-        JLabel lblNewLabel_2 = new JLabel("FROM:");
-        withPanel.add(lblNewLabel_2);
-
-        JList list4 = new JList();
-        list4.setModel(new AbstractListModel() {
-            String[] values = new String[] {"Savings", "Checking", "Credit"};
-            public int getSize() {
-                return values.length;
-            }
-            public Object getElementAt(int index) {
-                return values[index];
-            }
-        });
-        withPanel.add(list4);
 
         JPanel TranPanel = new JPanel();
         userAccount_Panel.add(TranPanel);
@@ -701,8 +790,6 @@ public class Application extends JPanel {
         });
         TranPanel.add(list5);
 
-        JLabel lblNewLabel_4 = new JLabel("FROM:");
-        TranPanel.add(lblNewLabel_4);
 
         JList list6 = new JList();
         list6.setModel(new AbstractListModel() {
