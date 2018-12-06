@@ -46,6 +46,7 @@ public class Application extends JPanel {
     private JPanel managerAccount_Panel;
     private JPanel userAccount_Panel;
     private JPanel removeUserAccount_Panel;
+    private JPanel createManager_Panel;
     CardLayout c1 = new CardLayout();
 
     // Strings for all the panels
@@ -54,24 +55,26 @@ public class Application extends JPanel {
     private final String managerAccountPanel_title = "managerAccount";
     private final String userAccountPanel_title = "userAccount";
     private final String removeAccountPanel_title = "removeUserAccount";
+    private final String createManager_title = "createManager";
 
     // then the other variables that we needed.
+    private JTextField amountTextField;
     private JTextField textField_1;
     private JTextField textField_2;
     private JTextField textField_3;
     private JTextField textField_4;
-    private JTextField amountTextField;
 
     /**
      * WE LAUNCH THE APPLICATION HERE AND EVERYTHING NEEDS TO BE CALLED AND ADDED HERE
      **/
-    public Application() {
+    private Application() {
         // call panels here
         LoginPanel();
         CreateAccountPanel();
         ManagerPanel();
         UserActPanel();
         removeUserAccountPanel();
+        createManagerPanel();
         // everything gets added to here now panel wise. we just have to give it the attributes we did
         panelCont.setLayout(c1);
         // we have to finally add this panel to the panelCont.
@@ -80,8 +83,13 @@ public class Application extends JPanel {
         panelCont.add(managerAccount_Panel, managerAccountPanel_title);
         panelCont.add(userAccount_Panel, userAccountPanel_title);
         panelCont.add(removeUserAccount_Panel, removeAccountPanel_title);
-        // this is what panel we want to show right away.
-        c1.show(panelCont, loginPanel_title);
+        panelCont.add(createManager_Panel, createManager_title);
+        if(managerAccount != null){
+            // this is what panel we want to show right away.
+            c1.show(panelCont, loginPanel_title);
+        }else{
+            c1.show(panelCont, createManager_title);
+        }
         // finally add it to the frame.
         frame.getContentPane().add(panelCont);
 
@@ -92,7 +100,7 @@ public class Application extends JPanel {
         frame.setVisible(true);
     }
 
-    public void LoginPanel() {
+    private void LoginPanel() {
         // all of this is now from the login menu itself and can be created using the building tool and we can hook it up from there
         JPanel panel = new JPanel();
         login_Panel = new JPanel();
@@ -190,7 +198,7 @@ public class Application extends JPanel {
         panel_3.add(loginButton);
     }
 
-    public void CreateAccountPanel() {
+    private void CreateAccountPanel() {
         createAccount_Panel = new JPanel();
         createAccount_Panel.setBorder(new EmptyBorder(5, 5, 5, 5));
         createAccount_Panel.setLayout(new BorderLayout(0, 0));
@@ -217,17 +225,17 @@ public class Application extends JPanel {
         lblNewLabel_2.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_3.add(lblNewLabel_2);
 
-        JTextField usernameTextField = new JTextField();
-        usernameTextField.setColumns(10);
-        panel_3.add(usernameTextField);
+        JTextField firstName_TextField = new JTextField();
+        firstName_TextField.setColumns(10);
+        panel_3.add(firstName_TextField);
 
         JLabel lblNewLabel_3 = new JLabel("LAST-NAME");
         lblNewLabel_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_3.add(lblNewLabel_3);
 
-        textField_1 = new JTextField();
-        panel_3.add(textField_1);
-        textField_1.setColumns(10);
+        JTextField lastName_TextField = new JTextField();
+        panel_3.add(lastName_TextField);
+        lastName_TextField.setColumns(10);
 
         JPanel panel_4 = new JPanel();
         panel_4.setBackground(Color.LIGHT_GRAY);
@@ -238,35 +246,35 @@ public class Application extends JPanel {
         lblNewLabel_4.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_4.add(lblNewLabel_4);
 
-        textField_2 = new JTextField();
-        panel_4.add(textField_2);
-        textField_2.setColumns(10);
+        JTextField password_TextField = new JTextField();
+        panel_4.add(password_TextField);
+        password_TextField.setColumns(10);
 
         JLabel lblNewLabel_5 = new JLabel("AGE ");
         lblNewLabel_5.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_4.add(lblNewLabel_5);
 
-        textField_3 = new JTextField();
-        textField_3.setColumns(10);
-        panel_4.add(textField_3);
+        JTextField age_TextField = new JTextField();
+        age_TextField.setColumns(10);
+        panel_4.add(age_TextField);
 
         JLabel lblNewLabel_6 = new JLabel("USERNAME ");
         lblNewLabel_6.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_4.add(lblNewLabel_6);
 
-        textField_4 = new JTextField();
-        textField_4.setColumns(10);
-        panel_4.add(textField_4);
+        JTextField username_TextField = new JTextField();
+        username_TextField.setColumns(10);
+        panel_4.add(username_TextField);
 
 
         JPanel panel_7 = new JPanel();
         panel_7.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
         panel_1.add(panel_7);
 
-        JCheckBox chckbxNewCheckBox_1 = new JCheckBox("CREDIT ACCOUNT");
-        chckbxNewCheckBox_1.setBackground(Color.LIGHT_GRAY);
-        chckbxNewCheckBox_1.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel_7.add(chckbxNewCheckBox_1);
+        JCheckBox hasCredtAccount_CheckBox = new JCheckBox("CREDIT ACCOUNT");
+        hasCredtAccount_CheckBox.setBackground(Color.LIGHT_GRAY);
+        hasCredtAccount_CheckBox.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_7.add(hasCredtAccount_CheckBox);
 
         JPanel panel_8 = new JPanel();
         panel_1.add(panel_8);
@@ -277,19 +285,18 @@ public class Application extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
-                if(usernameTextField.getText()!=null && textField_1.getText()!=null && textField_2.getText()!=null && textField_3.getText()!=null && textField_4.getText()!=null) {
+                if(firstName_TextField.getText()!=null && lastName_TextField.getText()!=null && username_TextField.getText()!=null && password_TextField.getText()!=null && age_TextField.getText()!=null) {
                     // if the fields are not null we are going to expect that they have entered the information correctly
                     // create temp variables to create user.
-                    String firstName = usernameTextField.getText();
-                    String lastName = textField_1.getText();
-                    String password = textField_2.getText();
-                    String age =  textField_3.getText();
-                    String userName = textField_4.getText();
-                    int age2 = Integer.parseInt(age);
+                    String firstName = firstName_TextField.getText();
+                    String lastName = lastName_TextField.getText();
+                    String password = password_TextField.getText();
+                    String userName = username_TextField.getText();
+                    int age = Integer.parseInt(age_TextField.getText());
                     // create user account and then add each account type that they specify on wanting.
                     // create a new account
-                    boolean hasCreditAccount = chckbxNewCheckBox_1.isSelected();
-                    UserAccount newAccount = new UserAccount(firstName, lastName, age2, userName, password, hasCreditAccount);
+                    boolean hasCreditAccount = hasCredtAccount_CheckBox.isSelected();
+                    UserAccount newAccount = new UserAccount(firstName, lastName, age, userName, password, hasCreditAccount);
                     // add it to the ManagerAccount object
                     boolean accountAdded = managerAccount.addUser(newAccount);
                     if(accountAdded){
@@ -315,11 +322,11 @@ public class Application extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 c1.show(panelCont, "managerAccount");                                                                                                                                                                                                                        
                 // empty all of the text fields
-                usernameTextField.setText("");
-                textField_1.setText("");
-                textField_2.setText("");
-                textField_3.setText("");
-                textField_4.setText("");
+                username_TextField.setText("");
+                firstName_TextField.setText("");
+                lastName_TextField.setText("");
+                age_TextField.setText("");
+                password_TextField.setText("");
             }
         });
         cancelButton.setBackground(Color.LIGHT_GRAY);
@@ -336,7 +343,7 @@ public class Application extends JPanel {
         panel_6.add(lblNewLabel_1);
     }
 
-    public void ManagerPanel(){
+    private void ManagerPanel(){
         managerAccount_Panel = new JPanel();
         managerAccount_Panel.setBackground(Color.LIGHT_GRAY);
         managerAccount_Panel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -500,44 +507,47 @@ public class Application extends JPanel {
         textPane.setText("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n                                                                                                                                      ");
     }
 
-    public void removeUserAccountPanel(){
+    private void removeUserAccountPanel(){
         removeUserAccount_Panel = new JPanel(new BorderLayout());
-        JPanel centerLayout = new JPanel(new GridLayout(2, 2));
+        if(managerAccount != null){
+            removeUserAccount_Panel = new JPanel(new BorderLayout());
+            JPanel centerLayout = new JPanel(new GridLayout(2, 2));
 
-        // Components
-        JComboBox<String> userNames = new JComboBox<>();
-        // Add all the user names to the list
-        for(UserAccount account : managerAccount.getUserAccounts().getUsers()){
-            if(account != null){
-                userNames.addItem(account.getUsername());
+            // Components
+            JComboBox<String> userNames = new JComboBox<>();
+            // Add all the user names to the list
+            for(UserAccount account : managerAccount.getUserAccounts().getUsers()){
+                if(account != null){
+                    userNames.addItem(account.getUsername());
+                }
             }
+
+            JButton removeUserButton = new JButton("Remove");
+            removeUserButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // TODO: Implement remove functionality
+                }
+            });
+            removeUserButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+
+            JButton cancelBtn = new JButton("Cancel");
+            cancelBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    c1.show(panelCont, managerAccountPanel_title);
+                }
+            });
+            cancelBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+
+            centerLayout.add(userNames);
+            centerLayout.add(removeUserButton);
+            centerLayout.add(cancelBtn);
+            removeUserAccount_Panel.add(centerLayout, BorderLayout.CENTER);
         }
-
-        JButton removeUserButton = new JButton("Remove");
-        removeUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO: Implement remove functionality
-            }
-        });
-        removeUserButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-
-        JButton cancelBtn = new JButton("Cancel");
-        cancelBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c1.show(panelCont, managerAccountPanel_title);
-            }
-        });
-        cancelBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-
-        centerLayout.add(userNames);
-        centerLayout.add(removeUserButton);
-        centerLayout.add(cancelBtn);
-        removeUserAccount_Panel.add(centerLayout, BorderLayout.CENTER);
     }
 
-    public void UserActPanel(){
+    private void UserActPanel(){
         JList list1 = new JList();
         JTextArea textArea = new JTextArea();
         userAccount_Panel = new JPanel();
@@ -581,25 +591,27 @@ public class Application extends JPanel {
 
 
         list1.addListSelectionListener(new ListSelectionListener() {
+            final int savings = 0;
+            final int checking = 1;
+            private int credit = 2;
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 // make a variable so that the list variable can be copied and compared to what the user selected.
                 int index = list1.getSelectedIndex();
-                if(index == 0){
+                if(index == savings){
                     // we are in savings account.
-
 
                     //works
                    // textArea.setText("Savings selected");
                 }
-                else if(index == 1){
+                else if(index == checking){
                     // we are in checkings account
 
                     //works
                    // textArea.setText("Checking selected");
 
                 }
-                else if(index == 2) {
+                else if(index == credit) {
                     // we are in credit account.
 
                     //works
@@ -725,21 +737,129 @@ public class Application extends JPanel {
         panel.add(textArea);
     }
 
+    private void createManagerPanel(){
+        createManager_Panel = new JPanel();
+        createManager_Panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        createManager_Panel.setLayout(new BorderLayout(0, 0));
+
+        JPanel panel = new JPanel();
+        createManager_Panel.add(panel, BorderLayout.NORTH);
+
+        JLabel lblNewLabel = new JLabel("WELCOME, NEW MANAGER!");
+        lblNewLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel.add(lblNewLabel);
+
+        JPanel panel_1 = new JPanel();
+        createManager_Panel.add(panel_1, BorderLayout.CENTER);
+        // rows ,cols
+        panel_1.setLayout(new GridLayout(5, 2));
+
+        JPanel panel_3 = new JPanel();
+        panel_3.setBackground(Color.LIGHT_GRAY);
+        panel_3.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+        panel_1.add(panel_3);
+        panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+        JLabel lblNewLabel_2 = new JLabel("FIRST-NAME ");
+        lblNewLabel_2.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_3.add(lblNewLabel_2);
+
+        JTextField usernameTextField = new JTextField();
+        usernameTextField.setColumns(10);
+        panel_3.add(usernameTextField);
+
+        JLabel lblNewLabel_3 = new JLabel("LAST-NAME");
+        lblNewLabel_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_3.add(lblNewLabel_3);
+
+        textField_1 = new JTextField();
+        panel_3.add(textField_1);
+        textField_1.setColumns(10);
+
+        JPanel panel_4 = new JPanel();
+        panel_4.setBackground(Color.LIGHT_GRAY);
+        panel_4.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+        panel_1.add(panel_4);
+
+        JLabel lblNewLabel_4 = new JLabel("PASSWORD ");
+        lblNewLabel_4.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_4.add(lblNewLabel_4);
+
+        textField_2 = new JTextField();
+        panel_4.add(textField_2);
+        textField_2.setColumns(10);
+
+        JLabel lblNewLabel_5 = new JLabel("AGE ");
+        lblNewLabel_5.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_4.add(lblNewLabel_5);
+
+        textField_3 = new JTextField();
+        textField_3.setColumns(10);
+        panel_4.add(textField_3);
+
+        JLabel lblNewLabel_6 = new JLabel("USERNAME ");
+        lblNewLabel_6.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_4.add(lblNewLabel_6);
+
+        textField_4 = new JTextField();
+        textField_4.setColumns(10);
+        panel_4.add(textField_4);
+
+
+        JPanel panel_7 = new JPanel();
+        panel_7.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+        panel_1.add(panel_7);
+
+        JPanel panel_8 = new JPanel();
+        panel_1.add(panel_8);
+
+        JButton btnNewButton = new JButton("CREATE");
+        // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
+        btnNewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
+                if(usernameTextField.getText()!=null && textField_1.getText()!=null && textField_2.getText()!=null && textField_3.getText()!=null && textField_4.getText()!=null) {
+                    // if the fields are not null we are going to expect that they have entered the information correctly
+                    // create temp variables to create user.
+                    String firstName = usernameTextField.getText();
+                    String lastName = textField_1.getText();
+                    String password = textField_2.getText();
+                    String age =  textField_3.getText();
+                    String userName = textField_4.getText();
+                    int age2 = Integer.parseInt(age);
+                    managerAccount = new ManagerAccount(firstName, lastName, age2, userName, password);
+                    saveSettings();
+                    c1.show(panelCont, loginPanel_title);
+                }
+            }
+        });
+        btnNewButton.setBackground(Color.LIGHT_GRAY);
+        btnNewButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_8.add(btnNewButton);
+
+        JButton cancelButton = new JButton("CANCEL");
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Manager account not created -- kill the program
+                System.exit(0);
+            }
+        });
+        cancelButton.setBackground(Color.LIGHT_GRAY);
+        cancelButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_8.add(cancelButton);
+
+        JPanel panel_6 = new JPanel();
+        panel_1.add(panel_6);
+    }
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
                 // DESERIALIZE managerAccount
-                managerAccount = FileOps.deserialize();
-                if (managerAccount == null) {
-                    System.out.println("There is no manager account. You must create one.");
-                    managerAccount = createManager();
-                    if (managerAccount == null) { // did the account creation fail?
-                        System.out.println("Account creation failed.\nProject exiting.");
-                        // close the program
-                        System.exit(0);
-                    }
-                }
+                managerAccount = FileOps.deserialize(); // might be null
 
 //               ManagerAccount differentManagerAccount = new ManagerAccount("Jeff", "Linkman", 43, "username", "password");
 //               FileOps.serialize(differentManagerAccount);
