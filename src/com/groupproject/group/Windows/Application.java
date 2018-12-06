@@ -63,6 +63,7 @@ public class Application extends JPanel {
     private JTextField textField_2;
     private JTextField textField_3;
     private JTextField textField_4;
+    private JTextPane managerTextPane = new JTextPane();
 
     /**
      * WE LAUNCH THE APPLICATION HERE AND EVERYTHING NEEDS TO BE CALLED AND ADDED HERE
@@ -271,10 +272,10 @@ public class Application extends JPanel {
         panel_7.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
         panel_1.add(panel_7);
 
-        JCheckBox hasCredtAccount_CheckBox = new JCheckBox("CREDIT ACCOUNT");
-        hasCredtAccount_CheckBox.setBackground(Color.LIGHT_GRAY);
-        hasCredtAccount_CheckBox.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel_7.add(hasCredtAccount_CheckBox);
+        JCheckBox hasCreditAccount_CheckBox = new JCheckBox("CREDIT ACCOUNT");
+        hasCreditAccount_CheckBox.setBackground(Color.LIGHT_GRAY);
+        hasCreditAccount_CheckBox.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        panel_7.add(hasCreditAccount_CheckBox);
 
         JPanel panel_8 = new JPanel();
         panel_1.add(panel_8);
@@ -295,7 +296,7 @@ public class Application extends JPanel {
                     int age = Integer.parseInt(age_TextField.getText());
                     // create user account and then add each account type that they specify on wanting.
                     // create a new account
-                    boolean hasCreditAccount = hasCredtAccount_CheckBox.isSelected();
+                    boolean hasCreditAccount = hasCreditAccount_CheckBox.isSelected();
                     UserAccount newAccount = new UserAccount(firstName, lastName, age, userName, password, hasCreditAccount);
                     // add it to the ManagerAccount object
                     boolean accountAdded = managerAccount.addUser(newAccount);
@@ -304,7 +305,7 @@ public class Application extends JPanel {
                         // save settings
                         saveSettings();
                         c1.show(panelCont, managerAccountPanel_title); // go back to the manager account panel
-                        // TODO: SEE ME - if we take the textPane that we are using in the managerPanel and make it a global variable we may be able to let the manager know that the user has indeed been added.
+                        managerTextPane.setText("New account created, username: " + userName);
 
                     }else{
                         System.err.println("Account failed to add.");
@@ -348,7 +349,6 @@ public class Application extends JPanel {
         managerAccount_Panel.setBackground(Color.LIGHT_GRAY);
         managerAccount_Panel.setBorder(new EmptyBorder(5, 5, 5, 5));
         managerAccount_Panel.setLayout(new BorderLayout(0, 0));
-        JTextPane textPane = new JTextPane();
 
         JLabel headerLabel = new JLabel("MANAGER ACCOUNT\r\n");
         headerLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
@@ -459,24 +459,24 @@ public class Application extends JPanel {
                         if(username.equals(managerAccount.findByUsername(username))){
                             // we have found the user.
                             //display to textPane.
-                            textPane.setText("USER FOUND:" + username);
+                            managerTextPane.setText("USER FOUND:" + username);
 
 
                         }else{
-                            textPane.setText("USER WAS NOT FOUND");
+                            managerTextPane.setText("USER WAS NOT FOUND");
                             // clear the fields for the user
                             usernameTextField.setText("");
                             usernameReEnterField.setText("");
                         }
                     }else{
-                        textPane.setText("USERNAMES DO NOT MATCH TRY AGAIN!");
+                        managerTextPane.setText("USERNAMES DO NOT MATCH TRY AGAIN!");
                         // clear the fields for the user.
                         usernameTextField.setText("");
                         usernameReEnterField.setText("");
                     }
 
                 }else{
-                    textPane.setText("PLEASE ENTER SOMETHING IN THE FIELDS!");
+                    managerTextPane.setText("PLEASE ENTER SOMETHING IN THE FIELDS!");
                 }
             }
         });
@@ -499,12 +499,12 @@ public class Application extends JPanel {
         panel_5.setBackground(Color.LIGHT_GRAY);
         panel_2.add(panel_5);
 
-        textPane.setContentType("MESSAGE CENTER\r\n");
-        panel_5.add(textPane);
-        textPane.setToolTipText("MESSAGE CENTER");
+        managerTextPane.setContentType("MESSAGE CENTER\r\n");
+        panel_5.add(managerTextPane);
+        managerTextPane.setToolTipText("MESSAGE CENTER");
 
 
-        textPane.setText("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n                                                                                                                                      ");
+        managerTextPane.setText("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n                                                                                                                                      ");
     }
 
     private void removeUserAccountPanel(){
