@@ -553,6 +553,7 @@ public class Application extends JPanel {
         userAccount_Panel.add(depPanel);
 
         JButton depositBtn = new JButton("DEPOSIT");
+        depositBtn.setBackground(Color.LIGHT_GRAY);
         depositBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         depositBtn.addActionListener(new ActionListener() {
             // we just have to make sure that the "$" that we are creating in the box is added to the value of amount.
@@ -677,6 +678,7 @@ public class Application extends JPanel {
         userAccount_Panel.add(withPanel);
 
         JButton withdrawBtn = new JButton("WITHDRAW");
+        withdrawBtn.setBackground(Color.LIGHT_GRAY);
         withdrawBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         withdrawBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -769,6 +771,7 @@ public class Application extends JPanel {
         userAccount_Panel.add(TranPanel);
 
         JButton tranBtn = new JButton("TRANSFER");
+        tranBtn.setBackground(Color.LIGHT_GRAY);
         tranBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         tranBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -825,6 +828,7 @@ public class Application extends JPanel {
 
         //add buttoon here.
         JButton logoutBtn = new JButton("Logout");
+        logoutBtn.setBackground(Color.LIGHT_GRAY);
         logoutBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         textArea.setColumns(52);
         textArea.setRows(3);
