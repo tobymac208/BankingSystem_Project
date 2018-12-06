@@ -540,9 +540,11 @@ public class Application extends JPanel {
     public void UserActPanel(){
         //deposit
         JList list1 = new JList();
+        list1.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         JTextArea textArea = new JTextArea();
         // withdraw (WE SHOULD CHANGE NAME TO LIST2)
         JList list3 = new JList();
+        list3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         userAccount_Panel = new JPanel();
         // row, col
         userAccount_Panel.setLayout(new GridLayout(4,3));
@@ -551,6 +553,7 @@ public class Application extends JPanel {
         userAccount_Panel.add(depPanel);
 
         JButton depositBtn = new JButton("DEPOSIT");
+        depositBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         depositBtn.addActionListener(new ActionListener() {
             // we just have to make sure that the "$" that we are creating in the box is added to the value of amount.
 
@@ -619,6 +622,7 @@ public class Application extends JPanel {
         depPanel.add(depositBtn);
 
         JLabel amountLbl = new JLabel("AMOUNT:");
+        amountLbl.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         depPanel.add(amountLbl);
 
         amountTextField = new JTextField();
@@ -626,6 +630,7 @@ public class Application extends JPanel {
         amountTextField.setColumns(10);
 
         JLabel toLbl = new JLabel("TO:");
+        toLbl.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         depPanel.add(toLbl);
 
 
@@ -672,6 +677,7 @@ public class Application extends JPanel {
         userAccount_Panel.add(withPanel);
 
         JButton withdrawBtn = new JButton("WITHDRAW");
+        withdrawBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         withdrawBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 int index = list3.getSelectedIndex();
@@ -734,6 +740,7 @@ public class Application extends JPanel {
         withPanel.add(withdrawBtn);
 
         JLabel amntLbl = new JLabel("AMOUNT:");
+        amntLbl.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         withPanel.add(amntLbl);
 
         JTextField usernameTextField = new JTextField();
@@ -741,6 +748,7 @@ public class Application extends JPanel {
         usernameTextField.setColumns(10);
 
         JLabel lblNewLabel_1 = new JLabel("TO:");
+        lblNewLabel_1.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         withPanel.add(lblNewLabel_1);
 
         //      CONFUSING BECAUSE WE HAD REMOVED PREVIOS LIST FROM ABOVE SO NOW THE SECOND LIST IS REALLY LABELED AS THE THIRD.
@@ -761,24 +769,28 @@ public class Application extends JPanel {
         userAccount_Panel.add(TranPanel);
 
         JButton tranBtn = new JButton("TRANSFER");
+        tranBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         tranBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                // TODO: FINISH HOOKING UP FUNCTIONALITY
             }
         });
         TranPanel.add(tranBtn);
 
         JLabel lblNewLabel = new JLabel("AMOUNT:");
+        lblNewLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         TranPanel.add(lblNewLabel);
 
         textField_1 = new JTextField();
-        textField_1.setText("$");
         TranPanel.add(textField_1);
         textField_1.setColumns(10);
 
         JLabel lblNewLabel_3 = new JLabel("TO:");
+        lblNewLabel_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         TranPanel.add(lblNewLabel_3);
 
         JList list5 = new JList();
+        list5.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         list5.setModel(new AbstractListModel() {
             String[] values = new String[] {"Savings", "Checking", "Credit"};
             public int getSize() {
@@ -790,8 +802,13 @@ public class Application extends JPanel {
         });
         TranPanel.add(list5);
 
+        JLabel lblNewLabel_4 = new JLabel("FROM");
+        lblNewLabel_4.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        TranPanel.add(lblNewLabel_4);
+
 
         JList list6 = new JList();
+        list6.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         list6.setModel(new AbstractListModel() {
             String[] values = new String[] {"Savings", "Checking", "Credit"};
             public int getSize() {
@@ -806,10 +823,21 @@ public class Application extends JPanel {
         JPanel panel = new JPanel();
         userAccount_Panel.add(panel);
 
-
+        //add buttoon here.
+        JButton logoutBtn = new JButton("Logout");
+        logoutBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         textArea.setColumns(52);
         textArea.setRows(3);
         panel.add(textArea);
+        panel.add(logoutBtn);
+
+        logoutBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                c1.show(panelCont, loginPanel_title);
+                // Logs user out of program returning to the main screen.
+            }
+        });
     }
 
     public static void main(String[] args) {
