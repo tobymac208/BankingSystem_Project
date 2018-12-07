@@ -21,11 +21,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 
-import static com.groupproject.group.Main.createManager;
 
 public class Application extends JPanel {
      //private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password"); -- here for testing purposes
@@ -47,7 +44,7 @@ public class Application extends JPanel {
     private JPanel userAccount_Panel;
     private JPanel removeUserAccount_Panel;
     private JPanel createManager_Panel;
-    CardLayout c1 = new CardLayout();
+    private CardLayout c1 = new CardLayout();
 
     // Strings for all the panels
     private final String loginPanel_title = "login";
@@ -159,35 +156,33 @@ public class Application extends JPanel {
         panel_3.add(passwordField);
 
         JButton loginButton = new JButton("LOGIN");
-        loginButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == loginButton) { // the btnNewButton was clicked
-                    // there is no manager account yet
-                    if(managerAccount == null){
-                        successMessage.setText("Login failed. No manager account exists.");
-                    }
-                    // The manager account is not null -- try to log them in
-                    else{
-                        String username = usernameField.getText(), password = passwordField.getText();
-                        if(isManagerCheckbox.isSelected()){ // try to login the administrator
-                            if(managerAccount.getUsername().equals(username) && managerAccount.getPassword().equals(password)){
-                                c1.show(panelCont, managerAccountPanel_title);
-                                successMessage.setText("Login successful! Manager logged in.");
+        loginButton.addActionListener(e -> {
+            if (e.getSource() == loginButton) { // the btnNewButton was clicked
+                // there is no manager account yet
+                if(managerAccount == null){
+                    successMessage.setText("Login failed. No manager account exists.");
+                }
+                // The manager account is not null -- try to log them in
+                else{
+                    String username = usernameField.getText(), password = passwordField.getText();
+                    if(isManagerCheckbox.isSelected()){ // try to login the administrator
+                        if(managerAccount.getUsername().equals(username) && managerAccount.getPassword().equals(password)){
+                            c1.show(panelCont, managerAccountPanel_title);
+                            successMessage.setText("Login successful! Manager logged in.");
+                            usernameField.setText("");
+                            passwordField.setText("");
+                        }
+                    // login a user account
+                    }else{
+                        if (managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
+                            // username found
+                            UserAccount accountLoggingIn = managerAccount.findByUsername(username);
+                            if (accountLoggingIn.getPassword().equals(password)) { // password is the same
+                                currentAccountOpen = managerAccount.findByUsername(username); // login the user
+                                successMessage.setText("Account logged in.");
+                                c1.show(panelCont, userAccountPanel_title);
                                 usernameField.setText("");
                                 passwordField.setText("");
-                            }
-                        // login a user account
-                        }else{
-                            if (managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
-                                // username found
-                                UserAccount accountLoggingIn = managerAccount.findByUsername(username);
-                                if (accountLoggingIn.getPassword().equals(password)) { // password is the same
-                                    currentAccountOpen = managerAccount.findByUsername(username); // login the user
-                                    successMessage.setText("Account logged in.");
-                                    c1.show(panelCont, userAccountPanel_title);
-                                    usernameField.setText("");
-                                    passwordField.setText("");
-                                }
                             }
                         }
                     }
@@ -282,34 +277,31 @@ public class Application extends JPanel {
 
         JButton btnNewButton = new JButton("CREATE");
         // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
-        btnNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
-                if(firstName_TextField.getText()!=null && lastName_TextField.getText()!=null && username_TextField.getText()!=null && password_TextField.getText()!=null && age_TextField.getText()!=null) {
-                    // if the fields are not null we are going to expect that they have entered the information correctly
-                    // create temp variables to create user.
-                    String firstName = firstName_TextField.getText();
-                    String lastName = lastName_TextField.getText();
-                    String password = password_TextField.getText();
-                    String userName = username_TextField.getText();
-                    int age = Integer.parseInt(age_TextField.getText());
-                    // create user account and then add each account type that they specify on wanting.
-                    // create a new account
-                    boolean hasCreditAccount = hasCreditAccount_CheckBox.isSelected();
-                    UserAccount newAccount = new UserAccount(firstName, lastName, age, userName, password, hasCreditAccount);
-                    // add it to the ManagerAccount object
-                    boolean accountAdded = managerAccount.addUser(newAccount);
-                    if(accountAdded){
-                        System.out.println("Added: " + newAccount.getUsername());
-                        // save settings
-                        saveSettings();
-                        c1.show(panelCont, managerAccountPanel_title); // go back to the manager account panel
-                        managerTextPane.setText("New account created, username: " + userName);
+        btnNewButton.addActionListener(e -> {
+            // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
+            if(firstName_TextField.getText()!=null && lastName_TextField.getText()!=null && username_TextField.getText()!=null && password_TextField.getText()!=null && age_TextField.getText()!=null) {
+                // if the fields are not null we are going to expect that they have entered the information correctly
+                // create temp variables to create user.
+                String firstName = firstName_TextField.getText();
+                String lastName = lastName_TextField.getText();
+                String password = password_TextField.getText();
+                String userName = username_TextField.getText();
+                int age = Integer.parseInt(age_TextField.getText());
+                // create user account and then add each account type that they specify on wanting.
+                // create a new account
+                boolean hasCreditAccount = hasCreditAccount_CheckBox.isSelected();
+                UserAccount newAccount = new UserAccount(firstName, lastName, age, userName, password, hasCreditAccount);
+                // add it to the ManagerAccount object
+                boolean accountAdded = managerAccount.addUser(newAccount);
+                if(accountAdded){
+                    System.out.println("Added: " + newAccount.getUsername());
+                    // save settings
+                    saveSettings();
+                    c1.show(panelCont, managerAccountPanel_title); // go back to the manager account panel
+                    managerTextPane.setText("New account created, username: " + userName);
 
-                    }else{
-                        System.err.println("Account failed to add.");
-                    }
+                }else{
+                    System.err.println("Account failed to add.");
                 }
             }
         });
@@ -318,17 +310,14 @@ public class Application extends JPanel {
         panel_8.add(btnNewButton);
 
         JButton cancelButton = new JButton("CANCEL");
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c1.show(panelCont, "managerAccount");                                                                                                                                                                                                                        
-                // empty all of the text fields
-                username_TextField.setText("");
-                firstName_TextField.setText("");
-                lastName_TextField.setText("");
-                age_TextField.setText("");
-                password_TextField.setText("");
-            }
+        cancelButton.addActionListener(e -> {
+            c1.show(panelCont, "managerAccount");
+            // empty all of the text fields
+            username_TextField.setText("");
+            firstName_TextField.setText("");
+            lastName_TextField.setText("");
+            age_TextField.setText("");
+            password_TextField.setText("");
         });
         cancelButton.setBackground(Color.LIGHT_GRAY);
         cancelButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
@@ -366,26 +355,19 @@ public class Application extends JPanel {
         managerControlPanel.setLayout(new GridLayout(6,1));
 
         JButton addBtn = new JButton("ADD-USER");
-        addBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // we are going to open the other GUI after we verify CREATE has been clicked.
-                // well we need to use this.dispose() to close previous GUI's
-                if (e.getSource() == addBtn) {
-                    // Similar catch block statement used in main to initially launch the application.
-                    c1.show(panelCont, createAccountPanel_title);
-                }
+        addBtn.addActionListener(e -> {
+            // we are going to open the other GUI after we verify CREATE has been clicked.
+            // well we need to use this.dispose() to close previous GUI's
+            if (e.getSource() == addBtn) {
+                // Similar catch block statement used in main to initially launch the application.
+                c1.show(panelCont, createAccountPanel_title);
             }
         });
         addBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         managerControlPanel.add(addBtn);
 
         JButton removeBtn = new JButton("REMOVE-USER");
-        removeBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c1.show(panelCont, removeAccountPanel_title);
-            }
-        });
+        removeBtn.addActionListener(e -> c1.show(panelCont, removeAccountPanel_title));
         removeBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         managerControlPanel.add(removeBtn);
 
@@ -398,12 +380,7 @@ public class Application extends JPanel {
         managerControlPanel.add(transBtn);
 
         JButton logoutBtn = new JButton("LOGOUT");
-        logoutBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c1.show(panelCont, loginPanel_title);
-            }
-        });
+        logoutBtn.addActionListener(e -> c1.show(panelCont, loginPanel_title));
         logoutBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         managerControlPanel.add(logoutBtn);
 
@@ -445,52 +422,47 @@ public class Application extends JPanel {
         panel_3.add(usernameReEnterField);
 
         JButton searchButton = new JButton("SEARCH");
-        searchButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // search for a user
-                String usernameToSearchFor = usernameTextField.getText();
-                // TODO: Make sure that this is working and understood.
-                // make sure something is input here.
-                if(usernameTextField.getText() !=null && usernameReEnterField.getText() !=null){
-                    // make sure username is the same on both sides
-                    if(usernameTextField.getText().equals(usernameReEnterField.getText())){
-                        // perform the search.
-                        String username = usernameTextField.getText();
-                        if(username.equals(managerAccount.findByUsername(username))){
-                            // we have found the user.
-                            //display to textPane.
-                            managerTextPane.setText("USER FOUND:" + username);
+        searchButton.addActionListener(e -> {
+            // search for a user
+            String usernameToSearchFor = usernameTextField.getText();
+            // TODO: Make sure that this is working and understood.
+            // make sure something is input here.
+            if(usernameTextField.getText() !=null && usernameReEnterField.getText() !=null){
+                // make sure username is the same on both sides
+                if(usernameTextField.getText().equals(usernameReEnterField.getText())){
+                    // perform the search.
+                    String username = usernameTextField.getText();
+                    if(username.equals(managerAccount.findByUsername(username))){
+                        // we have found the user.
+                        //display to textPane.
+                        managerTextPane.setText("USER FOUND:" + username);
 
 
-                        }else{
-                            managerTextPane.setText("USER WAS NOT FOUND");
-                            // clear the fields for the user
-                            usernameTextField.setText("");
-                            usernameReEnterField.setText("");
-                        }
                     }else{
-                        managerTextPane.setText("USERNAMES DO NOT MATCH TRY AGAIN!");
-                        // clear the fields for the user.
+                        managerTextPane.setText("USER WAS NOT FOUND");
+                        // clear the fields for the user
                         usernameTextField.setText("");
                         usernameReEnterField.setText("");
                     }
-
                 }else{
-                    managerTextPane.setText("PLEASE ENTER SOMETHING IN THE FIELDS!");
+                    managerTextPane.setText("USERNAMES DO NOT MATCH TRY AGAIN!");
+                    // clear the fields for the user.
+                    usernameTextField.setText("");
+                    usernameReEnterField.setText("");
                 }
+
+            }else{
+                managerTextPane.setText("PLEASE ENTER SOMETHING IN THE FIELDS!");
             }
         });
         searchButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_3.add(searchButton);
 
         JButton clrBtn = new JButton("CLEAR");
-        clrBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // clear all the fields.
-                usernameTextField.setText("");
-                usernameReEnterField.setText("");
-            }
+        clrBtn.addActionListener(e -> {
+            // clear all the fields.
+            usernameTextField.setText("");
+            usernameReEnterField.setText("");
         });
         clrBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         panel_3.add(clrBtn);
@@ -523,21 +495,13 @@ public class Application extends JPanel {
             }
 
             JButton removeUserButton = new JButton("Remove");
-            removeUserButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // TODO: Implement remove functionality
-                }
+            removeUserButton.addActionListener(e -> {
+                // TODO: Implement remove functionality
             });
             removeUserButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
 
             JButton cancelBtn = new JButton("Cancel");
-            cancelBtn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    c1.show(panelCont, managerAccountPanel_title);
-                }
-            });
+            cancelBtn.addActionListener(e -> c1.show(panelCont, managerAccountPanel_title));
             cancelBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
 
             centerLayout.add(userNames);
@@ -558,23 +522,19 @@ public class Application extends JPanel {
         userAccount_Panel.add(depPanel);
 
         JButton depositBtn = new JButton("DEPOSIT");
-        depositBtn.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int index = list1.getSelectedIndex();
-                if(amountTextField!=null && index == 0){
-                    textArea.setText("deposit to savings acct");
-
-                }
-                if(amountTextField!=null && index == 1){
-                    textArea.setText("deposit to checking acct");
-                }
-                if(amountTextField!=null && index == 2){
-                    textArea.setText("deposit to credit acct");
-                }
+        depositBtn.addActionListener(e -> {
+            int index = list1.getSelectedIndex();
+            if(amountTextField!=null && index == 0){
+                textArea.setText("deposit to savings acct");
 
             }
+            if(amountTextField!=null && index == 1){
+                textArea.setText("deposit to checking acct");
+            }
+            if(amountTextField!=null && index == 2){
+                textArea.setText("deposit to credit acct");
+            }
+
         });
         depPanel.add(depositBtn);
 
@@ -582,7 +542,6 @@ public class Application extends JPanel {
         depPanel.add(amountLbl);
 
         amountTextField = new JTextField();
-        amountTextField.setText("$");
         depPanel.add(amountTextField);
         amountTextField.setColumns(10);
 
@@ -635,10 +594,8 @@ public class Application extends JPanel {
         userAccount_Panel.add(withPanel);
 
         JButton withdrawBtn = new JButton("WITHDRAW");
-        withdrawBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
+        withdrawBtn.addActionListener(arg0 -> {
 
-            }
         });
         withPanel.add(withdrawBtn);
 
@@ -646,7 +603,6 @@ public class Application extends JPanel {
         withPanel.add(amntLbl);
 
         JTextField usernameTextField = new JTextField();
-        usernameTextField.setText("$");
         withPanel.add(usernameTextField);
         usernameTextField.setColumns(10);
 
@@ -684,9 +640,7 @@ public class Application extends JPanel {
         userAccount_Panel.add(TranPanel);
 
         JButton tranBtn = new JButton("TRANSFER");
-        tranBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
+        tranBtn.addActionListener(e -> {
         });
         TranPanel.add(tranBtn);
 
@@ -694,7 +648,6 @@ public class Application extends JPanel {
         TranPanel.add(lblNewLabel);
 
         textField_1 = new JTextField();
-        textField_1.setText("$");
         TranPanel.add(textField_1);
         textField_1.setColumns(10);
 
@@ -815,23 +768,20 @@ public class Application extends JPanel {
 
         JButton btnNewButton = new JButton("CREATE");
         // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
-        btnNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
-                if(usernameTextField.getText()!=null && textField_1.getText()!=null && textField_2.getText()!=null && textField_3.getText()!=null && textField_4.getText()!=null) {
-                    // if the fields are not null we are going to expect that they have entered the information correctly
-                    // create temp variables to create user.
-                    String firstName = usernameTextField.getText();
-                    String lastName = textField_1.getText();
-                    String password = textField_2.getText();
-                    String age =  textField_3.getText();
-                    String userName = textField_4.getText();
-                    int age2 = Integer.parseInt(age);
-                    managerAccount = new ManagerAccount(firstName, lastName, age2, userName, password);
-                    saveSettings();
-                    c1.show(panelCont, loginPanel_title);
-                }
+        btnNewButton.addActionListener(e -> {
+            // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
+            if(usernameTextField.getText()!=null && textField_1.getText()!=null && textField_2.getText()!=null && textField_3.getText()!=null && textField_4.getText()!=null) {
+                // if the fields are not null we are going to expect that they have entered the information correctly
+                // create temp variables to create user.
+                String firstName = usernameTextField.getText();
+                String lastName = textField_1.getText();
+                String password = textField_2.getText();
+                String age =  textField_3.getText();
+                String userName = textField_4.getText();
+                int age2 = Integer.parseInt(age);
+                managerAccount = new ManagerAccount(firstName, lastName, age2, userName, password);
+                saveSettings();
+                c1.show(panelCont, loginPanel_title);
             }
         });
         btnNewButton.setBackground(Color.LIGHT_GRAY);
@@ -839,12 +789,9 @@ public class Application extends JPanel {
         panel_8.add(btnNewButton);
 
         JButton cancelButton = new JButton("CANCEL");
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Manager account not created -- kill the program
-                System.exit(0);
-            }
+        cancelButton.addActionListener(e -> {
+            // Manager account not created -- kill the program
+            System.exit(0);
         });
         cancelButton.setBackground(Color.LIGHT_GRAY);
         cancelButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
@@ -855,22 +802,19 @@ public class Application extends JPanel {
     }
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // DESERIALIZE managerAccount
-                managerAccount = FileOps.deserialize(); // might be null
+        EventQueue.invokeLater(() -> {
+            // DESERIALIZE managerAccount
+            managerAccount = FileOps.deserialize(); // might be null
 
 //               ManagerAccount differentManagerAccount = new ManagerAccount("Jeff", "Linkman", 43, "username", "password");
 //               FileOps.serialize(differentManagerAccount);
 //               System.exit(0);
-                new Application();
-            }
+            new Application();
         });
     }
 
     /** Save settings to the file */
-    public static void saveSettings(){
+    private static void saveSettings(){
         // serialize the file
         boolean didSerialize = FileOps.serialize(managerAccount);
         if(didSerialize){
