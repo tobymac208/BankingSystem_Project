@@ -58,8 +58,6 @@ public class Application extends JPanel {
     private JTextField amountTextField;
     private JTextField withdrawTxtField;
     private JTextField transferTxtField;
-    private JTextField transToTxtField;
-
 
     /**
      * WE LAUNCH THE APPLICATION HERE AND EVERYTHING NEEDS TO BE CALLED AND ADDED HERE
@@ -88,8 +86,6 @@ public class Application extends JPanel {
             // show this if the managerAccount didn't exist
             c1.show(panelCont, createManager_title);
         }
-        // this is what panel we want to show right away.
-        c1.show(panelCont, loginPanel_title);
         // finally add it to the frame.
         JFrame frame = new JFrame();
         frame.getContentPane().add(panelCont);
@@ -505,10 +501,12 @@ public class Application extends JPanel {
     }
 
     private void removeUserAccountPanel(){
-        removeUserAccount_Panel = new JPanel(new BorderLayout());
+        removeUserAccount_Panel = new JPanel();
+        removeUserAccount_Panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        removeUserAccount_Panel.setLayout(new BorderLayout(10, 10));
         if(managerAccount != null){
             removeUserAccount_Panel = new JPanel(new BorderLayout());
-            JPanel centerLayout = new JPanel(new GridLayout(2, 2));
+            JPanel centerLayout = new JPanel(new GridLayout(4, 4));
 
             // Components
             JComboBox<String> userNames = new JComboBox<>();
@@ -552,7 +550,6 @@ public class Application extends JPanel {
 
         //deposit
         JList list1 = new JList();
-        JList fromAccountList = new JList();
         list1.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         JTextArea textArea = new JTextArea();
         // withdraw (WE SHOULD CHANGE NAME TO LIST2)
@@ -565,22 +562,22 @@ public class Application extends JPanel {
         JPanel depPanel = new JPanel();
         userAccount_Panel.add(depPanel);
 
-        // attempting to print current status for the user after initial login. throwing null pointer exception so ive put it in a try catch block to keep it from crashing
-        try{
-
-            double savingsAcctBal = currentAccountOpen.getSavingsAccount().getBalance();
-            double checkingAcctBal =currentAccountOpen.getchAccount().getBalance();
-            double creditAcctBal = currentAccountOpen.getCcAccount().getAmountLeft();
-            textArea.setText("---CURRENT ACCOUNT STATUS---\n " +
-                    " SAVINGS: $" + savingsAcctBal + "\n" +
-                    " CHECKINGS: $" + checkingAcctBal + "\n" +
-                    " CREDIT: $" + creditAcctBal);
-
-
-        }catch(Exception f){
-            // deals w null pointer from user loggin in. We want to show them there account standings but will show them reguardless after every action they do in the menus.
-            textArea.setText("Error: Trouble processing account standings.");
-        }
+//        // attempting to print current status for the user after initial login. throwing null pointer exception so ive put it in a try catch block to keep it from crashing
+//        try{
+//
+//            double savingsAcctBal = currentAccountOpen.getSavingsAccount().getBalance();
+//            double checkingAcctBal =currentAccountOpen.getchAccount().getBalance();
+//            double creditAcctBal = currentAccountOpen.getCcAccount().getAmountLeft();
+//            textArea.setText("---CURRENT ACCOUNT STATUS---\n " +
+//                    " SAVINGS: $" + savingsAcctBal + "\n" +
+//                    " CHECKINGS: $" + checkingAcctBal + "\n" +
+//                    " CREDIT: $" + creditAcctBal);
+//
+//
+//        }catch(Exception f){
+//            // deals w null pointer from user loggin in. We want to show them there account standings but will show them reguardless after every action they do in the menus.
+//            textArea.setText("Error: Trouble processing account standings.");
+//        }
 
 
         JButton depositBtn = new JButton("DEPOSIT");
@@ -653,33 +650,6 @@ public class Application extends JPanel {
         depPanel.add(toLbl);
 
 
-        list1.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                // make a variable so that the list variable can be copied and compared to what the user selected.
-                int index = list1.getSelectedIndex();
-                if(index == 0){
-                    // we are in savings account.
-
-
-                    //works
-                   // textArea.setText("Savings selected");
-                }
-                else if(index == 1){
-                    // we are in checkings account
-
-                    //works
-                   // textArea.setText("Checking selected");
-
-                }
-                else if(index == 2) {
-                    // we are in credit account.
-
-                    //works
-                   // textArea.setText("Credit selected");
-                }
-            }
-        });
         list1.setModel(new AbstractListModel() {
             String[] values = new String[] {"Savings", "Checking"};
             public int getSize() {
@@ -791,80 +761,17 @@ public class Application extends JPanel {
         tranBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO: FINSIH TRANSFER FUNCTIONALITY
-                //managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username
-                //UserAccount accountTransferTo = managerAccount.findByUsername(username);
                 try{
-
-                    int index = fromAccountList.getSelectedIndex();
-                    if(transToTxtField.getText() !=null && transferTxtField!=null && index == 0 ){  // savings account
-                        double amount = Double.parseDouble(transferTxtField.getText());
-                        String username = transToTxtField.getText();
-                        if(managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
-                            // the user they have selected has been found and now we can transfer the object money and save the setting
-                                UserAccount accountTransferTo = managerAccount.findByUsername(username);
-                                // take money away from the first user
-                                currentAccountOpen.withdraw(1,amount);
-                                // transfer method doesnt really let us do this as easily as just generically depositing all transfer from account to account
-                                accountTransferTo.deposit(1,amount);
-                                textArea.setText("Transfered "  + amount + " From Savings Accoount" +
-                                        "\n To " + accountTransferTo.getUsername()
-                                        + "\n" + "---CURRENT ACCOUNT STATUS---\n " +
-                                        " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
-                                        " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
-                                        " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
+                    double amount = Double.parseDouble(transferTxtField.getText());
+                    textArea.setText("TRANSFER" + amount);
 
 
 
-                        }else{
-                            // not good couldnt find the user.
-                            textArea.setText("USER NOT FOUND PLEASE TRY AGAIN");
-                            // reset the fields
-                            transferTxtField.setText("");
-                            transToTxtField.setText("");
 
-                        }
-
-                    }
 
                 }catch (Exception h){
                     textArea.setText("PLEASE RE-ENTER TRANSFER AMOUNT");
                     transferTxtField.setText("");
-
-
-                }
-                try{
-                    int index = fromAccountList.getSelectedIndex();
-                    if(transToTxtField.getText() !=null && transferTxtField!=null && index == 1 ){  // savings account
-                        double amount = Double.parseDouble(transferTxtField.getText());
-                        String username = transToTxtField.getText();
-                        if(managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
-                            // the user they have selected has been found and now we can transfer the object money and save the setting
-                            UserAccount accountTransferTo = managerAccount.findByUsername(username);
-                            // take money away from the first user
-                            currentAccountOpen.withdraw(2,amount);
-                            // transfer method doesnt really let us do this as easily as just generically depositing all transfer from account to account
-                            accountTransferTo.deposit(1,amount);
-                            textArea.setText("Transfered "  + amount + " From Checking Accoount" +
-                                    "\n To " + accountTransferTo.getUsername()
-                                    + "\n" + "---CURRENT ACCOUNT STATUS---\n " +
-                                    " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
-                                    " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
-                                    " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
-
-
-
-                        }else{
-                            // not good couldnt find the user.
-                            textArea.setText("USER NOT FOUND PLEASE TRY AGAIN");
-                            // reset the fields
-                            transferTxtField.setText("");
-                            transToTxtField.setText("");
-
-                        }
-
-                    }
-                }catch (Exception i){
 
 
                 }
@@ -886,10 +793,32 @@ public class Application extends JPanel {
         TranPanel.add(transferTxtField);
         transferTxtField.setColumns(10);
 
+        JLabel lblNewLabel_3 = new JLabel("TO:");
+        lblNewLabel_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        TranPanel.add(lblNewLabel_3);
+
+
+
+        // we really dont even want a list. talk to nick about using the j combox box that he had made for the previous example.
+        JList toAccountList = new JList();
+        toAccountList.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        toAccountList.setModel(new AbstractListModel() {
+            String[] values = new String[] {"Savings", "Checking", "Credit"};
+            public int getSize() {
+                return values.length;
+            }
+            public Object getElementAt(int index) {
+                return values[index];
+            }
+        });
+        TranPanel.add(toAccountList);
+
         JLabel lblNewLabel_4 = new JLabel("FROM");
         lblNewLabel_4.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         TranPanel.add(lblNewLabel_4);
 
+
+        JList fromAccountList = new JList();
         fromAccountList.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         fromAccountList.setModel(new AbstractListModel() {
 
@@ -903,18 +832,10 @@ public class Application extends JPanel {
         });
         TranPanel.add(fromAccountList);
 
-        JLabel lblNewLabel_3 = new JLabel("TO:");
-        lblNewLabel_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        TranPanel.add(lblNewLabel_3);
-
-        transToTxtField = new JTextField();
-        transToTxtField.setColumns(10);
-        TranPanel.add(transToTxtField);
-
         JPanel panel = new JPanel();
         userAccount_Panel.add(panel);
 
-        //add button here.
+        //add buttoon here.
         JButton logoutBtn = new JButton("Logout");
         logoutBtn.setBackground(Color.LIGHT_GRAY);
         logoutBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
@@ -1069,5 +990,4 @@ public class Application extends JPanel {
             System.out.println("*saved settings*");
         }
     }
-
 }
