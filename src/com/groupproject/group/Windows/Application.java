@@ -14,8 +14,6 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.SoftBevelBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -24,7 +22,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class Application extends JPanel {
-     //private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password"); -- here for testing purposes
+    //private static ManagerAccount managerAccount = new ManagerAccount("Jeff", "Linkman", 43, "linklink", "password"); -- here for testing purposes
     private static ManagerAccount managerAccount;
     private static UserAccount currentAccountOpen; // used for holding the current account's info
     // scanner to read in data from the user
@@ -40,6 +38,8 @@ public class Application extends JPanel {
     private JPanel userAccount_Panel;
     private JPanel removeUserAccount_Panel;
     private JPanel createManager_Panel;
+    private JPanel userHistoryPanel;
+    private JPanel transactionsPanel;
     private CardLayout c1 = new CardLayout();
 
     // Strings for all the panels
@@ -49,6 +49,8 @@ public class Application extends JPanel {
     private final String userAccountPanel_title = "userAccount";
     private final String removeAccountPanel_title = "removeUserAccount";
     private final String createManager_title = "createManager";
+    private final String userHistory_title = "userHistory";
+    private final String transaction_title = "transactions";
 
     // then the other variables that we needed.
     private JTextField textField_1;
@@ -59,6 +61,7 @@ public class Application extends JPanel {
     private JTextField withdrawTxtField;
     private JTextField transferTxtField;
     private JTextField transToTxtField;
+    private JTextPane managerTextPane = new JTextPane();
 
 
     /**
@@ -72,6 +75,8 @@ public class Application extends JPanel {
         UserActPanel();
         removeUserAccountPanel();
         createManagerPanel();
+        userHistoryPanel();
+        transactionPanel();
         // everything gets added to here now panel wise. we just have to give it the attributes we did
         panelCont.setLayout(c1);
         // we have to finally add this panel to the panelCont.
@@ -81,6 +86,8 @@ public class Application extends JPanel {
         panelCont.add(userAccount_Panel, userAccountPanel_title);
         panelCont.add(removeUserAccount_Panel, removeAccountPanel_title);
         panelCont.add(createManager_Panel, createManager_title);
+        panelCont.add(userHistoryPanel, userHistory_title);
+        panelCont.add(transactionsPanel, transaction_title);
         if(managerAccount != null){
             // this is what panel we want to show right away.
             c1.show(panelCont, loginPanel_title);
@@ -173,7 +180,7 @@ public class Application extends JPanel {
                             usernameField.setText("");
                             passwordField.setText("");
                         }
-                    // login a user account
+                        // login a user account
                     }else{
                         if (managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
                             // username found
@@ -218,51 +225,54 @@ public class Application extends JPanel {
         panel_1.add(panel_3);
         panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-        JLabel lblNewLabel_2 = new JLabel("FIRST-NAME ");
-        lblNewLabel_2.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel_3.add(lblNewLabel_2);
+        // Labels and new panels
+        JLabel firstName_Label = new JLabel("FIRST-NAME ");
+        firstName_Label.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
 
-        JTextField usernameTextField = new JTextField();
-        usernameTextField.setColumns(10);
-        panel_3.add(usernameTextField);
-
-        JLabel lblNewLabel_3 = new JLabel("LAST-NAME");
-        lblNewLabel_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel_3.add(lblNewLabel_3);
-
-        textField_1 = new JTextField();
-        panel_3.add(textField_1);
-        textField_1.setColumns(10);
+        JLabel lastName_Label = new JLabel("LAST-NAME");
+        lastName_Label.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
 
         JPanel panel_4 = new JPanel();
         panel_4.setBackground(Color.LIGHT_GRAY);
         panel_4.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
         panel_1.add(panel_4);
 
-        JLabel lblNewLabel_4 = new JLabel("PASSWORD ");
-        lblNewLabel_4.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel_4.add(lblNewLabel_4);
+        JLabel password_Label = new JLabel("PASSWORD ");
+        password_Label.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
 
-        textField_2 = new JTextField();
-        panel_4.add(textField_2);
-        textField_2.setColumns(10);
+        JLabel age_Label = new JLabel("AGE ");
+        age_Label.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
 
-        JLabel lblNewLabel_5 = new JLabel("AGE ");
-        lblNewLabel_5.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel_4.add(lblNewLabel_5);
+        JLabel username_Label = new JLabel("USERNAME ");
+        username_Label.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
 
-        textField_3 = new JTextField();
-        textField_3.setColumns(10);
-        panel_4.add(textField_3);
+        // TextFields
+        JTextField firstName_TextField = new JTextField();
+        firstName_TextField.setColumns(10);
 
-        JLabel lblNewLabel_6 = new JLabel("USERNAME ");
-        lblNewLabel_6.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        panel_4.add(lblNewLabel_6);
+        JTextField lastName_TextField = new JTextField();
+        lastName_TextField.setColumns(10);
 
-        textField_4 = new JTextField();
-        textField_4.setColumns(10);
-        panel_4.add(textField_4);
+        JTextField password_TextField = new JTextField();
+        password_TextField.setColumns(10);
 
+        JTextField age_TextField = new JTextField();
+        age_TextField.setColumns(10);
+
+        JTextField username_TextField = new JTextField();
+        username_TextField.setColumns(10);
+
+        // Add the objects
+        panel_3.add(firstName_Label);
+        panel_3.add(firstName_TextField);
+        panel_3.add(lastName_Label);
+        panel_3.add(lastName_TextField);
+        panel_4.add(username_Label);
+        panel_4.add(username_TextField);
+        panel_4.add(password_Label);
+        panel_4.add(password_TextField);
+        panel_4.add(age_Label);
+        panel_4.add(age_TextField);
 
         JPanel panel_7 = new JPanel();
         panel_7.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -280,28 +290,25 @@ public class Application extends JPanel {
         // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
         btnNewButton.addActionListener((ActionEvent e) -> {
             // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
-            if(usernameTextField.getText()!=null && textField_1.getText()!=null && textField_2.getText()!=null && textField_3.getText()!=null && textField_4.getText()!=null) {
+            if(username_TextField.getText()!=null && password_TextField.getText()!=null && age_TextField.getText()!=null && firstName_TextField.getText()!=null && lastName_TextField.getText()!=null) {
                 // if the fields are not null we are going to expect that they have entered the information correctly
                 // create temp variables to create user.
-                String firstName = usernameTextField.getText();
-                String lastName = textField_1.getText();
-                String password = textField_2.getText();
-                String age =  textField_3.getText();
-                String userName = textField_4.getText();
-                int age2 = Integer.parseInt(age);
+                String firstName = firstName_TextField.getText();
+                String lastName = lastName_TextField.getText();
+                String password = password_TextField.getText();
+                String userName = username_TextField.getText();
+                int age = Integer.parseInt(age_TextField.getText());
                 // create user account and then add each account type that they specify on wanting.
                 // create a new account
                 boolean hasCreditAccount = chckbxNewCheckBox_1.isSelected();
-                UserAccount newAccount = new UserAccount(firstName, lastName, age2, userName, password, hasCreditAccount);
+                UserAccount newAccount = new UserAccount(firstName, lastName, age, userName, password, hasCreditAccount);
                 // add it to the ManagerAccount object
                 boolean accountAdded = managerAccount.addUser(newAccount);
                 if(accountAdded){
-                    System.out.println("Added: " + newAccount.getUsername());
                     // save settings
                     saveSettings();
                     c1.show(panelCont, managerAccountPanel_title); // go back to the manager account panel
-                    // TODO: SEE ME - if we take the textPane that we are using in the managerPanel and make it a global variable we may be able to let the manager know that the user has indeed been added.
-
+                    managerTextPane.setText("Account added, username: " + userName);
                 }else{
                     System.err.println("Account failed to add.");
                 }
@@ -315,13 +322,13 @@ public class Application extends JPanel {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                c1.show(panelCont, "managerAccount");                                                                                                                                                                                                                        
+                c1.show(panelCont, "managerAccount");
                 // empty all of the text fields
-                usernameTextField.setText("");
-                textField_1.setText("");
-                textField_2.setText("");
-                textField_3.setText("");
-                textField_4.setText("");
+                username_TextField.setText("");
+                password_TextField.setText("");
+                firstName_TextField.setText("");
+                lastName_TextField.setText("");
+                age_TextField.setText("");
             }
         });
         cancelButton.setBackground(Color.LIGHT_GRAY);
@@ -343,7 +350,6 @@ public class Application extends JPanel {
         managerAccount_Panel.setBackground(Color.LIGHT_GRAY);
         managerAccount_Panel.setBorder(new EmptyBorder(5, 5, 5, 5));
         managerAccount_Panel.setLayout(new BorderLayout(0, 0));
-        JTextPane textPane = new JTextPane();
 
         JLabel headerLabel = new JLabel("MANAGER ACCOUNT\r\n");
         headerLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
@@ -385,10 +391,22 @@ public class Application extends JPanel {
         managerControlPanel.add(removeBtn);
 
         JButton historyBtn = new JButton("USER-HISTORY");
+        historyBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                c1.show(panelCont, userHistory_title);
+            }
+        });
         historyBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         managerControlPanel.add(historyBtn);
 
         JButton transBtn = new JButton("TRANSACTIONS");
+        transBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                c1.show(panelCont, transaction_title);
+            }
+        });
         transBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         managerControlPanel.add(transBtn);
 
@@ -454,24 +472,24 @@ public class Application extends JPanel {
                         if(username.equals(managerAccount.findByUsername(username))){
                             // we have found the user.
                             //display to textPane.
-                            textPane.setText("USER FOUND:" + username);
+                            managerTextPane.setText("USER FOUND:" + username);
 
 
                         }else{
-                            textPane.setText("USER WAS NOT FOUND");
+                            managerTextPane.setText("USER WAS NOT FOUND");
                             // clear the fields for the user
                             usernameTextField.setText("");
                             usernameReEnterField.setText("");
                         }
                     }else{
-                        textPane.setText("USERNAMES DO NOT MATCH TRY AGAIN!");
+                        managerTextPane.setText("USERNAMES DO NOT MATCH TRY AGAIN!");
                         // clear the fields for the user.
                         usernameTextField.setText("");
                         usernameReEnterField.setText("");
                     }
 
                 }else{
-                    textPane.setText("PLEASE ENTER SOMETHING IN THE FIELDS!");
+                    managerTextPane.setText("PLEASE ENTER SOMETHING IN THE FIELDS!");
                 }
             }
         });
@@ -494,12 +512,10 @@ public class Application extends JPanel {
         panel_5.setBackground(Color.LIGHT_GRAY);
         panel_2.add(panel_5);
 
-        textPane.setContentType("MESSAGE CENTER\r\n");
-        panel_5.add(textPane);
-        textPane.setToolTipText("MESSAGE CENTER");
-
-
-        textPane.setText("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n                                                                                                                                      ");
+        managerTextPane.setContentType("MESSAGE CENTER\r\n");
+        panel_5.add(managerTextPane);
+        managerTextPane.setToolTipText("MESSAGE CENTER");
+        managerTextPane.setText("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n                                                                                                                                      ");
     }
 
     private void removeUserAccountPanel(){
@@ -548,8 +564,6 @@ public class Application extends JPanel {
     }
 
     private void UserActPanel(){
-
-
         //deposit
         JList list1 = new JList();
         JList fromAccountList = new JList();
@@ -600,9 +614,9 @@ public class Application extends JPanel {
                     currentAccountOpen.deposit(1, amount);
 
                     textArea.setText("deposit to savings acct $"  + amount + "\n" + "---CURRENT ACCOUNT STATUS---\n " +
-                                   " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
-                                  " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
-                                " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
+                            " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
+                            " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
+                            " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
 
 
                     // clear the textField and save this information.
@@ -610,14 +624,14 @@ public class Application extends JPanel {
                     saveSettings();
 
 
-            }catch (Exception b){
+                }catch (Exception b){
                     // input is not casting correctly.
                     // maybe instead of throwing the exception we try to help the user out.
                     textArea.setText("PLEASE RE-ENTER AMOUNT!");
                     amountTextField.setText("");
-                //throw new NumberFormatException();
-                // b.printStackTrace();
-            }}
+                    //throw new NumberFormatException();
+                    // b.printStackTrace();
+                }}
             if(amountTextField!=null && index == 1){
                 try {
                     double amount = Double.parseDouble(amountTextField.getText());
@@ -764,12 +778,6 @@ public class Application extends JPanel {
         tranBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-<<<<<<<<< Temporary merge branch 1
-                // TODO: FINSIH TRANSFER FUNCTIONALITY
-                //managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username
-                //UserAccount accountTransferTo = managerAccount.findByUsername(username);
-=========
->>>>>>>>> Temporary merge branch 2
                 try{
 
                     int index = fromAccountList.getSelectedIndex();
@@ -778,36 +786,29 @@ public class Application extends JPanel {
                         String username = transToTxtField.getText();
                         if(managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
                             // the user they have selected has been found and now we can transfer the object money and save the setting
-                                UserAccount accountTransferTo = managerAccount.findByUsername(username);
-                                // take money away from the first user
-                                currentAccountOpen.withdraw(1,amount);
-                                // transfer method doesnt really let us do this as easily as just generically depositing all transfer from account to account
-                                accountTransferTo.deposit(1,amount);
-                                textArea.setText("Transfered "  + amount + " From Savings Accoount" +
-                                        "\n To " + accountTransferTo.getUsername()
-                                        + "\n" + "---CURRENT ACCOUNT STATUS---\n " +
-                                        " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
-                                        " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
-                                        " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
-
-
-
+                            UserAccount accountTransferTo = managerAccount.findByUsername(username);
+                            // take money away from the first user
+                            currentAccountOpen.withdraw(1,amount);
+                            // transfer method doesnt really let us do this as easily as just generically depositing all transfer from account to account
+                            accountTransferTo.deposit(1,amount);
+                            textArea.setText("Transfered "  + amount + " From Savings Accoount" +
+                                    "\n To " + accountTransferTo.getUsername()
+                                    + "\n" + "---CURRENT ACCOUNT STATUS---\n " +
+                                    " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
+                                    " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
+                                    " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
                         }else{
                             // not good couldnt find the user.
                             textArea.setText("USER NOT FOUND PLEASE TRY AGAIN");
                             // reset the fields
                             transferTxtField.setText("");
                             transToTxtField.setText("");
-
                         }
 
                     }
-
                 }catch (Exception h){
                     textArea.setText("PLEASE RE-ENTER TRANSFER AMOUNT");
                     transferTxtField.setText("");
-
-
                 }
                 try{
                     int index = fromAccountList.getSelectedIndex();
@@ -827,24 +828,17 @@ public class Application extends JPanel {
                                     " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
                                     " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
                                     " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
-
-
-
                         }else{
                             // not good couldnt find the user.
                             textArea.setText("USER NOT FOUND PLEASE TRY AGAIN");
                             // reset the fields
                             transferTxtField.setText("");
                             transToTxtField.setText("");
-
                         }
 
                     }
                 }catch (Exception i){
-
-
                 }
-
             }
         });
         tranBtn.setBackground(Color.LIGHT_GRAY);
@@ -862,8 +856,7 @@ public class Application extends JPanel {
         TranPanel.add(transferTxtField);
         transferTxtField.setColumns(10);
 
-<<<<<<<<< Temporary merge branch 1
-=========
+
         JLabel lblNewLabel_3 = new JLabel("TO:");
         lblNewLabel_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         TranPanel.add(lblNewLabel_3);
@@ -884,7 +877,6 @@ public class Application extends JPanel {
         });
         TranPanel.add(toAccountList);
 
->>>>>>>>> Temporary merge branch 2
         JLabel lblNewLabel_4 = new JLabel("FROM");
         lblNewLabel_4.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         TranPanel.add(lblNewLabel_4);
@@ -901,10 +893,6 @@ public class Application extends JPanel {
             }
         });
         TranPanel.add(fromAccountList);
-
-        JLabel lblNewLabel_3 = new JLabel("TO:");
-        lblNewLabel_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        TranPanel.add(lblNewLabel_3);
 
         transToTxtField = new JTextField();
         transToTxtField.setColumns(10);
@@ -1043,6 +1031,87 @@ public class Application extends JPanel {
 
         JPanel panel_6 = new JPanel();
         panel_1.add(panel_6);
+    }
+
+    private void userHistoryPanel(){
+        userHistoryPanel = new JPanel();
+
+        userHistoryPanel.setLayout(new BorderLayout(0, 0));
+
+        JPanel textPanel = new JPanel();
+        userHistoryPanel.add(textPanel, BorderLayout.CENTER);
+
+        JTextArea textArea = new JTextArea();
+        textArea.setRows(40);
+        textArea.setColumns(65);
+        textPanel.add(textArea);
+
+        // TODO: HOOK UP USER HISTORY PRINT INTO textArea
+
+        JPanel buttonPanel = new JPanel();
+        userHistoryPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        JButton backBtn = new JButton("BACK");
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                c1.show(panelCont, managerAccountPanel_title);
+            }
+        });
+        backBtn.setBackground(Color.LIGHT_GRAY);
+        backBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        buttonPanel.add(backBtn);
+
+        JButton logoutBtn = new JButton("LOGOUT");
+        logoutBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                c1.show(panelCont,loginPanel_title);
+            }
+        });
+        logoutBtn.setBackground(Color.LIGHT_GRAY);
+        logoutBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        buttonPanel.add(logoutBtn);
+    }
+
+    private void transactionPanel(){
+        transactionsPanel = new JPanel();
+
+        transactionsPanel.setLayout(new BorderLayout(0, 0));
+
+        JPanel textPanel = new JPanel();
+        transactionsPanel.add(textPanel, BorderLayout.CENTER);
+
+        JTextArea textArea = new JTextArea();
+        textArea.setRows(40);
+        textArea.setColumns(65);
+        textPanel.add(textArea);
+
+        // TODO: HOOK UP TRANSACTIONS to textArea
+
+        JPanel buttonPanel = new JPanel();
+        transactionsPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        JButton backBtn = new JButton("BACK");
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                c1.show(panelCont, managerAccountPanel_title);
+            }
+        });
+        backBtn.setBackground(Color.LIGHT_GRAY);
+        backBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        buttonPanel.add(backBtn);
+
+        JButton logoutBtn = new JButton("LOGOUT");
+        logoutBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        logoutBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                c1.show(panelCont,loginPanel_title);
+            }
+        });
+        logoutBtn.setBackground(Color.LIGHT_GRAY);
+        buttonPanel.add(logoutBtn);
+
     }
 
     public static void main(String[] args) {
