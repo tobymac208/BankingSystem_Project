@@ -86,8 +86,6 @@ public class Application extends JPanel {
             // show this if the managerAccount didn't exist
             c1.show(panelCont, createManager_title);
         }
-        // this is what panel we want to show right away.
-        c1.show(panelCont, loginPanel_title);
         // finally add it to the frame.
         JFrame frame = new JFrame();
         frame.getContentPane().add(panelCont);
@@ -503,10 +501,12 @@ public class Application extends JPanel {
     }
 
     private void removeUserAccountPanel(){
-        removeUserAccount_Panel = new JPanel(new BorderLayout());
+        removeUserAccount_Panel = new JPanel();
+        removeUserAccount_Panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        removeUserAccount_Panel.setLayout(new BorderLayout(10, 10));
         if(managerAccount != null){
             removeUserAccount_Panel = new JPanel(new BorderLayout());
-            JPanel centerLayout = new JPanel(new GridLayout(2, 2));
+            JPanel centerLayout = new JPanel(new GridLayout(4, 4));
 
             // Components
             JComboBox<String> userNames = new JComboBox<>();
@@ -562,22 +562,22 @@ public class Application extends JPanel {
         JPanel depPanel = new JPanel();
         userAccount_Panel.add(depPanel);
 
-        // attempting to print current status for the user after initial login. throwing null pointer exception so ive put it in a try catch block to keep it from crashing
-        try{
-
-            double savingsAcctBal = currentAccountOpen.getSavingsAccount().getBalance();
-            double checkingAcctBal =currentAccountOpen.getchAccount().getBalance();
-            double creditAcctBal = currentAccountOpen.getCcAccount().getAmountLeft();
-            textArea.setText("---CURRENT ACCOUNT STATUS---\n " +
-                    " SAVINGS: $" + savingsAcctBal + "\n" +
-                    " CHECKINGS: $" + checkingAcctBal + "\n" +
-                    " CREDIT: $" + creditAcctBal);
-
-
-        }catch(Exception f){
-            // deals w null pointer from user loggin in. We want to show them there account standings but will show them reguardless after every action they do in the menus.
-            textArea.setText("Error: Trouble processing account standings.");
-        }
+//        // attempting to print current status for the user after initial login. throwing null pointer exception so ive put it in a try catch block to keep it from crashing
+//        try{
+//
+//            double savingsAcctBal = currentAccountOpen.getSavingsAccount().getBalance();
+//            double checkingAcctBal =currentAccountOpen.getchAccount().getBalance();
+//            double creditAcctBal = currentAccountOpen.getCcAccount().getAmountLeft();
+//            textArea.setText("---CURRENT ACCOUNT STATUS---\n " +
+//                    " SAVINGS: $" + savingsAcctBal + "\n" +
+//                    " CHECKINGS: $" + checkingAcctBal + "\n" +
+//                    " CREDIT: $" + creditAcctBal);
+//
+//
+//        }catch(Exception f){
+//            // deals w null pointer from user loggin in. We want to show them there account standings but will show them reguardless after every action they do in the menus.
+//            textArea.setText("Error: Trouble processing account standings.");
+//        }
 
 
         JButton depositBtn = new JButton("DEPOSIT");
@@ -650,33 +650,6 @@ public class Application extends JPanel {
         depPanel.add(toLbl);
 
 
-        list1.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                // make a variable so that the list variable can be copied and compared to what the user selected.
-                int index = list1.getSelectedIndex();
-                if(index == 0){
-                    // we are in savings account.
-
-
-                    //works
-                   // textArea.setText("Savings selected");
-                }
-                else if(index == 1){
-                    // we are in checkings account
-
-                    //works
-                   // textArea.setText("Checking selected");
-
-                }
-                else if(index == 2) {
-                    // we are in credit account.
-
-                    //works
-                   // textArea.setText("Credit selected");
-                }
-            }
-        });
         list1.setModel(new AbstractListModel() {
             String[] values = new String[] {"Savings", "Checking"};
             public int getSize() {
@@ -788,7 +761,6 @@ public class Application extends JPanel {
         tranBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO: FINSIH TRANSFER FUNCTIONALITY
                 try{
                     double amount = Double.parseDouble(transferTxtField.getText());
                     textArea.setText("TRANSFER" + amount);
@@ -831,7 +803,6 @@ public class Application extends JPanel {
         JList toAccountList = new JList();
         toAccountList.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         toAccountList.setModel(new AbstractListModel() {
-            // TODO: THIS NEEDS TO BE USERNAME OBJECTS.
             String[] values = new String[] {"Savings", "Checking", "Credit"};
             public int getSize() {
                 return values.length;
@@ -1019,5 +990,4 @@ public class Application extends JPanel {
             System.out.println("*saved settings*");
         }
     }
-
 }
