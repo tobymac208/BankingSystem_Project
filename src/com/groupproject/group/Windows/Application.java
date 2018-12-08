@@ -58,6 +58,8 @@ public class Application extends JPanel {
     private JTextField amountTextField;
     private JTextField withdrawTxtField;
     private JTextField transferTxtField;
+    private JTextField transToTxtField;
+
 
     /**
      * WE LAUNCH THE APPLICATION HERE AND EVERYTHING NEEDS TO BE CALLED AND ADDED HERE
@@ -550,6 +552,7 @@ public class Application extends JPanel {
 
         //deposit
         JList list1 = new JList();
+        JList fromAccountList = new JList();
         list1.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         JTextArea textArea = new JTextArea();
         // withdraw (WE SHOULD CHANGE NAME TO LIST2)
@@ -761,17 +764,83 @@ public class Application extends JPanel {
         tranBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+<<<<<<<<< Temporary merge branch 1
+                // TODO: FINSIH TRANSFER FUNCTIONALITY
+                //managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username
+                //UserAccount accountTransferTo = managerAccount.findByUsername(username);
+=========
+>>>>>>>>> Temporary merge branch 2
                 try{
-                    double amount = Double.parseDouble(transferTxtField.getText());
-                    textArea.setText("TRANSFER" + amount);
+
+                    int index = fromAccountList.getSelectedIndex();
+                    if(transToTxtField.getText() !=null && transferTxtField!=null && index == 0 ){  // savings account
+                        double amount = Double.parseDouble(transferTxtField.getText());
+                        String username = transToTxtField.getText();
+                        if(managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
+                            // the user they have selected has been found and now we can transfer the object money and save the setting
+                                UserAccount accountTransferTo = managerAccount.findByUsername(username);
+                                // take money away from the first user
+                                currentAccountOpen.withdraw(1,amount);
+                                // transfer method doesnt really let us do this as easily as just generically depositing all transfer from account to account
+                                accountTransferTo.deposit(1,amount);
+                                textArea.setText("Transfered "  + amount + " From Savings Accoount" +
+                                        "\n To " + accountTransferTo.getUsername()
+                                        + "\n" + "---CURRENT ACCOUNT STATUS---\n " +
+                                        " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
+                                        " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
+                                        " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
 
 
 
+                        }else{
+                            // not good couldnt find the user.
+                            textArea.setText("USER NOT FOUND PLEASE TRY AGAIN");
+                            // reset the fields
+                            transferTxtField.setText("");
+                            transToTxtField.setText("");
 
+                        }
+
+                    }
 
                 }catch (Exception h){
                     textArea.setText("PLEASE RE-ENTER TRANSFER AMOUNT");
                     transferTxtField.setText("");
+
+
+                }
+                try{
+                    int index = fromAccountList.getSelectedIndex();
+                    if(transToTxtField.getText() !=null && transferTxtField!=null && index == 1 ){  // savings account
+                        double amount = Double.parseDouble(transferTxtField.getText());
+                        String username = transToTxtField.getText();
+                        if(managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
+                            // the user they have selected has been found and now we can transfer the object money and save the setting
+                            UserAccount accountTransferTo = managerAccount.findByUsername(username);
+                            // take money away from the first user
+                            currentAccountOpen.withdraw(2,amount);
+                            // transfer method doesnt really let us do this as easily as just generically depositing all transfer from account to account
+                            accountTransferTo.deposit(1,amount);
+                            textArea.setText("Transfered "  + amount + " From Checking Accoount" +
+                                    "\n To " + accountTransferTo.getUsername()
+                                    + "\n" + "---CURRENT ACCOUNT STATUS---\n " +
+                                    " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
+                                    " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
+                                    " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
+
+
+
+                        }else{
+                            // not good couldnt find the user.
+                            textArea.setText("USER NOT FOUND PLEASE TRY AGAIN");
+                            // reset the fields
+                            transferTxtField.setText("");
+                            transToTxtField.setText("");
+
+                        }
+
+                    }
+                }catch (Exception i){
 
 
                 }
@@ -793,6 +862,8 @@ public class Application extends JPanel {
         TranPanel.add(transferTxtField);
         transferTxtField.setColumns(10);
 
+<<<<<<<<< Temporary merge branch 1
+=========
         JLabel lblNewLabel_3 = new JLabel("TO:");
         lblNewLabel_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         TranPanel.add(lblNewLabel_3);
@@ -813,12 +884,11 @@ public class Application extends JPanel {
         });
         TranPanel.add(toAccountList);
 
+>>>>>>>>> Temporary merge branch 2
         JLabel lblNewLabel_4 = new JLabel("FROM");
         lblNewLabel_4.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         TranPanel.add(lblNewLabel_4);
 
-
-        JList fromAccountList = new JList();
         fromAccountList.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         fromAccountList.setModel(new AbstractListModel() {
 
@@ -832,10 +902,18 @@ public class Application extends JPanel {
         });
         TranPanel.add(fromAccountList);
 
+        JLabel lblNewLabel_3 = new JLabel("TO:");
+        lblNewLabel_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        TranPanel.add(lblNewLabel_3);
+
+        transToTxtField = new JTextField();
+        transToTxtField.setColumns(10);
+        TranPanel.add(transToTxtField);
+
         JPanel panel = new JPanel();
         userAccount_Panel.add(panel);
 
-        //add buttoon here.
+        //add button here.
         JButton logoutBtn = new JButton("Logout");
         logoutBtn.setBackground(Color.LIGHT_GRAY);
         logoutBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
