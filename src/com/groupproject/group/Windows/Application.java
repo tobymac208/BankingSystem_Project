@@ -57,6 +57,8 @@ public class Application extends JPanel {
     private JTextField textField_3;
     private JTextField textField_4;
     private JTextField amountTextField;
+    private JTextField withdrawTxtField;
+    private JTextField transferTxtField;
 
     /**
      * WE LAUNCH THE APPLICATION HERE AND EVERYTHING NEEDS TO BE CALLED AND ADDED HERE
@@ -530,6 +532,8 @@ public class Application extends JPanel {
     }
 
     public void UserActPanel(){
+
+
         //deposit
         JList list1 = new JList();
         list1.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
@@ -544,11 +548,28 @@ public class Application extends JPanel {
         JPanel depPanel = new JPanel();
         userAccount_Panel.add(depPanel);
 
+        // attempting to print current status for the user after initial login. throwing null pointer exception so ive put it in a try catch block to keep it from crashing
+        try{
+
+            double savingsAcctBal = currentAccountOpen.getSavingsAccount().getBalance();
+            double checkingAcctBal =currentAccountOpen.getchAccount().getBalance();
+            double creditAcctBal = currentAccountOpen.getCcAccount().getAmountLeft();
+            textArea.setText("---CURRENT ACCOUNT STATUS---\n " +
+                    " SAVINGS: $" + savingsAcctBal + "\n" +
+                    " CHECKINGS: $" + checkingAcctBal + "\n" +
+                    " CREDIT: $" + creditAcctBal);
+
+
+        }catch(Exception f){
+            // deals w null pointer from user loggin in. We want to show them there account standings but will show them reguardless after every action they do in the menus.
+            textArea.setText("Error: Trouble processing account standings.");
+        }
+
+
         JButton depositBtn = new JButton("DEPOSIT");
         depositBtn.setBackground(Color.LIGHT_GRAY);
         depositBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        // we just have to make sure that the "$" that we are creating in the box is added to the value of amount.
-// amountextfields cannot be negative or a none number. must not take either.
+
         depositBtn.addActionListener(e -> {
             int index = list1.getSelectedIndex();
             if(amountTextField!=null && index == 0){
@@ -560,7 +581,13 @@ public class Application extends JPanel {
 
                     // type, amount.
                     currentAccountOpen.deposit(1, amount);
-                    textArea.setText("deposit to savings acct" + amount);
+
+                    textArea.setText("deposit to savings acct $"  + amount + "\n" + "---CURRENT ACCOUNT STATUS---\n " +
+                                   " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
+                                  " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
+                                " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
+
+
                     // clear the textField and save this information.
                     amountTextField.setText("");
                     saveSettings();
@@ -578,7 +605,10 @@ public class Application extends JPanel {
                 try {
                     double amount = Double.parseDouble(amountTextField.getText());
                     currentAccountOpen.deposit(2, amount);
-                    textArea.setText("deposit to checking acct");
+                    textArea.setText("deposit to checking acct $"  + amount + "\n" + "---CURRENT ACCOUNT STATUS---\n " +
+                            " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
+                            " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
+                            " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
                     // clear the textArea and save the information.
                     textArea.setText("");
                     saveSettings();
@@ -588,24 +618,7 @@ public class Application extends JPanel {
                     // c.printStackTrace();
                 }
             }
-            // TODO: MAKE SURE DEPOSIT METHOD LETS TYPE 3 FOR CREDIT ACCOUNT. deposit(types,amount)
-            if(amountTextField!=null && index == 2){
-                try {
-                    double amount = Double.parseDouble(amountTextField.getText());
-                    textArea.setText("deposit to credit acct");
 
-                    currentAccountOpen.deposit(3, amount);
-                    textArea.setText("");
-                    saveSettings();
-                }catch (Exception d){
-                    throw new NumberFormatException();
-                    //d.printStackTrace();
-                }
-            }
-            else if(amountTextField == null ){
-                // do something if they dont enter something and want to click on the button
-                textArea.setText("PLEASE ENTER AN AMOUNT!");
-            }
 
         });
         depPanel.add(depositBtn);
@@ -651,7 +664,7 @@ public class Application extends JPanel {
             }
         });
         list1.setModel(new AbstractListModel() {
-            String[] values = new String[] {"Savings", "Checking", "Credit"};
+            String[] values = new String[] {"Savings", "Checking"};
             public int getSize() {
                 return values.length;
             }
@@ -670,55 +683,55 @@ public class Application extends JPanel {
         withdrawBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         withdrawBtn.addActionListener(arg0 -> {
             int index = list3.getSelectedIndex();
-            if(amountTextField !=null && index == 0) {
+            if(withdrawTxtField !=null && index == 0) {
                 try {
-                    double amount = Double.parseDouble(amountTextField.getText());
+                    double amount = Double.parseDouble(withdrawTxtField.getText());
                     // savings account
 
                     currentAccountOpen.withdraw(1, amount);
                     // let the user know what happened and save settings.
                     textArea.setText(amount + " " + " withdrawn from savings account");
-                    amountTextField.setText("");
+                    withdrawTxtField.setText("");
                     saveSettings();
                 }catch (Exception f){
                     //f.printStackTrace()
                     //throw new NumberFormatException();
                     textArea.setText("PLEASE RE-ENTER AMOUNT!");
-                    amountTextField.setText("");
+                    withdrawTxtField.setText("");
                 }
 
             }
-            else if(amountTextField !=null && index == 1){
+            else if(withdrawTxtField !=null && index == 1){
                 // checking account
                 try{
-                    double amount = Double.parseDouble(amountTextField.getText());
+                    double amount = Double.parseDouble(withdrawTxtField.getText());
                     currentAccountOpen.withdraw(2,amount);
                     // let the user know what happened
                     textArea.setText(amount + " " + " withdrawn from Checking Account");
-                    amountTextField.setText("");
+                    withdrawTxtField.setText("");
                     saveSettings();
 
                 }catch (Exception g){
                     //g.printStackTrace();
                     //throw new NumberFormatException();
                     textArea.setText("PLEASE RE-ENTER AMOUNT");
-                    amountTextField.setText("");
+                    withdrawTxtField.setText("");
                 }
 
             }
-            else if(amountTextField !=null && index == 2){
+            else if(withdrawTxtField !=null && index == 2){
                 // credit account
                 try{
-                    double amount = Double.parseDouble(amountTextField.getText());
+                    double amount = Double.parseDouble(withdrawTxtField.getText());
                     currentAccountOpen.withdraw(3,amount);
                     textArea.setText(amount + " " + " withdrawn from Credit Account");
-                    amountTextField.setText("");
+                    withdrawTxtField.setText("");
                     saveSettings();
                 }catch (Exception h){
                     //h.printStackTrace();
                     //throw new NumberFormatException
                     textArea.setText("PLEASE RE-ENTER AMOUNT");
-                    amountTextField.setText("");
+                    withdrawTxtField.setText("");
                 }
 
             }
@@ -731,9 +744,10 @@ public class Application extends JPanel {
         amntLbl.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         withPanel.add(amntLbl);
 
-        JTextField usernameTextField = new JTextField();
-        withPanel.add(usernameTextField);
-        usernameTextField.setColumns(10);
+        // this is third amount textfield
+        withdrawTxtField = new JTextField();
+        withPanel.add(withdrawTxtField);
+        withdrawTxtField.setColumns(10);
 
         JLabel lblNewLabel_1 = new JLabel("TO:");
         lblNewLabel_1.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
@@ -757,10 +771,31 @@ public class Application extends JPanel {
         userAccount_Panel.add(TranPanel);
 
         JButton tranBtn = new JButton("TRANSFER");
+        tranBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: FINSIH TRANSFER FUNCTIONALITY
+                try{
+                    double amount = Double.parseDouble(transferTxtField.getText());
+                    textArea.setText("TRANSFER" + amount);
+
+
+
+
+
+                }catch (Exception h){
+                    textArea.setText("PLEASE RE-ENTER TRANSFER AMOUNT");
+                    transferTxtField.setText("");
+
+
+                }
+
+            }
+        });
         tranBtn.setBackground(Color.LIGHT_GRAY);
         tranBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         tranBtn.addActionListener(e -> {
-            // TODO: FINISH HOOKING UP FUNCTIONALITY
+
         });
         TranPanel.add(tranBtn);
 
@@ -768,17 +803,21 @@ public class Application extends JPanel {
         lblNewLabel.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         TranPanel.add(lblNewLabel);
 
-        textField_1 = new JTextField();
-        TranPanel.add(textField_1);
-        textField_1.setColumns(10);
+        transferTxtField = new JTextField();
+        TranPanel.add(transferTxtField);
+        transferTxtField.setColumns(10);
 
         JLabel lblNewLabel_3 = new JLabel("TO:");
         lblNewLabel_3.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         TranPanel.add(lblNewLabel_3);
 
-        JList list5 = new JList();
-        list5.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        list5.setModel(new AbstractListModel() {
+
+
+        // we really dont even want a list. talk to nick about using the j combox box that he had made for the previous example.
+        JList toAccountList = new JList();
+        toAccountList.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        toAccountList.setModel(new AbstractListModel() {
+            // TODO: THIS NEEDS TO BE USERNAME OBJECTS.
             String[] values = new String[] {"Savings", "Checking", "Credit"};
             public int getSize() {
                 return values.length;
@@ -787,16 +826,17 @@ public class Application extends JPanel {
                 return values[index];
             }
         });
-        TranPanel.add(list5);
+        TranPanel.add(toAccountList);
 
         JLabel lblNewLabel_4 = new JLabel("FROM");
         lblNewLabel_4.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         TranPanel.add(lblNewLabel_4);
 
 
-        JList list6 = new JList();
-        list6.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        list6.setModel(new AbstractListModel() {
+        JList fromAccountList = new JList();
+        fromAccountList.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        fromAccountList.setModel(new AbstractListModel() {
+
             String[] values = new String[] {"Savings", "Checking", "Credit"};
             public int getSize() {
                 return values.length;
@@ -805,7 +845,7 @@ public class Application extends JPanel {
                 return values[index];
             }
         });
-        TranPanel.add(list6);
+        TranPanel.add(fromAccountList);
 
         JPanel panel = new JPanel();
         userAccount_Panel.add(panel);
@@ -854,4 +894,5 @@ public class Application extends JPanel {
             System.out.println("*saved settings*");
         }
     }
+
 }
