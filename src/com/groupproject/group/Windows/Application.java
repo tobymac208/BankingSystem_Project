@@ -437,7 +437,6 @@ public class Application extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 // search for a user
                 String usernameToSearchFor = usernameTextField.getText();
-                // TODO: Make sure that this is working and understood.
                 // make sure something is input here.
                 if(usernameTextField.getText() !=null && usernameReEnterField.getText() !=null){
                     // make sure username is the same on both sides
@@ -545,6 +544,7 @@ public class Application extends JPanel {
 
         JPanel depPanel = new JPanel();
         userAccount_Panel.add(depPanel);
+        // TODO: FIGURE OUT WHY THIS ISNT WORKING PROPERLY
 
 //        // attempting to print current status for the user after initial login. throwing null pointer exception so ive put it in a try catch block to keep it from crashing
 //        try{
