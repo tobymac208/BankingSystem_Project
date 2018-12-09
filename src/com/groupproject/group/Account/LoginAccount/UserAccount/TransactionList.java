@@ -61,21 +61,19 @@ public class TransactionList implements Serializable {
         return answer;
     }
 
-    /** Prints out a styled list of al transactions. */
-    public void printTransactions(){
-        if(!(numberOfTransactions > 0)){ // is it NOT greater than zero?
-            System.out.println("No transactions to print.");
-            return; // leave the method
+    /** Returns a formatted string of the transactions. */
+    @Override
+    public String toString(){
+        String stringToReturn = "";
+        if(head == null && tail == null){
+            stringToReturn = "No transactions.";
         }
-
-        String stringToPrint = "";
-        for(TransactionNode curretNode = head; curretNode != null; curretNode = curretNode.getLink()){
-            stringToPrint += "\"" + curretNode.getData().getDescription() + "\"";
-            if(curretNode.getLink() != null){
-                stringToPrint += "->";
+        for(TransactionNode currentTransaction = head; currentTransaction != null; currentTransaction = currentTransaction.getLink()){
+            stringToReturn += currentTransaction.getData().getDescription();
+            if(currentTransaction.getLink() != null){
+                stringToReturn += "\n";
             }
         }
-
-        System.out.println(stringToPrint);
+        return stringToReturn;
     }
 }

@@ -45,7 +45,7 @@ public class ManagerAccount extends LoginAccount {
         for(UserAccount account : userAccounts.getUsers()){
             if(account != null){ // some may be empty UserAccount objects
                 System.out.println(account.getUsername());
-                account.getTransactionList().printTransactions();
+                System.out.println(account.getTransactionList().toString());
             }
         }
     }
@@ -61,6 +61,6 @@ public class ManagerAccount extends LoginAccount {
         // Print the user's transactions
         System.out.println("Transactions, for user " + "\"" + userAccount.getUsername() + "\":");
          // print out their transactions
-        userAccount.getTransactionList().printTransactions();
+        System.out.println(userAccount.getTransactionList().toString());
     }
 }

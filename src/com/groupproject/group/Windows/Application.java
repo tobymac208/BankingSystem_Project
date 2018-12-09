@@ -5,6 +5,8 @@ package com.groupproject.group.Windows;
  */
 
 import com.groupproject.group.Account.LoginAccount.ManagerAccount;
+import com.groupproject.group.Account.LoginAccount.UserAccount.Transaction;
+import com.groupproject.group.Account.LoginAccount.UserAccount.TransactionList;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccount;
 import com.groupproject.group.Utility.FileOps;
 
@@ -995,43 +997,44 @@ public class Application extends JPanel {
 
     private void userHistoryPanel(){
         userHistoryPanel = new JPanel();
+        if(managerAccount != null){
+            userHistoryPanel.setLayout(new BorderLayout(0, 0));
 
-        userHistoryPanel.setLayout(new BorderLayout(0, 0));
+            JPanel textPanel = new JPanel();
+            userHistoryPanel.add(textPanel, BorderLayout.CENTER);
 
-        JPanel textPanel = new JPanel();
-        userHistoryPanel.add(textPanel, BorderLayout.CENTER);
-
-        JTextArea textArea = new JTextArea();
-        textArea.setRows(40);
-        textArea.setColumns(65);
-        textPanel.add(textArea);
-        int count = 0;
+            JTextArea textArea = new JTextArea();
+            textArea.setRows(40);
+            textArea.setColumns(65);
+            textPanel.add(textArea);
+            int count = 0;
 
 
-        for(UserAccount account : managerAccount.getUserAccounts().getUsers()){
-            if(account != null){
-                count++;
+            for(UserAccount account : managerAccount.getUserAccounts().getUsers()){
+                if(account != null){
+                    count++;
 
-                textArea.append("USER " + count +  " " + "USERNAME: "+account.getUsername() + "  " + "FIRSTNAME: "+account.getFirstName() + "  " +
-                 "LASTNAME: "+account.getLastName() + "  " + "AGE: "+ account.getAge() + "\n");
+                    textArea.append("USER " + count +  " " + "USERNAME: "+account.getUsername() + "  " + "FIRSTNAME: "+account.getFirstName() + "  " +
+                            "LASTNAME: "+account.getLastName() + "  " + "AGE: "+ account.getAge() + "\n");
+                }
             }
+
+
+            JPanel buttonPanel = new JPanel();
+            userHistoryPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+            JButton backBtn = new JButton("BACK");
+            backBtn.addActionListener(e -> c1.show(panelCont, managerAccountPanel_title));
+            backBtn.setBackground(Color.LIGHT_GRAY);
+            backBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+            buttonPanel.add(backBtn);
+
+            JButton logoutBtn = new JButton("LOGOUT");
+            logoutBtn.addActionListener(arg0 -> c1.show(panelCont,loginPanel_title));
+            logoutBtn.setBackground(Color.LIGHT_GRAY);
+            logoutBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+            buttonPanel.add(logoutBtn);
         }
-
-
-        JPanel buttonPanel = new JPanel();
-        userHistoryPanel.add(buttonPanel, BorderLayout.SOUTH);
-
-        JButton backBtn = new JButton("BACK");
-        backBtn.addActionListener(e -> c1.show(panelCont, managerAccountPanel_title));
-        backBtn.setBackground(Color.LIGHT_GRAY);
-        backBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        buttonPanel.add(backBtn);
-
-        JButton logoutBtn = new JButton("LOGOUT");
-        logoutBtn.addActionListener(arg0 -> c1.show(panelCont,loginPanel_title));
-        logoutBtn.setBackground(Color.LIGHT_GRAY);
-        logoutBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        buttonPanel.add(logoutBtn);
     }
 
     private void transactionPanel(){
@@ -1047,13 +1050,32 @@ public class Application extends JPanel {
         textArea.setColumns(65);
         textPanel.add(textArea);
 
-        // TODO: HOOK UP TRANSACTIONS to textArea please use append instead of setText.
-
         JPanel buttonPanel = new JPanel();
         transactionsPanel.add(buttonPanel, BorderLayout.SOUTH);
 
+        JButton viewBtn = new JButton("VIEW");
+        viewBtn.addActionListener(e -> {
+            textArea.setText("");
+            StringBuilder stringBuilder = new StringBuilder();
+            for(UserAccount userAccount : managerAccount.getUserAccounts().getUsers()){
+                if(userAccount != null){
+                    stringBuilder.append("Username: " + userAccount.getUsername() + ":");
+                    stringBuilder.append("\n");
+                    stringBuilder.append(userAccount.getTransactionList().toString());
+                    stringBuilder.append("\n\n\n");
+                }
+            }
+            textArea.append(stringBuilder.toString());
+        });
+        viewBtn.setBackground(Color.LIGHT_GRAY);
+        viewBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
+        buttonPanel.add(viewBtn);
+
         JButton backBtn = new JButton("BACK");
-        backBtn.addActionListener(e -> c1.show(panelCont, managerAccountPanel_title));
+        backBtn.addActionListener(e -> {
+            c1.show(panelCont, managerAccountPanel_title);
+            textArea.setText(""); // we have to empty the text area
+        });
         backBtn.setBackground(Color.LIGHT_GRAY);
         backBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         buttonPanel.add(backBtn);
