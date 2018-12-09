@@ -1045,8 +1045,17 @@ public class Application extends JPanel {
         textArea.setRows(40);
         textArea.setColumns(65);
         textPanel.add(textArea);
+        int count = 0;
 
-        // TODO: HOOK UP USER HISTORY PRINT INTO textArea
+
+        for(UserAccount account : managerAccount.getUserAccounts().getUsers()){
+            if(account != null){
+                count++;
+                textArea.setText("USER " + count +  " " + "USERNAME: "+account.getUsername() + "  " + "FIRSTNAME: "+account.getFirstName() + "  " +
+                 "LASTNAME: "+account.getLastName() + "  " + "AGE: "+ account.getAge() + "\n");
+            }
+        }
+
 
         JPanel buttonPanel = new JPanel();
         userHistoryPanel.add(buttonPanel, BorderLayout.SOUTH);
