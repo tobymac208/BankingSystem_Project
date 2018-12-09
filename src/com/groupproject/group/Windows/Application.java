@@ -319,17 +319,14 @@ public class Application extends JPanel {
         panel_8.add(btnNewButton);
 
         JButton cancelButton = new JButton("CANCEL");
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c1.show(panelCont, "managerAccount");
-                // empty all of the text fields
-                username_TextField.setText("");
-                password_TextField.setText("");
-                firstName_TextField.setText("");
-                lastName_TextField.setText("");
-                age_TextField.setText("");
-            }
+        cancelButton.addActionListener(e -> {
+            c1.show(panelCont, "managerAccount");
+            // empty all of the text fields
+            username_TextField.setText("");
+            password_TextField.setText("");
+            firstName_TextField.setText("");
+            lastName_TextField.setText("");
+            age_TextField.setText("");
         });
         cancelButton.setBackground(Color.LIGHT_GRAY);
         cancelButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
@@ -367,56 +364,34 @@ public class Application extends JPanel {
         managerControlPanel.setLayout(new GridLayout(6,1));
 
         JButton addBtn = new JButton("ADD-USER");
-        addBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // we are going to open the other GUI after we verify CREATE has been clicked.
-                // well we need to use this.dispose() to close previous GUI's
-                if (e.getSource() == addBtn) {
-                    // Similar catch block statement used in main to initially launch the application.
-                    c1.show(panelCont, createAccountPanel_title);
-                }
+        addBtn.addActionListener(e -> {
+            // we are going to open the other GUI after we verify CREATE has been clicked.
+            // well we need to use this.dispose() to close previous GUI's
+            if (e.getSource() == addBtn) {
+                // Similar catch block statement used in main to initially launch the application.
+                c1.show(panelCont, createAccountPanel_title);
             }
         });
         addBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         managerControlPanel.add(addBtn);
 
         JButton removeBtn = new JButton("REMOVE-USER");
-        removeBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c1.show(panelCont, removeAccountPanel_title);
-            }
-        });
+        removeBtn.addActionListener(e -> c1.show(panelCont, removeAccountPanel_title));
         removeBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         managerControlPanel.add(removeBtn);
 
         JButton historyBtn = new JButton("USER-HISTORY");
-        historyBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c1.show(panelCont, userHistory_title);
-            }
-        });
+        historyBtn.addActionListener(e -> c1.show(panelCont, userHistory_title));
         historyBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         managerControlPanel.add(historyBtn);
 
         JButton transBtn = new JButton("TRANSACTIONS");
-        transBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c1.show(panelCont, transaction_title);
-            }
-        });
+        transBtn.addActionListener(e -> c1.show(panelCont, transaction_title));
         transBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         managerControlPanel.add(transBtn);
 
         JButton logoutBtn = new JButton("LOGOUT");
-        logoutBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c1.show(panelCont, loginPanel_title);
-            }
-        });
+        logoutBtn.addActionListener(e -> c1.show(panelCont, loginPanel_title));
         logoutBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         managerControlPanel.add(logoutBtn);
 
@@ -536,24 +511,16 @@ public class Application extends JPanel {
             }
 
             JButton removeUserButton = new JButton("Remove");
-            removeUserButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String usernameToRemove = String.valueOf(userNames.getSelectedItem());
-                    UserAccount accountToRemove = managerAccount.findByUsername(usernameToRemove);
-                    // manager account will attempt to remove this user
-                    managerAccount.removeUser(accountToRemove);
-                }
+            removeUserButton.addActionListener(e -> {
+                String usernameToRemove = String.valueOf(userNames.getSelectedItem());
+                UserAccount accountToRemove = managerAccount.findByUsername(usernameToRemove);
+                // manager account will attempt to remove this user
+                managerAccount.removeUser(accountToRemove);
             });
             removeUserButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
 
             JButton cancelBtn = new JButton("Cancel");
-            cancelBtn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    c1.show(panelCont, managerAccountPanel_title);
-                }
-            });
+            cancelBtn.addActionListener(e -> c1.show(panelCont, managerAccountPanel_title));
             cancelBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
 
             centerLayout.add(userNames);
@@ -775,70 +742,69 @@ public class Application extends JPanel {
         userAccount_Panel.add(TranPanel);
 
         JButton tranBtn = new JButton("TRANSFER");
-        tranBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try{
+        tranBtn.addActionListener(e -> {
+            try{
 
-                    int index = fromAccountList.getSelectedIndex();
-                    if(transToTxtField.getText() !=null && transferTxtField!=null && index == 0 ){  // savings account
-                        double amount = Double.parseDouble(transferTxtField.getText());
-                        String username = transToTxtField.getText();
-                        if(managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
-                            // the user they have selected has been found and now we can transfer the object money and save the setting
-                            UserAccount accountTransferTo = managerAccount.findByUsername(username);
-                            // take money away from the first user
-                            currentAccountOpen.withdraw(1,amount);
-                            // transfer method doesnt really let us do this as easily as just generically depositing all transfer from account to account
-                            accountTransferTo.deposit(1,amount);
-                            textArea.setText("Transfered "  + amount + " From Savings Accoount" +
-                                    "\n To " + accountTransferTo.getUsername()
-                                    + "\n" + "---CURRENT ACCOUNT STATUS---\n " +
-                                    " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
-                                    " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
-                                    " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
-                        }else{
-                            // not good couldnt find the user.
-                            textArea.setText("USER NOT FOUND PLEASE TRY AGAIN");
-                            // reset the fields
-                            transferTxtField.setText("");
-                            transToTxtField.setText("");
-                        }
-
+                int index = fromAccountList.getSelectedIndex();
+                if(transToTxtField.getText() !=null && transferTxtField!=null && index == 0 ){  // savings account
+                    double amount = Double.parseDouble(transferTxtField.getText());
+                    String username = transToTxtField.getText();
+                    if(managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
+                        // the user they have selected has been found and now we can transfer the object money and save the setting
+                        UserAccount accountTransferTo = managerAccount.findByUsername(username);
+                        // take money away from the first user
+                        currentAccountOpen.withdraw(1,amount);
+                        // transfer method doesnt really let us do this as easily as just generically depositing all transfer from account to account
+                        accountTransferTo.deposit(1,amount);
+                        textArea.setText("Transfered "  + amount + " From Savings Accoount" +
+                                "\n To " + accountTransferTo.getUsername()
+                                + "\n" + "---CURRENT ACCOUNT STATUS---\n " +
+                                " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
+                                " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
+                                " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
+                    }else{
+                        // not good couldnt find the user.
+                        textArea.setText("USER NOT FOUND PLEASE TRY AGAIN");
+                        // reset the fields
+                        transferTxtField.setText("");
+                        transToTxtField.setText("");
                     }
-                }catch (Exception h){
-                    textArea.setText("PLEASE RE-ENTER TRANSFER AMOUNT");
-                    transferTxtField.setText("");
-                }
-                try{
-                    int index = fromAccountList.getSelectedIndex();
-                    if(transToTxtField.getText() !=null && transferTxtField!=null && index == 1 ){  // savings account
-                        double amount = Double.parseDouble(transferTxtField.getText());
-                        String username = transToTxtField.getText();
-                        if(managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
-                            // the user they have selected has been found and now we can transfer the object money and save the setting
-                            UserAccount accountTransferTo = managerAccount.findByUsername(username);
-                            // take money away from the first user
-                            currentAccountOpen.withdraw(2,amount);
-                            // transfer method doesnt really let us do this as easily as just generically depositing all transfer from account to account
-                            accountTransferTo.deposit(1,amount);
-                            textArea.setText("Transfered "  + amount + " From Checking Accoount" +
-                                    "\n To " + accountTransferTo.getUsername()
-                                    + "\n" + "---CURRENT ACCOUNT STATUS---\n " +
-                                    " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
-                                    " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
-                                    " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
-                        }else{
-                            // not good couldnt find the user.
-                            textArea.setText("USER NOT FOUND PLEASE TRY AGAIN");
-                            // reset the fields
-                            transferTxtField.setText("");
-                            transToTxtField.setText("");
-                        }
 
-                    }
-                }catch (Exception i){
                 }
+            }catch (Exception h){
+                textArea.setText("PLEASE RE-ENTER TRANSFER AMOUNT");
+                transferTxtField.setText("");
+            }
+            try{
+                int index = fromAccountList.getSelectedIndex();
+                if(transToTxtField.getText() !=null && transferTxtField!=null && index == 1 ){  // savings account
+                    double amount = Double.parseDouble(transferTxtField.getText());
+                    String username = transToTxtField.getText();
+                    if(managerAccount.getUserAccounts().findByUsername(username) !=null && managerAccount.getUsername().equals(username)){
+                        // the user they have selected has been found and now we can transfer the object money and save the setting
+                        UserAccount accountTransferTo = managerAccount.findByUsername(username);
+                        // take money away from the first user
+                        currentAccountOpen.withdraw(2,amount);
+                        // transfer method doesnt really let us do this as easily as just generically depositing all transfer from account to account
+                        accountTransferTo.deposit(1,amount);
+                        textArea.setText("Transfered "  + amount + " From Checking Accoount" +
+                                "\n To " + accountTransferTo.getUsername()
+                                + "\n" + "---CURRENT ACCOUNT STATUS---\n " +
+                                " SAVINGS: $" + currentAccountOpen.getSavingsAccount().getBalance() + "\n" +
+                                " CHECKINGS: $" + currentAccountOpen.getchAccount().getBalance() + "\n" +
+                                " CREDIT: $" + currentAccountOpen.getCcAccount().getAmountLeft());
+                    }else{
+                        // not good couldnt find the user.
+                        textArea.setText("USER NOT FOUND PLEASE TRY AGAIN");
+                        // reset the fields
+                        transferTxtField.setText("");
+                        transToTxtField.setText("");
+                    }
+
+                }
+            }catch (Exception i){
+                textArea.setText("PLEASE RE-ENTER TRANSFER AMOUNT");
+                transferTxtField.setText("");
             }
         });
         tranBtn.setBackground(Color.LIGHT_GRAY);
@@ -994,23 +960,20 @@ public class Application extends JPanel {
 
         JButton btnNewButton = new JButton("CREATE");
         // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
-        btnNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
-                if(usernameTextField.getText()!=null && textField_1.getText()!=null && textField_2.getText()!=null && textField_3.getText()!=null && textField_4.getText()!=null) {
-                    // if the fields are not null we are going to expect that they have entered the information correctly
-                    // create temp variables to create user.
-                    String firstName = usernameTextField.getText();
-                    String lastName = textField_1.getText();
-                    String password = textField_2.getText();
-                    String age =  textField_3.getText();
-                    String userName = textField_4.getText();
-                    int age2 = Integer.parseInt(age);
-                    managerAccount = new ManagerAccount(firstName, lastName, age2, userName, password);
-                    saveSettings();
-                    c1.show(panelCont, loginPanel_title);
-                }
+        btnNewButton.addActionListener(e -> {
+            // we have to add the action listener here so that it takes all the fields from the panel and creates the user if they are entered correctly.
+            if(usernameTextField.getText()!=null && textField_1.getText()!=null && textField_2.getText()!=null && textField_3.getText()!=null && textField_4.getText()!=null) {
+                // if the fields are not null we are going to expect that they have entered the information correctly
+                // create temp variables to create user.
+                String firstName = usernameTextField.getText();
+                String lastName = textField_1.getText();
+                String password = textField_2.getText();
+                String age =  textField_3.getText();
+                String userName = textField_4.getText();
+                int age2 = Integer.parseInt(age);
+                managerAccount = new ManagerAccount(firstName, lastName, age2, userName, password);
+                saveSettings();
+                c1.show(panelCont, loginPanel_title);
             }
         });
         btnNewButton.setBackground(Color.LIGHT_GRAY);
@@ -1018,12 +981,9 @@ public class Application extends JPanel {
         panel_8.add(btnNewButton);
 
         JButton cancelButton = new JButton("CANCEL");
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Manager account not created -- kill the program
-                System.exit(0);
-            }
+        cancelButton.addActionListener(e -> {
+            // Manager account not created -- kill the program
+            System.exit(0);
         });
         cancelButton.setBackground(Color.LIGHT_GRAY);
         cancelButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
@@ -1062,22 +1022,13 @@ public class Application extends JPanel {
         userHistoryPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         JButton backBtn = new JButton("BACK");
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c1.show(panelCont, managerAccountPanel_title);
-            }
-        });
+        backBtn.addActionListener(e -> c1.show(panelCont, managerAccountPanel_title));
         backBtn.setBackground(Color.LIGHT_GRAY);
         backBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         buttonPanel.add(backBtn);
 
         JButton logoutBtn = new JButton("LOGOUT");
-        logoutBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                c1.show(panelCont,loginPanel_title);
-            }
-        });
+        logoutBtn.addActionListener(arg0 -> c1.show(panelCont,loginPanel_title));
         logoutBtn.setBackground(Color.LIGHT_GRAY);
         logoutBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         buttonPanel.add(logoutBtn);
@@ -1096,46 +1047,34 @@ public class Application extends JPanel {
         textArea.setColumns(65);
         textPanel.add(textArea);
 
-        // TODO: HOOK UP TRANSACTIONS to textArea
+        // TODO: HOOK UP TRANSACTIONS to textArea please use append instead of setText.
 
         JPanel buttonPanel = new JPanel();
         transactionsPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         JButton backBtn = new JButton("BACK");
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                c1.show(panelCont, managerAccountPanel_title);
-            }
-        });
+        backBtn.addActionListener(e -> c1.show(panelCont, managerAccountPanel_title));
         backBtn.setBackground(Color.LIGHT_GRAY);
         backBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
         buttonPanel.add(backBtn);
 
         JButton logoutBtn = new JButton("LOGOUT");
         logoutBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
-        logoutBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                c1.show(panelCont,loginPanel_title);
-            }
-        });
+        logoutBtn.addActionListener(arg0 -> c1.show(panelCont,loginPanel_title));
         logoutBtn.setBackground(Color.LIGHT_GRAY);
         buttonPanel.add(logoutBtn);
 
     }
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // DESERIALIZE managerAccount
-                managerAccount = FileOps.deserialize(); // might be null
+        EventQueue.invokeLater(() -> {
+            // DESERIALIZE managerAccount
+            managerAccount = FileOps.deserialize(); // might be null
 
 //               ManagerAccount differentManagerAccount = new ManagerAccount("Jeff", "Linkman", 43, "username", "password");
 //               FileOps.serialize(differentManagerAccount);
 //               System.exit(0);
-                new Application();
-            }
+            new Application();
         });
     }
 
