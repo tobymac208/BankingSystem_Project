@@ -1051,7 +1051,8 @@ public class Application extends JPanel {
         for(UserAccount account : managerAccount.getUserAccounts().getUsers()){
             if(account != null){
                 count++;
-                textArea.setText("USER " + count +  " " + "USERNAME: "+account.getUsername() + "  " + "FIRSTNAME: "+account.getFirstName() + "  " +
+
+                textArea.append("USER " + count +  " " + "USERNAME: "+account.getUsername() + "  " + "FIRSTNAME: "+account.getFirstName() + "  " +
                  "LASTNAME: "+account.getLastName() + "  " + "AGE: "+ account.getAge() + "\n");
             }
         }
