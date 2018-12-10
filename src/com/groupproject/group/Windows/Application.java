@@ -5,8 +5,6 @@ package com.groupproject.group.Windows;
  */
 
 import com.groupproject.group.Account.LoginAccount.ManagerAccount;
-import com.groupproject.group.Account.LoginAccount.UserAccount.Transaction;
-import com.groupproject.group.Account.LoginAccount.UserAccount.TransactionList;
 import com.groupproject.group.Account.LoginAccount.UserAccount.UserAccount;
 import com.groupproject.group.Utility.FileOps;
 
