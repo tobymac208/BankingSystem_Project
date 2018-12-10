@@ -33,34 +33,4 @@ public class ManagerAccount extends LoginAccount {
         // return the result of the call to removeAccount
         return userAccounts.removeAccount(account);
     }
-
-    /** Prints a styled string of every transaction for every UserAccount */
-    public void printAllTransactions(){
-        // check if userAccounts has anything in it
-        if(!(userAccounts.getSize() > 0)){
-            System.out.println("No accounts to display."); // it doesn't, so tell the user that.
-            return;
-        }
-        // Go through the list of users
-        for(UserAccount account : userAccounts.getUsers()){
-            if(account != null){ // some may be empty UserAccount objects
-                System.out.println(account.getUsername());
-                System.out.println(account.getTransactionList().toString());
-            }
-        }
-    }
-
-    /** Print a certain user's transactions. */
-    public void printTransactionsByUsername(String target){
-        UserAccount userAccount = userAccounts.findByUsername(target);
-        if(userAccount == null){ // user account doesn't exist.
-            System.out.println("That username doesn't exist.");
-            return; // simple leave the method
-        }
-
-        // Print the user's transactions
-        System.out.println("Transactions, for user " + "\"" + userAccount.getUsername() + "\":");
-         // print out their transactions
-        System.out.println(userAccount.getTransactionList().toString());
-    }
 }
