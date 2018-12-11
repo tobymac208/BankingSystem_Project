@@ -498,23 +498,47 @@ public class Application extends JPanel {
         removeUserAccount_Panel.setLayout(new BorderLayout(10, 10));
         if(managerAccount != null){
             removeUserAccount_Panel = new JPanel(new BorderLayout());
-            JPanel centerLayout = new JPanel(new GridLayout(4, 4));
+            JPanel topLayout = new JPanel();
+            topLayout.setLayout(new BoxLayout(topLayout, BoxLayout.PAGE_AXIS));
+            JPanel fieldAndButton = new JPanel(new FlowLayout());
+
+            JPanel bottomLayout = new JPanel(new FlowLayout());
 
             // Components
-            JComboBox<String> userNames = new JComboBox<>();
-            // Add all the user names to the list
-            for(UserAccount account : managerAccount.getUserAccounts().getUsers()){
-                if(account != null){
-                    userNames.addItem(account.getUsername());
+            JTextArea textArea = new JTextArea();
+            textArea.setEditable(false);
+            JButton viewUsers_Button = new JButton("View User List");
+            viewUsers_Button.addActionListener(e -> {
+                String stringToSetTextArea = "";
+                for(UserAccount currentAccount : managerAccount.getUserAccounts().getUsers()){
+                    if(currentAccount != null){
+                        stringToSetTextArea += currentAccount.getUsername() + "\n";
+                    }
                 }
-            }
+                textArea.setText(stringToSetTextArea);
+            });
+            JLabel requestEntry_Label = new JLabel("Username to remove: ");
+            JTextField requestEntry_TextField = new JTextField();
+            requestEntry_TextField.setColumns(10);
 
             JButton removeUserButton = new JButton("Remove");
             removeUserButton.addActionListener(e -> {
-                String usernameToRemove = String.valueOf(userNames.getSelectedItem());
-                UserAccount accountToRemove = managerAccount.findByUsername(usernameToRemove);
-                // manager account will attempt to remove this user
-                managerAccount.removeUser(accountToRemove);
+                String username = requestEntry_TextField.getText();
+                if(username.trim().length() > 0){
+                    // remove the user, specified by the username
+                    boolean removed = managerAccount.removeUser(managerAccount.findByUsername(username));
+                    if(removed){
+                        c1.show(panelCont, managerAccountPanel_title);
+                        managerTextPane.setText("Account removed: " + username);
+                        saveSettings();
+                    }else{
+                        c1.show(panelCont, managerAccountPanel_title);
+                        managerTextPane.setText("Account failed to remove: " + username);
+                    }
+                }else{
+                    c1.show(panelCont, managerAccountPanel_title);
+                    managerTextPane.setText("No username entered.");
+                }
             });
             removeUserButton.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
 
@@ -522,10 +546,15 @@ public class Application extends JPanel {
             cancelBtn.addActionListener(e -> c1.show(panelCont, managerAccountPanel_title));
             cancelBtn.setFont(new Font("OCR A Extended", Font.PLAIN, 11));
 
-            centerLayout.add(userNames);
-            centerLayout.add(removeUserButton);
-            centerLayout.add(cancelBtn);
-            removeUserAccount_Panel.add(centerLayout, BorderLayout.CENTER);
+            topLayout.add(textArea);
+            topLayout.add(viewUsers_Button);
+            fieldAndButton.add(requestEntry_Label);
+            fieldAndButton.add(requestEntry_TextField);
+            fieldAndButton.add(removeUserButton);
+            topLayout.add(fieldAndButton);
+            bottomLayout.add(cancelBtn);
+            removeUserAccount_Panel.add(topLayout, BorderLayout.CENTER);
+            removeUserAccount_Panel.add(bottomLayout, BorderLayout.SOUTH);
         }
     }
 
@@ -968,12 +997,11 @@ public class Application extends JPanel {
                 String firstName = usernameTextField.getText();
                 String lastName = textField_1.getText();
                 String password = textField_2.getText();
-                String age =  textField_3.getText();
                 String userName = textField_4.getText();
-                int age2 = Integer.parseInt(age);
-                managerAccount = new ManagerAccount(firstName, lastName, age2, userName, password);
+                int age = Integer.parseInt(textField_3.getText());
+                managerAccount = new ManagerAccount(firstName, lastName, age, userName, password);
                 saveSettings();
-                c1.show(panelCont, loginPanel_title);
+                System.exit(0); // close the program
             }
         });
         btnNewButton.setBackground(Color.LIGHT_GRAY);
