@@ -1,6 +1,6 @@
 package com.groupproject.group.Account.LoginAccount;
 
-import javax.swing.*;
+// import javax.swing.*;
 
     /**so basically the only reason why i have this class is because when you use eclipse window builder it doesnt recognize more
      * than one GUI at a time so if any work or updating needs to be done on these gui's it can be done here and tested before being
@@ -165,7 +165,7 @@ import javax.swing.border.BevelBorder;
 
 
 
-            JPanel panel_2 = new JPanel();
+            // JPanel panel_2 = new JPanel();
 
 
 
